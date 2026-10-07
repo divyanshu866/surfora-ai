@@ -353,7 +353,7 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
           w-full
           overflow-x-hidden
           overflow-y-auto
-          px-5
+          px-4
           pt-8
           pb-34
           sm:px-6
@@ -363,6 +363,7 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
           scrollbar-thumb-white/10
         "
       >
+        {/* ? */}
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
           {messages.map((message, index) => {
             const isAssistant = message.role === "ASSISTANT";
