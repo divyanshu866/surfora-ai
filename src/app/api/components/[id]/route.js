@@ -63,7 +63,7 @@ export async function PATCH(req, context) {
     await tx.component.update({
       where: { id: Number(id) },
       data: {
-        name,
+        name: name.trim() || "New Project",
         html,
         css,
         js,

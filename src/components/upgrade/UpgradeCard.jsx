@@ -1,170 +1,127 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Rocket, Crown } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ArrowRight, CircleHelp, Check, Sparkles } from "lucide-react";
+import CheckoutModal from "./CheckoutModal";
 import { PaddleUpgradeButton } from "./PaddleUpgradeButton";
 
-const UpgradeCard = ({ userId }) => {
-  const [billingCycle, setBillingCycle] = useState("monthly");
+const PRO_FEATURES = [
+  "More AI capabilities",
+  "Higher generation capacity",
+  "GPT-6 Luna — broader effort range",
+  "GPT-6 Sol — advanced reasoning",
+  "Gemini 3.8 Flash",
+  "GLM 5.3 Flash",
+  "Full interface generation + rework workflow",
+];
 
-  const plans = [
-    {
-      id: "free",
-      name: "Free",
-      description:
-        "Perfect for trying out the platform and building your first components.",
-      icon: Rocket,
-      badge: null,
-      price: {
-        monthly: 0,
-        yearly: 0,
-      },
-      cta: "Get Started for Free",
-      features: [
-        "Generate up to 10 components / month",
-        "Access to all base UI components",
-        "Community templates",
-        "Basic exports (JSX, TSX, HTML, CSS)",
-        "Standard support",
-      ],
-    },
+function BillingToggle({ yearly, onChange }) {
+  return (
+    <div className="inline-flex rounded-xl border border-white/[0.08] bg-white/[0.018] p-1">
+      <button
+        type="button"
+        aria-pressed={!yearly}
+        onClick={() => onChange(false)}
+        className={`rounded-lg px-4 py-2 text-xs font-medium transition ${!yearly ? "bg-white/[0.08] text-white" : "text-white/35 hover:text-white/70"}`}
+      >
+        Monthly
+      </button>
+      <button
+        type="button"
+        aria-pressed={yearly}
+        onClick={() => onChange(true)}
+        className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-medium transition ${yearly ? "bg-violet-400/[0.10] text-violet-100" : "text-white/35 hover:text-white/70"}`}
+      >
+        Yearly
+        <span className="rounded-md bg-violet-300/[0.12] px-1.5 py-0.5 text-[9px] font-semibold text-violet-200">
+          Save 20%
+        </span>
+      </button>
+    </div>
+  );
+}
 
-    {
-      id: "pro",
-      name: "Pro",
-      description:
-        "For developers who build more, move faster, and want more power.",
-      icon: Crown,
-      badge: "Most Popular",
-      price: {
-        monthly: 15,
-        yearly: 12,
-      },
-      cta: "Get Pro",
-      features: [
-        "500 component generations / billing period",
-        "Access to powerful AI models",
-        "Advanced reasoning effort levels",
-        "AI-powered improvements & refactors",
-        "Private projects",
-        "Priority support",
-      ],
-    },
-  ];
+function ProFeatureList() {
+  return (
+    <div className="space-y-3">
+      {PRO_FEATURES.map((item) => (
+        <div key={item} className="flex items-start gap-3">
+          <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-violet-300/[0.11] text-violet-200">
+            <Check className="h-2.5 w-2.5" strokeWidth={2.4} />
+          </span>
+          <span className="text-sm leading-5 text-white/70">{item}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  const router = useRouter();
+export default function UpgradeCard({ userId }) {
+  const [yearly, setYearly] = useState(true);
+  const monthlyPrice = yearly ? 16 : 20;
 
   return (
-    <section className="px-6 pt-14">
-      <div className="mx-auto max-w-5xl">
-        <div className="grid gap-6 lg:grid-cols-2">
-          {plans.map((plan) => {
-            const isPro = plan.id === "pro";
-            const Icon = plan.icon;
+    <div>
+      <div className="mb-4 flex flex-col items-center gap-4 text-center">
+        <div>
+          <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/25">
+            Choose your plan
+          </div>
+          <p className="mt-1 text-xs text-white/30">
+            Switch billing whenever it makes sense.
+          </p>
+        </div>
+        <BillingToggle yearly={yearly} onChange={setYearly} />
+      </div>
 
-            return (
-              <div
-                key={plan.id}
-                className={`relative mb-5 overflow-hidden rounded-[28px] transition-transform duration-300 hover:-translate-y-1 ${
-                  isPro
-                    ? "p-[1px] bg-linear-to-br from-violet-400 via-fuchsia-500 to-pink-500 shadow-[0_0_35px_rgba(217,70,239,0.14)]"
-                    : "border border-white/[0.12]"
-                }`}
-              >
-                {/* Pro-only ambient glow */}
-                {isPro && (
-                  <>
-                    <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-fuchsia-500/10 blur-[90px]" />
-                    <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-violet-500/10 blur-[90px]" />
-                  </>
-                )}
+      <div className="relative overflow-hidden rounded-[28px] border border-violet-300/20 bg-[#0b080e] p-6 shadow-[0_30px_120px_rgba(124,58,237,0.10)] sm:p-8">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-violet-500/[0.09] blur-3xl" />
+        <div className="pointer-events-none absolute bottom-[-7rem] left-[-5rem] h-48 w-48 rounded-full bg-fuchsia-500/[0.05] blur-3xl" />
 
-                <div className="relative flex h-full flex-col rounded-[27px] bg-[#08080a]/95 p-8 backdrop-blur-sm">
-                  {/* Plan */}
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-3xl font-semibold text-white">
-                        {plan.name}
-                      </h3>
-
-                      {plan.badge && (
-                        <span className="rounded-full border border-fuchsia-400/20 bg-fuchsia-400/10 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-fuchsia-300">
-                          {plan.badge}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Price */}
-                    <div className="mt-5 flex items-end">
-                      <span className="text-6xl font-bold tracking-tight text-white">
-                        ${plan.price[billingCycle]}
-                      </span>
-
-                      <span className="mb-2 ml-2 text-xl font-medium text-gray-300">
-                        /month
-                      </span>
-                    </div>
-
-                    {billingCycle === "yearly" &&
-                      (plan.price.monthly - plan.price.yearly) * 12 > 0 && (
-                        <p className="mt-3 text-sm text-emerald-400">
-                          Save ${(plan.price.monthly - plan.price.yearly) * 12}
-                          /year
-                        </p>
-                      )}
-
-                    <p className="mt-8 text-lg leading-8 text-gray-300">
-                      {plan.description}
-                    </p>
-                  </div>
-
-                  {/* Features */}
-                  <div className="mt-10 space-y-5">
-                    {plan.features.map((feature) => (
-                      <div key={feature} className="flex items-center gap-4">
-                        <div
-                          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                            isPro
-                              ? "bg-fuchsia-400 text-black"
-                              : "bg-white text-black"
-                          }`}
-                        >
-                          <Check size={11} strokeWidth={3} />
-                        </div>
-
-                        <span className="text-[17px] leading-8 text-gray-300">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Spacer */}
-                  <div className="flex-1" />
-
-                  {/* CTA */}
-                  <div className="mt-10">
-                    {isPro && userId != null ? (
-                      <PaddleUpgradeButton userId={userId} />
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => router.push("/workspace")}
-                        className="group flex h-14 w-full items-center justify-center rounded-2xl bg-white/[0.06] font-semibold text-lg text-white transition-all duration-300 hover:bg-white/[0.1] cursor-pointer"
-                      >
-                        {plan.cta}
-                      </button>
-                    )}
-                  </div>
-                </div>
+        <div className="relative">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-base font-semibold text-white">Pro</h2>
+                <span className="rounded-full border border-violet-300/15 bg-violet-300/[0.07] px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-violet-200">
+                  Recommended
+                </span>
               </div>
-            );
-          })}
+              <p className="mt-1.5 text-xs text-white/32">
+                For ongoing interface development.
+              </p>
+            </div>
+            <Sparkles className="h-4 w-4 text-violet-300/70" />
+          </div>
+
+          <div className="mt-7 flex items-end gap-2">
+            <span className="text-[4rem] font-semibold leading-none tracking-[-0.065em] text-white">
+              ${monthlyPrice}
+            </span>
+            <span className="pb-1 text-xs text-white/30">/ month</span>
+          </div>
+
+          <p className="mt-2 text-xs text-white/30">
+            {yearly
+              ? "$192 / year · save $48 / year"
+              : "$20 / month · billed monthly"}
+          </p>
+
+          <div className="my-7 h-px bg-white/[0.07]" />
+          <ProFeatureList />
+
+          <PaddleUpgradeButton userId={userId} yearly={yearly} />
+
+          <div className="mt-3 text-center text-[10px] text-white/24">
+            Secure checkout · Cancel anytime
+          </div>
         </div>
       </div>
-    </section>
-  );
-};
 
-export default UpgradeCard;
+      <div className="mt-4 flex items-center justify-center gap-2 text-[10px] text-white/22">
+        <CircleHelp className="h-3 w-3" />
+        Questions about plans? Talk to support.
+      </div>
+    </div>
+  );
+}

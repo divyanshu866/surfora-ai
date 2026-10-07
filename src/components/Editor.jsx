@@ -9,8 +9,7 @@ import { useConsole } from "@/context/ConsoleContext";
 
 const Editor = ({ user, isMobile }) => {
   const {
-    setSelectedType,
-    setSelectedStyle,
+    setSelectedVisualStyle,
     activeComponent,
     setActiveComponent,
     updatePreview,
@@ -105,8 +104,7 @@ const Editor = ({ user, isMobile }) => {
         setActiveMessages([]);
         setReworkUI(false);
         setActiveComponentIndex(null);
-        setSelectedType("Custom type");
-        setSelectedStyle("Custom style");
+        setSelectedVisualStyle("Custom style");
         setActiveComponent({
           id: "",
           messages: [],
@@ -121,7 +119,7 @@ const Editor = ({ user, isMobile }) => {
         setConsoleLogs([]);
         updatePreview();
 
-        console.log("New Component");
+        console.log("New Project");
       }
     };
 

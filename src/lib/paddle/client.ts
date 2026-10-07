@@ -31,14 +31,16 @@ export function initializePaddleClient() {
   return paddlePromise;
 }
 
-export async function openProCheckout(userId: string) {
+export async function openProCheckout(userId: string, yearly: boolean) {
   const paddle = await initializePaddleClient();
 
   if (!paddle) {
     throw new Error("Failed to initialize Paddle.js");
   }
 
-  const priceId = process.env.NEXT_PUBLIC_PADDLE_PREMIUM_MONTHLY_PRICE_ID;
+  const priceId = yearly
+    ? process.env.NEXT_PUBLIC_PADDLE_PREMIUM_YEARLY_PRICE_ID
+    : process.env.NEXT_PUBLIC_PADDLE_PREMIUM_MONTHLY_PRICE_ID;
 
   if (!priceId) {
     throw new Error(

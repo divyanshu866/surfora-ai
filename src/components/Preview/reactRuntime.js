@@ -102,6 +102,8 @@ const SUPPORTED_REACT_DEPENDENCIES = {
 
     //Animation
     three: "https://esm.sh/three/",
+    motion: "https://esm.sh/motion/",
+    next: "https://esm.sh/next/",
   },
 };
 const RUNTIME_DEPENDENCIES = {

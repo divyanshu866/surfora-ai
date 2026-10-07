@@ -26,7 +26,8 @@ export async function buildwebBundleDocument(component) {
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Component Preview</title>
+         <script src="https://cdn.tailwindcss.com"></script>
+        <title>SurforaAI Preview</title>
         <!-- Generated component CSS -->
         <style>
           ${component.css ? component.css : boilerCss}

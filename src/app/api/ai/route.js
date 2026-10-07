@@ -13,7 +13,7 @@ const chunkSize = 2; // Set the chunk size for the mock stream
 const delay = 1; // Set the delay between chunks in milliseconds
 
 import {
-  WEB_BUNDLE_PROMPT,
+  WEB_BUNDLE_SYSTEM_PROMPT,
   WEB_BUNDLE_EDIT_SYSTEM_PROMPT,
   WEB_BUNDLE_ASK_SYSTEM_PROMPT,
 } from "./prompts/webBundle";
@@ -24,11 +24,12 @@ import {
   REACT_ASK_SYSTEM_PROMPT,
 } from "./prompts/react";
 import { consumeGeneration } from "../../../lib/billing/generation-usage";
+import { startMarkers } from "../../../ai/stream_parser";
 
 const SYSTEM_PROMPTS = {
   HTML: {
     ASK: WEB_BUNDLE_ASK_SYSTEM_PROMPT,
-    REWORK: WEB_BUNDLE_PROMPT,
+    REWORK: WEB_BUNDLE_SYSTEM_PROMPT,
   },
   REACT: {
     ASK: REACT_ASK_SYSTEM_PROMPT,
@@ -221,6 +222,7 @@ export async function PATCH(req) {
 
   const { entitlement, generationUsage } = authorization;
 
+  console.log("TARGET TECH BEF BUILD CONTENTS===>", request.targetTech);
   //Build contents
   const contents = buildNeutralEditContext(request);
 
@@ -239,8 +241,18 @@ export async function PATCH(req) {
   } else {
     console.log("GENERATION MODE========>:", generationMode);
     const resolvedMode = await resolveMode(generationMode, contents);
-    console.log("RESOLVED GENERATION MODE========>:", resolvedMode);
 
+    const systemPrompt = SYSTEM_PROMPTS[targetTech][resolvedMode];
+    console.log("========== FINAL SYSTEM PROMPT ==========");
+    console.log("targetTech:", targetTech);
+    console.log("resolvedMode:", resolvedMode);
+    console.log("prompt length:", systemPrompt?.length);
+    console.log("has NAME_START:", systemPrompt?.includes(startMarkers.name));
+    console.log(
+      "has MESSAGE_START:",
+      systemPrompt?.includes(startMarkers.message),
+    );
+    console.log("==========================================");
     const stream = await generate(
       EDIT_SYSTEM_PROMPT[targetTech][resolvedMode],
       contents,

@@ -1,63 +1,62 @@
 "use client";
 
-import Navbar from "@/components/Landing/Navbar";
-import Hero from "@/components/Landing/Hero";
-import TechnologyStrip from "@/components/Landing/TechnologyStrip";
-import Workflow from "@/components/Landing/Workflow";
-import ProductShowcase from "@/components/Landing/ProductShowcase";
-import Features from "@/components/Landing/Features";
-import FinalCTA from "@/components/Landing/FinalCTA";
-import Footer from "@/components/Landing/Footer";
+import { useEffect, useMemo, useState } from "react";
 
-export default function Home() {
+import { AnimatePresence, motion } from "motion/react";
+
+import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Code2,
+  Command,
+  Cpu,
+  Gauge,
+  Globe2,
+  Layers3,
+  Monitor,
+  MousePointer2,
+  Play,
+  RotateCcw,
+  Sparkles,
+  WandSparkles,
+  Zap,
+} from "lucide-react";
+import Navbar from "../components/Landing/Navbar";
+import Hero from "../components/Landing/Hero";
+import TheIdea from "../components/Landing/TheIdea";
+import TheWhy from "../components/Landing/TheWhy";
+import Capabilities from "../components/Landing/Capabilities";
+import UseCases from "../components/Landing/UseCases";
+import Pricing from "../components/Landing/Pricing";
+import Start from "../components/Landing/Start";
+import Footer from "../components/Landing/Footer";
+import { Glow } from "../components/Landing/Helpers";
+
+export default function Page() {
   return (
-    <main
-      className="
-        relative min-h-screen overflow-x-hidden
-        bg-[#09090b]/50
-        font-(family-name:var(--font-geist-sans))
-        text-white
-        antialiased
-        selection:bg-violet-400/30
-        selection:text-white
-      "
-    >
-      {/* Global landing-page atmosphere */}
+    <main className="relative min-h-screen overflow-x-hidden bg-transparent text-white selection:bg-violet-500/30 selection:text-white">
       <div
         aria-hidden="true"
-        className="
-          pointer-events-none absolute inset-x-0 top-0 z-0
-          h-175
-          bg-[radial-gradient(
-            circle_at_50%_0%,
-            rgba(124,58,237,0.14),
-            transparent_62%
-          )]
-        "
+        className="pointer-events-none fixed inset-0 -z-10 opacity-70 [background-image:radial-gradient(rgba(255,255,255,.045)_1px,transparent_1px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent_80%)]"
       />
 
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none absolute left-1/2 top-112.5 z-0
-          h-125 w-225
-          -translate-x-1/2
-          rounded-full
-          bg-violet-600/[0.035]
-          blur-3xl
-        "
-      />
+      <Navbar />
 
-      <div className="relative z-10">
-        <Navbar />
-        <Hero />
-        <TechnologyStrip />
-        <Workflow />
-        <ProductShowcase />
-        <Features />
-        <FinalCTA />
-        <Footer />
-      </div>
+      <Hero />
+      <TheIdea />
+
+      <TheWhy />
+
+      <Capabilities />
+
+      <UseCases />
+      <Pricing />
+
+      <Start />
+
+      <Footer />
     </main>
   );
 }

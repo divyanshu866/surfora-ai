@@ -65,7 +65,7 @@ const Profile = ({ user }) => {
     }
   };
 
-  const displayName = user?.name || "ComponentLab user";
+  const displayName = user?.name || "SurforaAI user";
   const email = user?.email || "";
   const plan = generationUsage?.plan ?? "FREE";
   const isPro = plan === "PRO";

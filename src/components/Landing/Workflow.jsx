@@ -12,7 +12,7 @@ const WORKFLOW_STEPS = [
     number: "01",
     icon: PencilLine,
     title: "Describe",
-    description: "Tell ComponentLab what you want to build.",
+    description: "Tell SurforaAI what you want to build.",
   },
   {
     number: "02",
@@ -30,7 +30,7 @@ const WORKFLOW_STEPS = [
     number: "04",
     icon: Rocket,
     title: "Ship",
-    description: "Take the finished component into your project.",
+    description: "Take the finished UI into your project.",
   },
 ];
 

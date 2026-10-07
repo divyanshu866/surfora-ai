@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Ellipsis,
-  Menu,
-  PanelLeft,
-  RefreshCcw,
-  Save,
-  SquareTerminal,
-} from "lucide-react";
+import { Ellipsis, Menu, RefreshCcw, Save, SquareTerminal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useConsole } from "@/context/ConsoleContext";
 import { useEditorContext } from "@/context/EditorContext";
@@ -42,10 +35,7 @@ export default function Navbar({ user }) {
     };
 
     document.addEventListener("mousedown", handlePointerDown);
-
-    return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
-    };
+    return () => document.removeEventListener("mousedown", handlePointerDown);
   }, []);
 
   function reRender() {
@@ -80,151 +70,107 @@ export default function Navbar({ user }) {
     }
   }
 
-  const iconButtonClass =
-    "group flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080a] active:scale-95";
+  const iconBtn =
+    "group flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080a] active:scale-95";
 
   return (
     <nav
       aria-label="Workspace"
-      className="relative z-50 h-12 w-full border-b border-white/[0.08] bg-[#08080a] px-2.5 sm:px-3 lg:px-4"
+      className="relative z-50 h-12 w-full border-b border-white/[0.08] bg-[#08080a]"
     >
-      <div className="mx-auto flex h-full w-full max-w-[1800px] items-center gap-2 sm:gap-3">
-        {/* Brand / sidebar toggle */}
-        <div className="flex min-w-0 shrink-0 items-center">
-          {/* Mobile sidebar toggle */}
+      <div className="mx-auto flex h-full w-full max-w-[1800px] items-center gap-2 px-2.5 sm:gap-3 sm:px-3 lg:px-4">
+        {/* ── Brand / sidebar toggle ── */}
+        <div className="flex shrink-0 items-center gap-1.5">
+          {/* Mobile: menu + logo */}
           <button
             type="button"
-            className="md:hidden flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.12] bg-white/[0.04] text-neutral-300 transition-colors hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 active:scale-95"
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             aria-label="Toggle sidebar"
             aria-pressed={sidebarCollapsed}
+            className={`${iconBtn} border-white/[0.1] bg-white/[0.04] text-zinc-300 hover:bg-white/[0.08] hover:text-white md:hidden`}
           >
-            <Menu className="h-[17px] w-[17px]" />
+            <Menu className="h-4 w-4" />
           </button>
 
-          {/* Mobile brand mark */}
           <Image
             src="/newlogo.svg"
-            width={45}
-            height={45}
-            alt="ComponentLab"
-            className={`
-      ml-1
-      shrink-0
-      object-contain
-      opacity-80
-      md:hidden
-            
-    `}
+            width={28}
+            height={28}
+            alt="Surfora AI"
+            className="h-7 w-7 object-contain opacity-90 md:hidden"
+            priority
           />
 
-          {/* Desktop sidebar toggle */}
+          {/* Desktop: logo ↔ sidebar icon swap on hover */}
           <button
             type="button"
-            className="
-      group relative hidden
-      h-8 w-8 shrink-0
-      cursor-col-resize
-      items-center justify-center
-      rounded-lg
-      text-neutral-300
-      transition-colors
-      hover:bg-white/[0.055]
-      focus-visible:outline-none
-      focus-visible:ring-2
-      focus-visible:ring-violet-400
-      active:scale-95
-      md:flex
-    "
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             aria-label="Toggle sidebar"
             aria-pressed={sidebarCollapsed}
+            className="group relative hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-300 transition-colors hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60 active:scale-95 md:flex"
           >
             <Image
               src="/newlogo.svg"
-              width={32}
-              height={32}
+              width={40}
+              height={40}
               alt=""
-              aria-hidden="true"
-              className="
-        absolute
-        object-contain
-        opacity-90
-        transition-opacity
-        duration-150
-        group-hover:opacity-0
-      "
+              aria-hidden
+              className="absolute h-7 w-7 object-contain opacity-90 transition-opacity duration-150 group-hover:opacity-0"
             />
-
             <Image
               src="/sidebar.svg"
+              width={20}
+              height={20}
               alt=""
-              width={22}
-              height={22}
-              aria-hidden="true"
-              className="
-        absolute
-        object-contain
-        opacity-0
-        transition-opacity
-        duration-150
-        group-hover:opacity-70
-      "
+              aria-hidden
+              className="absolute h-5 w-5 object-contain opacity-0 transition-opacity duration-150 group-hover:opacity-80"
             />
           </button>
 
           {/* Desktop wordmark */}
           <Image
             src="/name.svg"
-            height={22}
-            width={120}
-            alt="ComponentLab"
-            className="
-      ml-1
-      mb-0.5
-      hidden
-      h-[22px]
-      w-auto
-      shrink-0
-      object-contain
-      opacity-[0.92]
-      md:block
-    "
+            width={100}
+            height={60}
+            alt="Surfora AI"
+            className="hidden h-[15px] w-auto object-contain opacity-90 md:block"
+            priority
           />
         </div>
 
-        {/* Component name */}
-        <div className="min-w-0 flex-1 md:max-w-[360px] md:flex-none">
+        {/* ── Project name ── */}
+        <div className="min-w-0 flex-1 md:max-w-[320px] sm:ml-25 md:flex-none">
           <input
             type="text"
-            onChange={(event) =>
+            value={activeComponent?.name ?? ""}
+            onChange={(e) =>
               setActiveComponent((prev) => ({
                 ...prev,
-                name: event.target.value,
+                name: e.target.value,
               }))
             }
-            value={activeComponent?.name ?? ""}
-            placeholder="Component name"
-            aria-label="Component name"
-            className={`h-8 w-full rounded-lg border bg-[#111114] px-2.5 text-[12px] font-medium tracking-[0.01em] outline-none transition-colors placeholder:text-neutral-500 focus:border-violet-400/70 focus:ring-2 focus:ring-violet-400/15 sm:px-3 sm:text-[13px] ${
+            placeholder="Project name"
+            aria-label="Project name"
+            className={`h-8 w-full rounded-lg border bg-[#111114] px-2.5 text-[13px] font-medium tracking-tight outline-none transition-colors placeholder:text-zinc-500 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/15 sm:px-3 ${
               activeComponent?.name
-                ? "border-white/[0.11] text-neutral-100"
-                : "border-red-400/35 text-red-200"
+                ? "border-white/[0.1] text-zinc-100"
+                : "border-red-400/40 text-red-200"
             }`}
           />
         </div>
 
-        {/* Actions */}
+        {/* ── Actions ── */}
         <div className="ml-auto flex shrink-0 items-center gap-1.5">
+          {/* Desktop action buttons */}
           <div className="hidden items-center gap-1.5 sm:flex">
             <button
               type="button"
               onClick={onSave}
-              title="Save component"
-              aria-label="Save component"
-              className={`${iconButtonClass} border-orange-300/25 bg-orange-300/[0.07] text-orange-200 hover:border-orange-200/50 hover:bg-orange-300/[0.13]`}
+              title="Save project"
+              aria-label="Save project"
+              className={`${iconBtn} border-orange-400/25 bg-orange-400/[0.08] text-orange-200 hover:border-orange-300/45 hover:bg-orange-400/[0.14]`}
             >
-              <Save className="h-4 w-4 transition-transform duration-150 group-hover:scale-110" />
+              <Save className="h-3.5 w-3.5 transition-transform duration-150 group-hover:scale-110" />
             </button>
 
             <button
@@ -233,13 +179,13 @@ export default function Navbar({ user }) {
               title="Toggle console"
               aria-label="Toggle console"
               aria-pressed={showConsole}
-              className={`${iconButtonClass} ${
+              className={`${iconBtn} ${
                 showConsole
-                  ? "border-pink-300/50 bg-pink-300/[0.14] text-pink-100"
-                  : "border-pink-300/25 bg-pink-300/[0.07] text-pink-200 hover:border-pink-200/50 hover:bg-pink-300/[0.13]"
+                  ? "border-pink-400/50 bg-pink-400/[0.16] text-pink-100"
+                  : "border-pink-400/25 bg-pink-400/[0.08] text-pink-200 hover:border-pink-300/45 hover:bg-pink-400/[0.14]"
               }`}
             >
-              <SquareTerminal className="h-4 w-4 transition-transform duration-150 group-hover:scale-110" />
+              <SquareTerminal className="h-3.5 w-3.5 transition-transform duration-150 group-hover:scale-110" />
             </button>
 
             <button
@@ -247,36 +193,36 @@ export default function Navbar({ user }) {
               onClick={reRender}
               title="Refresh preview"
               aria-label="Refresh preview"
-              className={`${iconButtonClass} border-emerald-300/25 bg-emerald-300/[0.07] text-emerald-200 hover:border-emerald-200/50 hover:bg-emerald-300/[0.13]`}
+              className={`${iconBtn} border-emerald-400/25 bg-emerald-400/[0.08] text-emerald-200 hover:border-emerald-300/45 hover:bg-emerald-400/[0.14]`}
             >
-              <RefreshCcw className="h-4 w-4 transition-transform duration-300 group-hover:rotate-90" />
+              <RefreshCcw className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-90" />
             </button>
           </div>
 
-          {/* Mobile actions */}
+          {/* Mobile: overflow menu */}
           <div ref={moreRef} className="relative sm:hidden">
             <button
               type="button"
-              onClick={() => setShowMore((previous) => !previous)}
+              onClick={() => setShowMore((prev) => !prev)}
               aria-label="More actions"
               aria-expanded={showMore}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.12] bg-white/[0.04] text-neutral-300 transition-colors hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 active:scale-95"
+              className={`${iconBtn} border-white/[0.1] bg-white/[0.04] text-zinc-300 hover:bg-white/[0.08] hover:text-white`}
             >
-              <Ellipsis className="h-5 w-5" />
+              <Ellipsis className="h-4 w-4" />
             </button>
 
             {showMore && (
-              <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-white/[0.1] bg-[#111114] p-1 shadow-[0_16px_40px_rgba(0,0,0,0.5)]">
+              <div className="absolute right-0 top-full z-50 mt-1.5 w-48 overflow-hidden rounded-xl border border-white/[0.1] bg-[#111114] p-1 shadow-[0_16px_40px_rgba(0,0,0,0.55)]">
                 <button
                   type="button"
                   onClick={() => {
                     onSave();
                     setShowMore(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm text-neutral-300 transition-colors hover:bg-white/[0.06] hover:text-white"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white active:bg-white/[0.1]"
                 >
-                  <Save className="h-4 w-4 text-orange-200" />
-                  Save component
+                  <Save className="h-4 w-4 text-orange-300" />
+                  Save project
                 </button>
 
                 <button
@@ -285,9 +231,9 @@ export default function Navbar({ user }) {
                     setShowConsole((prev) => !prev);
                     setShowMore(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm text-neutral-300 transition-colors hover:bg-white/[0.06] hover:text-white"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white active:bg-white/[0.1]"
                 >
-                  <SquareTerminal className="h-4 w-4 text-pink-200" />
+                  <SquareTerminal className="h-4 w-4 text-pink-300" />
                   {showConsole ? "Hide console" : "Show console"}
                 </button>
 
@@ -297,9 +243,9 @@ export default function Navbar({ user }) {
                     reRender();
                     setShowMore(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm text-neutral-300 transition-colors hover:bg-white/[0.06] hover:text-white"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white active:bg-white/[0.1]"
                 >
-                  <RefreshCcw className="h-4 w-4 text-emerald-200" />
+                  <RefreshCcw className="h-4 w-4 text-emerald-300" />
                   Refresh preview
                 </button>
               </div>
@@ -307,8 +253,8 @@ export default function Navbar({ user }) {
           </div>
         </div>
 
-        {/* Profile */}
-        <div className="shrink-0 border-l border-white/[0.1] pl-2">
+        {/* ── Profile ── */}
+        <div className="shrink-0 border-l border-white/[0.08] pl-2 sm:pl-2.5">
           <Profile user={user} />
         </div>
       </div>

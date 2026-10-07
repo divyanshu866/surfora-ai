@@ -56,7 +56,7 @@ export default function GeneratingIndicator() {
         </div>
 
         <h2 className="text-base font-semibold tracking-tight text-zinc-100">
-          Building your component
+          Building your user interface
         </h2>
         <p className="mt-2 max-w-xs text-sm leading-relaxed text-zinc-400">
           Your interface is coming together.

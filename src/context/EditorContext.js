@@ -8,8 +8,8 @@ const EditorContext = createContext();
 
 export function EditorProvider({ children }) {
   const { appendConsoleLog, setConsoleLogs } = useConsole();
-  const [selectedType, setSelectedType] = useState("Custom type");
-  const [selectedStyle, setSelectedStyle] = useState("Custom style");
+  const [selectedVisualStyle, setSelectedVisualStyle] =
+    useState("Custom style");
   const [activeEditor, setActiveEditor] = useState("AI");
   const [targetTech, setTargetTech] = useState("REACT");
   const [generationUsage, setGenerationUsage] = useState(null);
@@ -51,7 +51,7 @@ export function EditorProvider({ children }) {
 
   const saveComponent = async (component) => {
     if (!component?.name?.trim()) {
-      component.name = "New Component";
+      component.name = "New Project";
     }
     const payload = {
       id: component?.id ?? "",
@@ -151,10 +151,8 @@ export function EditorProvider({ children }) {
   return (
     <EditorContext.Provider
       value={{
-        selectedType,
-        setSelectedType,
-        selectedStyle,
-        setSelectedStyle,
+        selectedVisualStyle,
+        setSelectedVisualStyle,
         activeEditor,
         activeMessages,
         setActiveMessages,

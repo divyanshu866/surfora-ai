@@ -32,9 +32,9 @@ export async function* generateWithOpenAI(
 
   //Normalise Stream
   for await (const event of stream) {
-    console.log("OPEN_AI STREAM===>");
-    console.log(event.delta);
     if (event.type === "response.output_text.delta") {
+      console.log("OPEN_AI RAW:", JSON.stringify(event.delta));
+
       yield {
         type: "text",
         text: event.delta,

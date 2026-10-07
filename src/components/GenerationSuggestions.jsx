@@ -13,7 +13,7 @@ const suggestions = [
   {
     title: "Image gallery",
     prompt:
-      "Create an editorial-grade image gallery with a distinctive art-directed layout rather than a standard masonry grid. Use striking image composition, varied image scales, intentional whitespace, sophisticated typography, subtle metadata or captions, refined hover transitions, and a cohesive premium visual direction. Make it feel like a high-end creative portfolio or design publication rather than a generic component. Use realistic image URLs and polished responsive behavior. Prioritize visual personality, composition, and restraint.",
+      "Create an editorial-grade image gallery with a distinctive art-directed layout rather than a standard masonry grid. Use striking image composition, varied image scales, intentional whitespace, sophisticated typography, subtle metadata or captions, refined hover transitions, and a cohesive premium visual direction. Make it feel like a high-end creative portfolio or design publication rather than a generic interface. Use realistic image URLs and polished responsive behavior. Prioritize visual personality, composition, and restraint.",
     icon: Image,
   },
   {

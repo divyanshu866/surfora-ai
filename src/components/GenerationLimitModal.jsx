@@ -98,7 +98,7 @@ export default function GenerationLimitModal({
                 </div>
 
                 <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-violet-200/70 sm:text-[10px]">
-                  ComponentLab Pro
+                  SurforaAI Pro
                 </span>
               </div>
 

@@ -1,103 +1,162 @@
-<svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1295 1214" width="1295" height="1214" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTowYTc5NmRhYy01YjBkLTRjNTItYTM3OC1iYTA2NTFlYTFjNmYAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaK3mE/wYL+faqnjIF7SYy40AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDozODRjMjg3ZC0xZTExLTQ2NWEtOGZiOS04MWJkMGI3NDUxODhscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoO+sctS/rGFTrP/+a8A92agAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggnDAOyn3P3SnENhfsx5Pcsr9f9RsPS3RWU/UtgViPwhakZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaJEbwG0qqbQnOvmQKO1ip5wAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCDfFg9TkXvExKpOobQpPGLGrHKaMqbrbX12NqL9PumWDWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBiaZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjBhNzk2ZGFjLTViMGQtNGM1Mi1hMzc4LWJhMDY1MWVhMWM2Zi9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjI1Mjk3MzM0LWI3NmQtNDljNC1hYjkwLWE2MWEyYWUzNTQwOHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCcMA7Kfc/dKcQ2F+zHk9yyv1/1Gw9LdFZT9S2BWI/CFqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggD0yTWLkNo9YMY7G6iaL+X3s0d9TeO2Fkez8lrRBBUgSiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggeXSfRRNZv5JRsT7xHXXbtW6akSg5Ivv57HSicXAa/Nx0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQApievmyDaZr8hL4eCifXwK98IYuL4fqmDPunAPjHoC1bnztMCX/2/HkNnjjW979JGTvZ0etLtqHV+ju0fD5S28=</c2pa:manifest></metadata>
+  <title>Glossy Violet Ribbon S Logo</title>
   <defs>
-    <!-- Main gradient -->
-    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ff006e;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#8338ec;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3a86ff;stop-opacity:1" />
+    <!-- Left bend + diagonal base ribbon: pale lavender-white on the left to saturated blue on the right -->
+    <linearGradient id="baseRibbon" gradientUnits="userSpaceOnUse" x1="350" y1="540" x2="925" y2="790">
+      <stop offset="0" stop-color="#f1f1ff"/>
+      <stop offset="0.14" stop-color="#b9c0ff"/>
+      <stop offset="0.38" stop-color="#6f7cff"/>
+      <stop offset="0.7" stop-color="#6a78ff"/>
+      <stop offset="1" stop-color="#4b5cff"/>
     </linearGradient>
-    
-    <!-- Glow effect -->
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-      <feMerge> 
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    
-    <!-- Component pattern -->
-    <pattern id="componentPattern" patternUnits="userSpaceOnUse" width="20" height="20">
-      <rect width="20" height="20" fill="none"/>
-      <circle cx="10" cy="10" r="1" fill="url(#mainGradient)" opacity="0.3"/>
-    </pattern>
+
+    <!-- Left bend vertical softening -->
+    <linearGradient id="leftBendGlow" gradientUnits="userSpaceOnUse" x1="350" y1="520" x2="560" y2="560">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Top face: deep violet-blue at lower-left to pale pink at top-right -->
+    <linearGradient id="topFace" gradientUnits="userSpaceOnUse" x1="640" y1="540" x2="940" y2="240">
+      <stop offset="0" stop-color="#5b3dff"/>
+      <stop offset="0.3" stop-color="#7c55fb"/>
+      <stop offset="0.62" stop-color="#b57af4"/>
+      <stop offset="0.85" stop-color="#e3b4f6"/>
+      <stop offset="1" stop-color="#f6d9fb"/>
+    </linearGradient>
+    <linearGradient id="topFaceLeft" gradientUnits="userSpaceOnUse" x1="480" y1="440" x2="700" y2="440">
+      <stop offset="0" stop-color="#8a5cff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#8a5cff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="topFaceTopEdge" gradientUnits="userSpaceOnUse" x1="700" y1="330" x2="800" y2="400">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Overlap band where ribbon crosses itself in the middle -->
+    <linearGradient id="overlapBand" gradientUnits="userSpaceOnUse" x1="470" y1="640" x2="860" y2="760">
+      <stop offset="0" stop-color="#3a3fd8"/>
+      <stop offset="0.35" stop-color="#4a4df0"/>
+      <stop offset="0.6" stop-color="#7a86ff"/>
+      <stop offset="0.8" stop-color="#9aa6ff"/>
+      <stop offset="1" stop-color="#6a7bff"/>
+    </linearGradient>
+    <linearGradient id="overlapShadow" gradientUnits="userSpaceOnUse" x1="560" y1="560" x2="560" y2="680">
+      <stop offset="0" stop-color="#2b22c0" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#2b22c0" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Right bend -->
+    <linearGradient id="rightBend" gradientUnits="userSpaceOnUse" x1="760" y1="680" x2="900" y2="900">
+      <stop offset="0" stop-color="#8f9bff" stop-opacity="0.9"/>
+      <stop offset="0.45" stop-color="#6674ff"/>
+      <stop offset="1" stop-color="#4c60ff"/>
+    </linearGradient>
+    <radialGradient id="rightBendGlow" gradientUnits="userSpaceOnUse" cx="860" cy="860" r="110">
+      <stop offset="0" stop-color="#4a63ff"/>
+      <stop offset="1" stop-color="#4a63ff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Bottom pill upper (dark) half -->
+    <linearGradient id="pillUpper" gradientUnits="userSpaceOnUse" x1="380" y1="830" x2="690" y2="730">
+      <stop offset="0" stop-color="#4a2fff"/>
+      <stop offset="0.35" stop-color="#3a22e0"/>
+      <stop offset="0.75" stop-color="#1c0f6e"/>
+      <stop offset="1" stop-color="#150a52"/>
+    </linearGradient>
+    <!-- Bottom pill lower half -->
+    <linearGradient id="pillLower" gradientUnits="userSpaceOnUse" x1="430" y1="960" x2="740" y2="880">
+      <stop offset="0" stop-color="#6f46ff"/>
+      <stop offset="0.5" stop-color="#5a38ff"/>
+      <stop offset="0.8" stop-color="#3a24d8"/>
+      <stop offset="1" stop-color="#2a1aa8"/>
+    </linearGradient>
+    <linearGradient id="pillRightShade" gradientUnits="userSpaceOnUse" x1="690" y1="800" x2="770" y2="900">
+      <stop offset="0" stop-color="#1f14a0" stop-opacity="0"/>
+      <stop offset="0.6" stop-color="#2a1cb5" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#2a1cb5" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="pillBottomEdge" gradientUnits="userSpaceOnUse" x1="520" y1="960" x2="660" y2="1000">
+      <stop offset="0" stop-color="#8a62ff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#8a62ff" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="soft6" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="soft12" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="12"/></filter>
+    <filter id="soft24" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="24"/></filter>
+
+    <!-- Shape paths reused as clips -->
+    <path id="baseShape" d="M 440,410 C 375,435 350,485 352,535 C 355,595 410,640 462,668 L 700,790 C 740,810 762,850 758,885 C 752,930 706,968 668,988 L 790,930 C 860,895 912,850 922,790 C 935,740 900,685 830,645 L 658,560 L 560,502 L 495,388 Z"/>
+    <path id="topShape" d="M 490,388 L 905,200 Q 950,190 952,232 L 952,352 Q 950,420 880,462 L 658,560 L 535,492 Q 481,462 481,430 Q 482,402 490,388 Z"/>
+    <path id="pillShape" d="M 460,668 C 392,686 350,736 350,790 C 350,836 386,868 426,886 L 628,993 C 645,1001 660,999 668,990 C 735,962 760,925 760,885 C 760,845 736,806 700,790 Z"/>
+    <clipPath id="clipBase"><use href="#baseShape"/></clipPath>
+    <clipPath id="clipTop"><use href="#topShape"/></clipPath>
+    <clipPath id="clipPill"><use href="#pillShape"/></clipPath>
   </defs>
-  
-  <!-- Background glow -->
-  <rect x="0" y="0" width="80" height="80" fill="url(#componentPattern)" opacity="0.1"/>
-  
-  <!-- Icon container centered -->
-  <g transform="translate(15, 15)">
-    <!-- Outer component frame -->
-    <rect x="0" y="0" width="50" height="50" rx="12" ry="12" 
-          fill="none" stroke="url(#mainGradient)" stroke-width="2.5" opacity="0.8"/>
-    
-    <!-- Inner component layers -->
-    <rect x="8" y="8" width="34" height="34" rx="8" ry="8" 
-          fill="url(#mainGradient)" opacity="0.15" stroke="url(#mainGradient)" stroke-width="1.5"/>
-    
-    <!-- Component elements -->
-    <rect x="15" y="15" width="20" height="4" rx="2" fill="url(#mainGradient)" opacity="0.9"/>
-    <rect x="15" y="23" width="16" height="4" rx="2" fill="url(#mainGradient)" opacity="0.7"/>
-    <rect x="15" y="31" width="12" height="4" rx="2" fill="url(#mainGradient)" opacity="0.5"/>
-    
-    <!-- AI brain/neural network elements -->
-    <circle cx="12" cy="12" r="2" fill="#ff006e" opacity="0.9">
-      <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="38" cy="12" r="2" fill="#8338ec" opacity="0.9">
-      <animate attributeName="opacity" values="0.9;0.5;0.9" dur="2.5s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="12" cy="38" r="2" fill="#3a86ff" opacity="0.9">
-      <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="38" cy="38" r="2" fill="#ff006e" opacity="0.9">
-      <animate attributeName="opacity" values="1;0.6;1" dur="3.5s" repeatCount="indefinite"/>
-    </circle>
-    
-    <!-- Connection lines with animation -->
-    <line x1="12" y1="12" x2="25" y2="18" stroke="url(#mainGradient)" stroke-width="1" opacity="0.6">
-      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite"/>
-    </line>
-    <line x1="38" y1="12" x2="31" y2="18" stroke="url(#mainGradient)" stroke-width="1" opacity="0.6">
-      <animate attributeName="opacity" values="0.6;0.3;0.6" dur="3s" repeatCount="indefinite"/>
-    </line>
-    <line x1="12" y1="38" x2="25" y2="28" stroke="url(#mainGradient)" stroke-width="1" opacity="0.6">
-      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.5s" repeatCount="indefinite"/>
-    </line>
-    <line x1="38" y1="38" x2="31" y2="28" stroke="url(#mainGradient)" stroke-width="1" opacity="0.6">
-      <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3.5s" repeatCount="indefinite"/>
-    </line>
-    
-    <!-- Center AI core -->
-    <circle cx="25" cy="25" r="3" fill="url(#mainGradient)" opacity="0.3" filter="url(#glow)">
-      <animate attributeName="r" values="2;4;2" dur="4s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4s" repeatCount="indefinite"/>
-    </circle>
+
+  <!-- ============ 1. Base translucent ribbon (left bend, diagonal band, right bend) ============ -->
+  <use href="#baseShape" fill="url(#baseRibbon)"/>
+  <g clip-path="url(#clipBase)">
+    <!-- white luminous haze at far left bend -->
+    <ellipse cx="372" cy="535" rx="62" ry="110" fill="url(#leftBendGlow)" filter="url(#soft12)"/>
+    <ellipse cx="395" cy="470" rx="40" ry="55" fill="#ffffff" opacity="0.35" filter="url(#soft12)"/>
+    <ellipse cx="420" cy="600" rx="45" ry="45" fill="#ffffff" opacity="0.28" filter="url(#soft12)"/>
+    <!-- saturated blue pooling on right bend -->
+    <ellipse cx="860" cy="860" rx="90" ry="100" fill="url(#rightBendGlow)" filter="url(#soft12)"/>
+    <ellipse cx="900" cy="760" rx="40" ry="60" fill="#5a6cff" opacity="0.5" filter="url(#soft12)"/>
   </g>
-  
-  <!-- Floating code elements around icon -->
-  <text x="60" y="25" font-family="JetBrains Mono, monospace" font-size="8" 
-        fill="url(#mainGradient)" opacity="0.4" font-weight="600">
-    &lt;/&gt;
-    <animateTransform
-      attributeName="transform"
-      attributeType="XML"
-      type="translate"
-      values="0,0; 2,-1; 0,0"
-      dur="5s"
-      repeatCount="indefinite"/>
-  </text>
-  
-  <text x="10" y="70" font-family="JetBrains Mono, monospace" font-size="6" 
-        fill="url(#mainGradient)" opacity="0.3" font-weight="600">
-    { }
-    <animateTransform
-      attributeName="transform"
-      attributeType="XML"
-      type="translate"
-      values="0,0; -1,1; 0,0"
-      dur="6s"
-      repeatCount="indefinite"/>
-  </text>
+
+  <!-- ============ 2. Overlap band (ribbon crossing itself) ============ -->
+  <path d="M 460,668 C 478,636 540,608 658,562 L 830,646 C 880,676 906,712 916,748 C 880,770 800,810 740,794 Z" fill="url(#overlapBand)"/>
+  <g clip-path="url(#clipBase)">
+    <path d="M 460,668 C 478,636 540,608 658,562 L 760,612 C 700,640 620,640 540,655 Z" fill="url(#overlapShadow)" filter="url(#soft6)"/>
+    <!-- periwinkle highlight sweep through the middle -->
+    <ellipse cx="740" cy="722" rx="110" ry="28" transform="rotate(26 740 722)" fill="#c2c9ff" opacity="0.55" filter="url(#soft12)"/>
+    <ellipse cx="560" cy="640" rx="70" ry="14" transform="rotate(-22 560 640)" fill="#8e9bff" opacity="0.55" filter="url(#soft6)"/>
+  </g>
+  <!-- crisp light rim at the upper-left edge of the overlap band -->
+  <path d="M 462,666 C 480,636 540,608 658,562" fill="none" stroke="#a9b4ff" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- ============ 3. Right bend refinement ============ -->
+  <path d="M 790,930 C 860,895 912,850 922,790 C 930,752 910,716 880,690 C 905,730 905,790 880,835 C 855,880 820,905 790,930 Z" fill="url(#rightBend)" opacity="0.75" filter="url(#soft6)"/>
+  <path d="M 830,645 C 900,685 935,740 922,790" fill="none" stroke="#8d9cff" stroke-width="2" opacity="0.5"/>
+
+  <!-- ============ 4. Bottom dark pill ============ -->
+  <use href="#pillShape" fill="url(#pillLower)"/>
+  <g clip-path="url(#clipPill)">
+    <!-- upper dark half above diagonal split -->
+    <path d="M 440,640 L 720,640 L 672,778 L 428,888 L 330,888 L 330,640 Z" fill="url(#pillUpper)"/>
+    <!-- darker shadow tucked under the overlap -->
+    <ellipse cx="600" cy="722" rx="120" ry="34" transform="rotate(26 600 722)" fill="#0f0640" opacity="0.7" filter="url(#soft12)"/>
+    <!-- left-side saturated glow -->
+    <ellipse cx="395" cy="805" rx="48" ry="60" fill="#5a38ff" opacity="0.7" filter="url(#soft12)"/>
+    <ellipse cx="560" cy="925" rx="120" ry="28" transform="rotate(26 560 925)" fill="#7a52ff" opacity="0.55" filter="url(#soft12)"/>
+    <!-- right inner shading (curl of the ribbon) -->
+    <path d="M 700,790 C 736,806 760,845 760,885 C 760,925 735,962 668,990 L 700,900 Z" fill="url(#pillRightShade)" filter="url(#soft6)"/>
+    <!-- lower bottom-edge sheen -->
+    <path d="M 426,886 L 628,993 L 668,990 L 560,930 Z" fill="url(#pillBottomEdge)" filter="url(#soft6)"/>
+  </g>
+  <!-- diagonal split line within the pill -->
+  <path d="M 430,886 L 672,778" stroke="#0c0638" stroke-width="2.5" stroke-linecap="round" opacity="0.45"/>
+  <path d="M 430,889 L 672,781" stroke="#8c6bff" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+
+  <!-- ============ 5. Top face (violet to pink) ============ -->
+  <use href="#topShape" fill="url(#topFace)"/>
+  <g clip-path="url(#clipTop)">
+    <rect x="470" y="380" width="260" height="200" fill="url(#topFaceLeft)"/>
+    <!-- bright pink-white bloom in the upper-right corner -->
+    <ellipse cx="925" cy="262" rx="90" ry="70" fill="#fbe6fb" opacity="0.8" filter="url(#soft24)"/>
+    <ellipse cx="870" cy="330" rx="90" ry="40" transform="rotate(-24 870 330)" fill="#f0c4f7" opacity="0.55" filter="url(#soft12)"/>
+    <!-- deep blue-violet pooling near the crossing point -->
+    <ellipse cx="640" cy="520" rx="95" ry="38" transform="rotate(-24 640 520)" fill="#4a35ff" opacity="0.65" filter="url(#soft12)"/>
+    <ellipse cx="560" cy="470" rx="50" ry="26" fill="#6b4bff" opacity="0.45" filter="url(#soft12)"/>
+    <!-- subtle lighter top edge -->
+    <path d="M 500,392 L 905,208" stroke="#ffffff" stroke-width="5" opacity="0.18" filter="url(#soft6)"/>
+    <!-- subtle shadow along the lower diagonal edge -->
+    <path d="M 535,494 L 658,560 L 880,462" fill="none" stroke="#4c36ff" stroke-width="8" opacity="0.35" filter="url(#soft6)"/>
+  </g>
+  <!-- translucent edge where the top face's rounded left end overlays the ribbon -->
+  <path d="M 490,390 Q 481,404 481,430 Q 481,462 535,492" fill="none" stroke="#c8b6ff" stroke-width="2" opacity="0.55"/>
+  <path d="M 535,492 L 658,560" fill="none" stroke="#3b32e8" stroke-width="2" opacity="0.35"/>
 </svg>

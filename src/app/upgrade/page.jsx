@@ -1,100 +1,39 @@
-import PricingHero from "@/components/upgrade/PricingHero";
-import BillingToggle from "@/components/upgrade/BillingToggle";
+import TopBar from "@/components/upgrade/TopBar";
+import UpgradeBackground from "@/components/upgrade/UpgradeBackground";
+import UpgradeHero from "@/components/upgrade/UpgradeHero";
+import CurrentPlanCard from "@/components/upgrade/CurrentPlanCard";
 import UpgradeCard from "@/components/upgrade/UpgradeCard";
-import GuaranteeCard from "@/components/upgrade/GuaranteeCard";
-import FeatureComparison from "@/components/upgrade/FeatureComparison";
-import FAQ from "@/components/upgrade/FAQ";
-import CTASection from "@/components/upgrade/CTASection";
-import Navbar from "@/components/Landing/Navbar";
-
+import ModelAccess from "@/components/upgrade/ModelAccess";
 import { getSession } from "@/lib/get-session";
+import { redirect } from "next/navigation";
+// Use the same server-side session helper/auth function already used by your app.
 
 export default async function UpgradePage() {
   const session = await getSession();
-
-  // if (!session) redirect("/sign-in");
-  const userId = session?.user?.id || null;
-
-  console.log("SESSION===>", session);
-
+  session == null && redirect("/sign-in");
   return (
-    <main className="relative min-h-screen overflow-hidden bg-transparent text-white">
-      {/* Grid Overlay */}
-      <Navbar />
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-        }}
-      />
-      {/* Ambient background */}
+    <main className="relative min-h-screen overflow-x-hidden bg-[#070709] text-white antialiased selection:bg-violet-500/25">
+      <UpgradeBackground />
+      <TopBar />
 
-      <div
-        className="fixed pointer-events-none inset-x-0 top-0 h-[650px] opacity-[0.018]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)
-          `,
-          backgroundSize: "44px 44px",
-          maskImage:
-            "linear-gradient(to bottom, black 0%, rgba(0,0,0,.45) 55%, transparent 100%)",
-        }}
-      />
-      <div className="relative z-10">
-        {/* Hero */}
-
-        <section className="px-6 pt-32 lg:pt-36">
-          <div className="mx-auto max-w-7xl">
-            <PricingHero />
-
-            {/* <div className="mt-14">
-              <BillingToggle
-                plans={plans}
-                billingCycle={billingCycle}
-                setBillingCycle={setBillingCycle}
-              />
-            </div> */}
+      <div className="relative z-10 px-5 py-12 sm:px-8 sm:py-16 lg:px-10 lg:py-20">
+        <section className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1fr_0.82fr] lg:gap-20">
+          <div>
+            <UpgradeHero />
+            <div className="mt-8 max-w-xl">
+              <CurrentPlanCard />
+            </div>
           </div>
+
+          <UpgradeCard session={session?.user?.id} />
         </section>
 
-        {/* Pricing Cards */}
+        <ModelAccess />
 
-        <UpgradeCard userId={userId} />
-
-        {/* Guarantee */}
-
-        <section className="px-6 pt-20">
-          <div className="mx-auto max-w-3xl">
-            <GuaranteeCard />
-          </div>
-        </section>
-
-        {/* Feature Comparison */}
-
-        <section className="px-6 pt-28">
-          <div className="mx-auto max-w-6xl">
-            <FeatureComparison />
-          </div>
-        </section>
-
-        {/* FAQ */}
-
-        <section className="px-6 pt-28">
-          <div className="mx-auto max-w-4xl">
-            <FAQ />
-          </div>
-        </section>
-
-        {/* Final CTA */}
-
-        <section className="px-6 py-28">
-          <div className="mx-auto max-w-5xl">
-            <CTASection />
-          </div>
-        </section>
+        <footer className="mx-auto mt-10 flex max-w-6xl flex-col gap-3 border-t border-white/[0.05] pt-5 text-[10px] text-white/20 sm:flex-row sm:items-center sm:justify-between">
+          <span>© 2026 SurforaAI</span>
+          <span>Build the interface. Then keep improving it.</span>
+        </footer>
       </div>
     </main>
   );

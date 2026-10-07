@@ -29,8 +29,16 @@ export async function* generateWithGemini(
 
   //Normalise Stream
   for await (const chunk of stream) {
-    console.log("GEMINI STREAM===>");
-    console.log(chunk.text);
+    console.log(
+      "GEMINI CHUNK:",
+      JSON.stringify({
+        text: chunk.text,
+        candidates: chunk.candidates,
+        usageMetadata: chunk.usageMetadata,
+        promptFeedback: chunk.promptFeedback,
+      }),
+    );
+
     if (chunk.text) {
       yield {
         type: "text",

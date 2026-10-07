@@ -53,10 +53,8 @@ const AIEditor = ({ user, isMobile }) => {
     setShowPreview,
     updatePreview,
     setIsGenerating,
-    selectedType,
-    setSelectedType,
-    selectedStyle,
-    setSelectedStyle,
+    selectedVisualStyle,
+    setSelectedVisualStyle,
     targetTech,
     generationUsage,
     setGenerationUsage,
@@ -65,259 +63,6 @@ const AIEditor = ({ user, isMobile }) => {
   } = useEditorContext();
 
   const router = useRouter();
-
-  const [componentTypes, setComponentTypes] = useState([
-    {
-      name: "Modal",
-      icon: "maximize",
-      description: "Popup overlay for alerts or input",
-    },
-    {
-      name: "Button",
-      icon: "square",
-      description: "Clickable UI element for actions",
-    },
-    {
-      name: "Card",
-      icon: "layout",
-      description: "Container with title, text, and actions",
-    },
-    {
-      name: "Subscription Pricing Cards (Free and premium)",
-      icon: "layout",
-      description: "Container with title, text, and actions",
-    },
-    {
-      name: "Navbar",
-      icon: "menu",
-      description: "Top or side navigation bar",
-    },
-    {
-      name: "Form",
-      icon: "file-text",
-      description: "Input fields grouped for submission",
-    },
-    {
-      name: "Input Field",
-      icon: "type",
-      description: "Basic text input element",
-    },
-    {
-      name: "Dropdown",
-      icon: "chevron-down",
-      description: "Expandable menu for options",
-    },
-    {
-      name: "Checkbox",
-      icon: "check-square",
-      description: "Binary toggle input for selections",
-    },
-    {
-      name: "Radio Group",
-      icon: "dot",
-      description: "Exclusive choice among selections",
-    },
-    {
-      name: "Tabs",
-      icon: "columns",
-      description: "Switch between multiple views",
-    },
-    {
-      name: "Tooltip",
-      icon: "help-circle",
-      description: "Info popup on hover or focus",
-    },
-    {
-      name: "Accordion",
-      icon: "chevrons-down-up",
-      description: "Expandable content sections",
-    },
-    {
-      name: "Toast Notification",
-      icon: "bell",
-      description: "Auto-dismissable alerts/messages",
-    },
-    {
-      name: "Avatar",
-      icon: "user",
-      description: "Profile or identity thumbnail",
-    },
-    {
-      name: "Pagination",
-      icon: "more-horizontal",
-      description: "Navigate between pages",
-    },
-    {
-      name: "Breadcrumbs",
-      icon: "navigation",
-      description: "Hierarchy-based page trail",
-    },
-    {
-      name: "List",
-      icon: "list",
-      description: "Vertical or horizontal collection of repeating items",
-    },
-    {
-      name: "Data Grid",
-      icon: "grid",
-      description: "Paginated table for large data sets",
-    },
-    {
-      name: "Calendar",
-      icon: "calendar",
-      description: "Month/Week/Day date selector",
-    },
-    {
-      name: "Date Picker",
-      icon: "calendar-clock",
-      description: "Compact date or range date selector",
-    },
-    {
-      name: "Time Picker",
-      icon: "clock",
-      description: "Select a specific time value",
-    },
-    {
-      name: "Combobox",
-      icon: "list-plus",
-      description: "Input field with list suggestions",
-    },
-    { name: "Select", icon: "selector", description: "Single-option dropdown" },
-    {
-      name: "Slider",
-      icon: "slider",
-      description: "Range selection with drag handle",
-    },
-    {
-      name: "Switch",
-      icon: "toggle-left",
-      description: "Binary on/off toggle",
-    },
-    {
-      name: "Progress Bar",
-      icon: "loader",
-      description: "Task completion indicator",
-    },
-    {
-      name: "Loader",
-      icon: "refresh",
-      description: "Indefinite loading indicator",
-    },
-    {
-      name: "Skeleton",
-      icon: "align-justify",
-      description: "Loading placeholder shimmer",
-    },
-    { name: "Chip", icon: "tag", description: "Small removable label" },
-    { name: "Badge", icon: "award", description: "Numeric/status indicator" },
-    { name: "Rating", icon: "star", description: "Star/heart rating selector" },
-    { name: "Avatar Group", icon: "users", description: "Clustered avatars" },
-    {
-      name: "Breadcrumb",
-      icon: "compass",
-      description: "Clickable path trail",
-    },
-    { name: "Drawer", icon: "sidebar", description: "Sliding side panel" },
-    {
-      name: "Dialog",
-      icon: "message-square",
-      description: "Modal confirmation overlay",
-    },
-    {
-      name: "Popover",
-      icon: "message-circle",
-      description: "Lightweight contextual bubble",
-    },
-    {
-      name: "Carousel",
-      icon: "play-circle",
-      description: "Swipeable content slider",
-    },
-    {
-      name: "Steps",
-      icon: "steps",
-      description: "Multi-stage progress tracker",
-    },
-    {
-      name: "Accordion",
-      icon: "chevrons-right",
-      description: "Expandable content sections",
-    },
-    {
-      name: "Collapse",
-      icon: "arrow-down",
-      description: "Single panel show/hide",
-    },
-    { name: "Table", icon: "table", description: "Basic tabular layout" },
-    { name: "Chart", icon: "bar-chart", description: "Chart placeholder" },
-    {
-      name: "Tooltip Rich",
-      icon: "info",
-      description: "Tooltip with rich content",
-    },
-    {
-      name: "Alert Banner",
-      icon: "flag",
-      description: "Prominent page-level alert",
-    },
-    {
-      name: "Toast Stack",
-      icon: "bell-off",
-      description: "Transient status messages",
-    },
-    {
-      name: "Chat Bubble",
-      icon: "message",
-      description: "Chat message container",
-    },
-    {
-      name: "Comment Thread",
-      icon: "message-square-dashed",
-      description: "Nested comments",
-    },
-    {
-      name: "Activity Feed",
-      icon: "activity",
-      description: "Reverse-chronological event list",
-    },
-    {
-      name: "File Dropzone",
-      icon: "upload-cloud",
-      description: "Drag-and-drop file upload",
-    },
-    {
-      name: "Image",
-      icon: "image",
-      description: "Static or responsive illustration",
-    },
-    {
-      name: "Video Player",
-      icon: "video",
-      description: "Responsive video frame",
-    },
-    {
-      name: "Video Embed",
-      icon: "video",
-      description: "Responsive video frame",
-    },
-    { name: "Tree View", icon: "tree", description: "Hierarchical explorer" },
-    {
-      name: "Drawer Stack",
-      icon: "layout-sidebar",
-      description: "Multiple stacked drawers",
-    },
-    { name: "Tablist", icon: "columns-3", description: "Tabbed navigation" },
-    {
-      name: "Persona Card",
-      icon: "id-badge",
-      description: "Rich user profile card",
-    },
-    {
-      name: "Toolbar",
-      icon: "slider-horizontal",
-      description: "Action button cluster",
-    },
-  ]);
 
   const [styleOptions, setStyleOptions] = useState([
     /* ---- original 11 presets here ---- */
@@ -587,10 +332,8 @@ const AIEditor = ({ user, isMobile }) => {
       setActiveMessages(streamState.messages);
 
       const enrichedPrompt = `Use the following 'User Request' to resolve user intent to 'REWORK' or 'ASK' mode.
-  
-        Component Type:${selectedType}
 
-        Component Style:${selectedStyle}
+        Selected Visual Style:${selectedVisualStyle}
 
         User Request:${prompt}`;
 
@@ -972,8 +715,7 @@ const AIEditor = ({ user, isMobile }) => {
 
   const clearScreen = (name, html, css, js, jsx, targetTech) => {
     console.log("Editor cleared from AI-EDITOR");
-    setSelectedType("Custom type");
-    setSelectedStyle("Custom style");
+    setSelectedVisualStyle("Custom style");
     setActiveComponentIndex(null);
 
     setActiveComponent({
@@ -1131,67 +873,6 @@ const AIEditor = ({ user, isMobile }) => {
             {/* Type / style filters */}
             {!reworkUI && showFilters && (
               <div className="grid w-full grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3 max-[639px]:gap-2">
-                {/* Component type */}
-                <label className="group block min-w-0">
-                  <span className="mb-1.5 block px-0.5 text-[11px] font-medium uppercase tracking-[0.06em] text-white/40 max-[639px]:mb-1 max-[639px]:text-[10px] max-[639px]:tracking-[0.04em]">
-                    Component type
-                  </span>
-                  <div className="relative">
-                    <select
-                      value={selectedType}
-                      onChange={(e) => setSelectedType(e.target.value)}
-                      name="type"
-                      className="
-              h-11 w-full min-w-0 cursor-pointer appearance-none
-              rounded-xl border border-white/[0.08]
-              bg-white/[0.03] px-3.5 pr-9
-              text-[13px] font-medium text-white/90
-              outline-none transition-all duration-150
-              [color-scheme:dark]
-              hover:border-white/[0.14] hover:bg-white/[0.05]
-              focus:border-violet-400/50 focus:bg-violet-500/[0.06]
-              focus:ring-2 focus:ring-violet-400/15
-              max-[639px]:h-10 max-[639px]:rounded-[11px]
-              max-[639px]:px-3 max-[639px]:pr-8 max-[639px]:text-[16px]
-            "
-                    >
-                      <option
-                        value="Custom type"
-                        className="bg-[#18171d] text-white"
-                      >
-                        Describe type in prompt
-                      </option>
-                      {componentTypes.map((type, index) => (
-                        <option
-                          key={`${type.name}-${index}`}
-                          value={type.name}
-                          className="bg-[#18171d] text-white"
-                        >
-                          {type.name}
-                        </option>
-                      ))}
-                    </select>
-                    <span
-                      className="pointer-events-none absolute right-3 top-1/2 flex -translate-y-1/2 items-center text-white/35 max-[639px]:right-2.5"
-                      aria-hidden="true"
-                    >
-                      <svg
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        className="h-4 w-4 max-[639px]:h-3.5 max-[639px]:w-3.5"
-                      >
-                        <path
-                          d="m6 8 4 4 4-4"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </label>
-
                 {/* Visual style */}
                 <label className="group block min-w-0">
                   <span className="mb-1.5 block px-0.5 text-[11px] font-medium uppercase tracking-[0.06em] text-white/40 max-[639px]:mb-1 max-[639px]:text-[10px] max-[639px]:tracking-[0.04em]">
@@ -1199,8 +880,8 @@ const AIEditor = ({ user, isMobile }) => {
                   </span>
                   <div className="relative mb-2">
                     <select
-                      value={selectedStyle}
-                      onChange={(e) => setSelectedStyle(e.target.value)}
+                      value={selectedVisualStyle}
+                      onChange={(e) => setSelectedVisualStyle(e.target.value)}
                       name="style"
                       className="
               h-11 w-full min-w-0 cursor-pointer appearance-none
@@ -1220,7 +901,7 @@ const AIEditor = ({ user, isMobile }) => {
                         value="Custom style"
                         className="bg-[#18171d] text-white"
                       >
-                        Describe style in prompt
+                        Describe visual style in prompt
                       </option>
                       {styleOptions.map((style, index) => (
                         <option
@@ -1287,7 +968,7 @@ const AIEditor = ({ user, isMobile }) => {
     `}
             >
               <label htmlFor="prompt" className="sr-only">
-                Describe your component or changes
+                Describe your changes
               </label>
 
               {/* Prompt input */}
@@ -1300,8 +981,8 @@ const AIEditor = ({ user, isMobile }) => {
                 rows={1}
                 placeholder={
                   activeComponent.id
-                    ? "Describe changes..."
-                    : "Describe the component..."
+                    ? "Describe the changes you want..."
+                    : "Describe what you want to build..."
                 }
                 className={`
         m-0 w-full min-w-0 resize-none overflow-y-auto
@@ -1394,8 +1075,7 @@ const AIEditor = ({ user, isMobile }) => {
                     aria-pressed={showFilters}
                     onClick={() => {
                       setShowFilters((v) => !v);
-                      setSelectedType("Custom type");
-                      setSelectedStyle("Custom style");
+                      setSelectedVisualStyle("Custom style");
                     }}
                     className={`
             flex h-9 w-9 shrink-0 items-center justify-center

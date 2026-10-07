@@ -21,8 +21,7 @@ export default function Sidebar() {
   }, [selectedModel]);
 
   const {
-    setSelectedType,
-    setSelectedStyle,
+    setSelectedVisualStyle,
     components,
     setActiveMessages,
     setComponents,
@@ -139,7 +138,6 @@ export default function Sidebar() {
     }
 
     setActiveMessages(components[index]?.prompts || []);
-    console.log("activeComponent>>>#####>>>", activeComponent);
     setChangeDesc("");
   }
 
@@ -169,8 +167,7 @@ export default function Sidebar() {
       return;
     }
 
-    setSelectedType("Custom type");
-    setSelectedStyle("Custom style");
+    setSelectedVisualStyle("Custom style");
     setActiveMessages([]);
     setReworkUI(false);
     setShowPreview(false);
@@ -229,7 +226,7 @@ export default function Sidebar() {
             <span className="rounded-lg bg-white/5 p-1">
               <Plus className="size-5 transition-transform duration-300 group-hover:rotate-90" />
             </span>
-            <span className="flex-1 text-left">New Component</span>
+            <span className="flex-1 text-left">New Project</span>
             <span className="text-xs text-neutral-500 transition-colors duration-100 group-hover:text-neutral-300">
               ⌘ K
             </span>
@@ -237,11 +234,11 @@ export default function Sidebar() {
         </header>
 
         <nav
-          aria-label="Recent components"
+          aria-label="Recent projects"
           className="mt-3 min-h-0 w-full flex-1 overflow-y-auto overscroll-contain px-4 pb-4 text-nowrap"
         >
           <h2 className="mb-4 px-3 text-xs font-semibold uppercase tracking-wider text-neutral-600">
-            Recent Components
+            Recent Projects
           </h2>
 
           <ul className="space-y-1">
@@ -304,7 +301,7 @@ export default function Sidebar() {
                       className="flex w-full items-center gap-3 px-4 py-2 text-red-400 transition hover:bg-red-500/10"
                     >
                       <Trash size={16} />
-                      Delete Component
+                      Delete project
                     </button>
                   </div>
                 )}

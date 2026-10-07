@@ -38,7 +38,7 @@ export async function POST(request) {
         if (messages.length < 2) {
           const component = await tx.component.create({
             data: {
-              name: name.trim() || "New Component",
+              name: name.trim() || "New Project",
               html: html.trim() || "",
               css: css.trim() || "",
               js: js.trim() || "",
@@ -61,7 +61,7 @@ export async function POST(request) {
         //If component is AI Generated (User Prompt + Model Response)
         const component = await tx.component.create({
           data: {
-            name: name.trim() || "New Component",
+            name: name.trim() || "New Project",
             html: html.trim() || "",
             css: css.trim() || "",
             js: js.trim() || "",

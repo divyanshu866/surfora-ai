@@ -22,6 +22,7 @@
     "esbuild-wasm": "^0.28.1",
     "highlight.js": "^11.11.1",
     "lucide-react": "^0.525.0",
+    "motion": "^14.0.0",
     "next": "16.0.10",
     "openai": "^5.10.2",
     "react": "^18.0.0",
