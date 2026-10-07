@@ -20,21 +20,16 @@ const PLAN_CONTENT = {
         icon: Zap,
         title: "500",
         description: "generations / billing period",
-        className:
-          "border-violet-400/[0.14] bg-violet-400/[0.06] text-violet-300",
       },
       {
         icon: BrainCircuit,
         title: "Powerful models",
         description: "GPT-6 Sol · Gemini 3.8 Flash",
-        className:
-          "border-fuchsia-400/[0.14] bg-fuchsia-400/[0.06] text-fuchsia-300",
       },
       {
         icon: Gauge,
         title: "Higher effort",
         description: "More control over AI reasoning",
-        className: "border-pink-400/[0.14] bg-pink-400/[0.06] text-pink-300",
       },
     ],
   },
@@ -49,21 +44,16 @@ const PLAN_CONTENT = {
         icon: Zap,
         title: "500",
         description: "generations / billing period",
-        className:
-          "border-violet-400/[0.14] bg-violet-400/[0.06] text-violet-300",
       },
       {
         icon: BrainCircuit,
         title: "All Pro models",
         description: "Full access to Pro model lineup",
-        className:
-          "border-fuchsia-400/[0.14] bg-fuchsia-400/[0.06] text-fuchsia-300",
       },
       {
         icon: Gauge,
         title: "Maximum control",
         description: "Higher AI effort levels",
-        className: "border-pink-400/[0.14] bg-pink-400/[0.06] text-pink-300",
       },
     ],
   },
@@ -85,9 +75,13 @@ export default function PlanRequiredModal({
       }
     };
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open, onClose]);
@@ -101,7 +95,18 @@ export default function PlanRequiredModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 p-3 backdrop-blur-md sm:p-5"
+      className="
+        fixed
+        inset-0
+        z-[100]
+        flex
+        items-end
+        justify-center
+        bg-black/70
+        backdrop-blur-sm
+        sm:items-center
+        sm:p-5
+      "
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
           onClose?.();
@@ -112,120 +117,153 @@ export default function PlanRequiredModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="plan-required-title"
-        className="relative w-full max-w-[640px] overflow-hidden rounded-2xl border border-white/[0.10] bg-[#0b0b0e] shadow-[0_35px_120px_rgba(0,0,0,0.72)]"
+        aria-describedby="plan-required-description"
+        onMouseDown={(event) => event.stopPropagation()}
+        className="
+          flex
+          max-h-[92dvh]
+          w-full
+          max-w-[660px]
+          flex-col
+          overflow-hidden
+          rounded-t-2xl
+          border
+          border-[#272528]
+          bg-[#0c0c10]
+          shadow-[0_30px_90px_rgba(0,0,0,0.65)]
+          sm:max-h-[calc(100dvh-40px)]
+          sm:rounded-2xl
+        "
       >
-        {/* Ambient glows */}
-        <div className="pointer-events-none absolute -left-28 -top-28 h-64 w-64 rounded-full bg-violet-600/[0.16] blur-[100px]" />
-        <div className="pointer-events-none absolute -right-28 top-0 h-64 w-64 rounded-full bg-fuchsia-500/[0.12] blur-[100px]" />
+        {/* HEADER */}
+        <div className="shrink-0 border-b border-[#272528]">
+          <div className="relative px-5 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6">
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="
+                absolute
+                right-4
+                top-4
+                flex
+                h-8
+                w-8
+                items-center
+                justify-center
+                rounded-lg
+                border
+                border-[#272528]
+                text-neutral-500
+                transition
+                hover:border-[#343135]
+                hover:bg-white/[0.03]
+                hover:text-white
+                focus-visible:outline-none
+                focus-visible:ring-1
+                focus-visible:ring-violet-400
+                sm:right-5
+                sm:top-5
+              "
+            >
+              <X size={15} />
+            </button>
 
-        {/* ================= HERO ================= */}
-        <div className="relative min-h-[190px] overflow-hidden border-b border-white/[0.07]">
-          <div className="absolute inset-0 bg-linear-to-br from-violet-500/[0.14] via-fuchsia-500/[0.045] to-transparent" />
-
-          {/* Grid */}
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)
-              `,
-              backgroundSize: "30px 30px",
-              maskImage: "linear-gradient(to bottom, black, transparent)",
-            }}
-          />
-
-          {/* Decorative rings */}
-          <div className="absolute -right-20 -top-24 h-56 w-56 rounded-full border border-white/[0.05]" />
-          <div className="absolute right-[-5px] -top-10 h-40 w-40 rounded-full border border-violet-300/[0.07]" />
-          <div className="absolute right-[24%] top-[32%] h-1.5 w-1.5 rounded-full bg-violet-300/70 shadow-[0_0_18px_rgba(167,139,250,0.9)]" />
-
-          {/* Close */}
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="absolute right-4 top-4 z-20 flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.08] bg-black/20 text-neutral-500 backdrop-blur-md transition hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-white sm:right-5 sm:top-5"
-          >
-            <X size={15} />
-          </button>
-
-          {/* Hero content */}
-          <div className="relative flex min-h-[190px] items-end px-5 pb-6 pt-14 sm:px-7 sm:pb-7">
-            <div className="w-full">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-violet-300/[0.18] bg-violet-400/[0.08]">
-                  <Lock size={13} className="text-violet-300" />
-                </div>
-
-                <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-violet-200/70 sm:text-[10px]">
-                  {planContent.eyebrow}
-                </span>
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-violet-400/15 bg-violet-400/[0.05]">
+                <Lock size={13} className="text-violet-300" />
               </div>
 
-              <h2
-                id="plan-required-title"
-                className="max-w-[540px] text-[28px] font-medium leading-[1.05] tracking-[-0.04em] text-white sm:text-[36px]"
-              >
-                {model.label}
-                <span className="text-neutral-600"> requires </span>
-                <span className="bg-linear-to-r from-fuchsia-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
-                  {planContent.label}.
-                </span>
-              </h2>
-
-              <p className="mt-3 max-w-[500px] text-[12px] leading-5 text-neutral-400 sm:text-[13px] sm:leading-6">
-                {planContent.description}
-              </p>
+              <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-violet-300/80">
+                {planContent.eyebrow}
+              </span>
             </div>
+
+            <h2
+              id="plan-required-title"
+              className="
+                mt-4
+                max-w-[560px]
+                text-[25px]
+                font-medium
+                leading-[1.08]
+                tracking-[-0.035em]
+                text-white
+                sm:text-[31px]
+              "
+            >
+              {model.label} requires{" "}
+              <span className="text-violet-300">{planContent.label}</span>.
+            </h2>
+
+            <p
+              id="plan-required-description"
+              className="
+                mt-2.5
+                max-w-[520px]
+                text-[12px]
+                leading-5
+                text-neutral-500
+                sm:text-[13px]
+                sm:leading-5.5
+              "
+            >
+              {planContent.description}
+            </p>
           </div>
         </div>
 
-        {/* ================= CONTENT ================= */}
-        <div className="relative px-5 py-5 sm:px-7 sm:py-6">
-          {/* Selected model */}
-          <div className="flex items-center gap-3 rounded-lg border border-white/[0.07] bg-white/[0.025] px-3.5 py-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-violet-400/[0.12] bg-violet-400/[0.06]">
-              <Sparkles size={14} className="text-violet-300" />
-            </div>
+        {/* SCROLLABLE CONTENT */}
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <div className="px-5 py-5 sm:px-7 sm:py-6">
+            {/* SELECTED MODEL */}
+            <section>
+              <div className="flex min-w-0 items-center gap-3 rounded-xl border border-[#272528] bg-white/[0.015] px-3.5 py-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#272528] bg-white/[0.02]">
+                  <Sparkles size={14} className="text-violet-300" />
+                </div>
 
-            <div className="min-w-0 flex-1">
-              <div className="text-xs font-medium text-neutral-200">
-                {model.label}
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs font-medium text-neutral-200">
+                    {model.label}
+                  </div>
+
+                  {model.description && (
+                    <div className="mt-0.5 truncate text-[10px] text-neutral-600">
+                      {model.description}
+                    </div>
+                  )}
+                </div>
+
+                <div className="shrink-0 rounded-md border border-violet-400/15 bg-violet-400/[0.05] px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-violet-300">
+                  {requiredPlan}
+                </div>
+              </div>
+            </section>
+
+            {/* FEATURES */}
+            <section className="mt-6 border-t border-[#272528] pt-5">
+              <div>
+                <div className="text-[9px] font-medium uppercase tracking-[0.18em] text-neutral-600">
+                  What you unlock
+                </div>
+
+                <h3 className="mt-1 text-base font-medium tracking-[-0.02em] text-white sm:text-lg">
+                  More capability. More control.
+                </h3>
               </div>
 
-              {model.description && (
-                <div className="mt-0.5 truncate text-[10px] text-neutral-500">
-                  {model.description}
-                </div>
-              )}
-            </div>
+              <div className="mt-4 divide-y divide-[#272528] border-y border-[#272528]">
+                {planContent.features.map((feature) => {
+                  const Icon = feature.icon;
 
-            <div className="shrink-0 rounded-md border border-violet-400/[0.14] bg-violet-400/[0.06] px-2 py-1 text-[9px] font-semibold uppercase tracking-wide text-violet-300">
-              {requiredPlan}
-            </div>
-          </div>
-
-          {/* Features */}
-          <div className="mt-5">
-            <div className="mb-3 text-[9px] font-medium uppercase tracking-[0.18em] text-neutral-600">
-              What you unlock
-            </div>
-
-            <div className="grid gap-2 sm:grid-cols-3">
-              {planContent.features.map((feature) => {
-                const Icon = feature.icon;
-
-                return (
-                  <div
-                    key={feature.title}
-                    className="rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-3"
-                  >
-                    <div className="flex items-start gap-2.5">
-                      <div
-                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md border ${feature.className}`}
-                      >
-                        <Icon size={13} />
+                  return (
+                    <div
+                      key={feature.title}
+                      className="flex items-center gap-3 py-3.5"
+                    >
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#272528] bg-white/[0.02]">
+                        <Icon size={14} className="text-violet-300" />
                       </div>
 
                       <div className="min-w-0">
@@ -233,70 +271,121 @@ export default function PlanRequiredModal({
                           {feature.title}
                         </div>
 
-                        <div className="mt-0.5 text-[10px] leading-4 text-neutral-500">
+                        <div className="mt-0.5 text-[10px] leading-4 text-neutral-600 sm:text-[11px]">
                           {feature.description}
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Current plan */}
-          <div className="mt-5 flex items-center justify-between border-t border-white/[0.06] pt-4">
-            <div>
-              <div className="text-[9px] font-medium uppercase tracking-[0.16em] text-neutral-600">
-                Current plan
+                  );
+                })}
               </div>
+            </section>
 
-              <div className="mt-1 text-xs font-medium text-neutral-300">
-                {currentPlan}
-              </div>
-            </div>
-
-            <div className="text-right text-[10px] text-neutral-600">
-              Upgrade to unlock
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="relative mt-5 overflow-hidden rounded-lg border border-violet-400/[0.14] bg-linear-to-r from-violet-500/[0.08] via-fuchsia-500/[0.04] to-transparent">
-            <div className="absolute inset-y-0 left-0 w-[2px] bg-linear-to-b from-violet-400 via-fuchsia-400 to-pink-400" />
-
-            <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-              <div>
-                <div className="text-xs font-medium text-white">
-                  Unlock {model.label}
+            {/* CURRENT PLAN */}
+            <section className="mt-5 flex items-center justify-between gap-4 border-t border-[#272528] pt-4">
+              <div className="min-w-0">
+                <div className="text-[9px] font-medium uppercase tracking-[0.16em] text-neutral-600">
+                  Current plan
                 </div>
 
-                <div className="mt-0.5 text-[10px] text-neutral-500">
-                  Get {planContent.label} access to continue.
+                <div className="mt-1 text-xs font-medium text-neutral-300">
+                  {currentPlan}
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => onUpgrade?.(requiredPlan)}
-                className="group flex h-9 w-full shrink-0 items-center justify-center gap-1.5 rounded-md bg-white px-4 text-[11px] font-semibold text-black transition hover:bg-neutral-200 active:scale-[0.985] sm:w-auto"
+              <div className="shrink-0 text-right text-[10px] text-neutral-700">
+                Upgrade to unlock
+              </div>
+            </section>
+
+            {/* CTA */}
+            <section className="mt-5">
+              <div
+                className="
+                  flex
+                  flex-col
+                  gap-4
+                  rounded-xl
+                  border
+                  border-[#272528]
+                  bg-white/[0.02]
+                  p-4
+                  sm:flex-row
+                  sm:items-center
+                  sm:justify-between
+                "
               >
-                View plans
-                <ArrowUpRight
-                  size={13}
-                  className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
-              </button>
-            </div>
-          </div>
+                <div className="flex min-w-0 items-start gap-3">
+                  <div className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-violet-400/15 bg-violet-400/[0.05] sm:flex">
+                    <Sparkles size={14} className="text-violet-300" />
+                  </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-4 block w-full text-center text-[10px] text-neutral-600 transition-colors hover:text-neutral-400"
-          >
-            Not now
-          </button>
+                  <div className="min-w-0">
+                    <div className="text-xs font-medium text-white">
+                      Unlock {model.label}
+                    </div>
+
+                    <div className="mt-0.5 text-[10px] leading-4 text-neutral-600 sm:text-[11px]">
+                      Get {planContent.label} access to continue.
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => onUpgrade?.(requiredPlan)}
+                  className="
+                    group
+                    flex
+                    h-10
+                    w-full
+                    shrink-0
+                    items-center
+                    justify-center
+                    gap-1.5
+                    rounded-lg
+                    bg-white
+                    px-4
+                    text-[11px]
+                    font-semibold
+                    text-black
+                    transition
+                    hover:bg-neutral-200
+                    active:scale-[0.985]
+                    focus-visible:outline-none
+                    focus-visible:ring-1
+                    focus-visible:ring-violet-400
+                    sm:h-9
+                    sm:w-auto
+                  "
+                >
+                  View plans
+                  <ArrowUpRight
+                    size={13}
+                    className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </button>
+              </div>
+            </section>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="
+                mt-4
+                block
+                w-full
+                pb-[env(safe-area-inset-bottom)]
+                text-center
+                text-[10px]
+                text-neutral-700
+                transition-colors
+                hover:text-neutral-400
+              "
+            >
+              Not now
+            </button>
+          </div>
         </div>
       </div>
     </div>
