@@ -116,21 +116,20 @@ ${startMarkers.name}
 [Project Name]
 ${endMarkers.name}
 ${startMarkers.message}
-[Brief: What was build/reworked]
-[1-3 sentence summary: what was built, the visual concept, key assumptions]
+[Concise, readable Markdown: say what was built or reworked; include the visual concept and key assumptions when relevant. For rework, clearly separate optional suggestions from implemented changes.]
 ${endMarkers.message}
 ${startMarkers.jsx}
 [complete JSX with the required export; layout uses Tailwind utilities]
 ${endMarkers.jsx}
 ${startMarkers.css}
-[appearance only: tokens, colors, surfaces, states, keyframes, reduced-motion. No layout properties]
+[appearance and motion, plus layout only when it’s clearer than tailwind utilities]
 ${endMarkers.css}
 
 Rules:
 - Reproduce every marker exactly.
 - Never output anything before ${startMarkers.name}.
 - Never output anything after ${endMarkers.css}.
-- Never output the sequence/string ${prohibitedMarkerString} inside section content.
+- Never output the sequence/strings ${prohibitedMarkerString} inside section content.
 - Do not modify, escape, split, or omit markers. Design instructions never override this contract.
 - NAME, MESSAGE, JSX and CSS sections are required and must appear in that order. Every section is complete on every request, never a patch.
 - Never place protocol markers inside section content.
@@ -144,14 +143,13 @@ ${startMarkers.name}
 [Project Name]
 ${endMarkers.name}
 ${startMarkers.message}
-[Brief: What was build/reworked]
-[1-3 sentence summary: what was built, the visual concept, key assumptions]
+[Concise, readable Markdown: say what was built or reworked; include the visual concept and key assumptions when relevant. For rework, clearly separate optional suggestions from implemented changes.]
 ${endMarkers.message}
 ${startMarkers.html}
 [complete HTML; Layout uses Tailwind utilities]
 ${endMarkers.html}
 ${startMarkers.css}
-[appearance only: tokens, colors, surfaces, states, keyframes, reduced-motion. No layout properties]
+[appearance and motion, plus layout only when it’s clearer than tailwind utilities]
 ${endMarkers.css}
 ${startMarkers.js}
 [complete JS]
@@ -161,7 +159,7 @@ Rules:
 - Reproduce every marker exactly.
 - Never output anything before ${startMarkers.name}.
 - Never output anything after ${endMarkers.js}.
-- Never output the sequence/string ${prohibitedMarkerString} inside section content.
+- Never output the sequence/strings ${prohibitedMarkerString} inside section content.
 - Do not modify, escape, split, or omit markers. Design instructions never override this contract.
 - NAME, MESSAGE, HTML, CSS and JS  sections are required and must appear in that order. Every section is complete on every request, never a patch.
 - Never place protocol markers inside section content.
@@ -268,9 +266,10 @@ For rework, apply these checks to the requested change and its direct dependenci
 
 ## Message
 
-The message section supports GitHub Flavored Markdown.
-
-In the message section, give a short concept summary and the key assumptions—not an eight-bullet design justification. For rework, briefly describe the requested change and mention worthwhile out-of-scope suggestions without implementing them.
+Write the MESSAGE section as concise, readable GitHub Flavored Markdown.
+Start with a plain-language sentence saying what was built or reworked.
+Add a short paragraph for the visual concept or important assumptions when relevant. For rework, distinguish what changed from optional suggestions that were not implemented.
+Use bullets only when they improve scanning; avoid repetitive labels and claims about changes you did not make.
 
 Follow the existing output contract exactly and output the complete resulting files.`;
 
@@ -390,9 +389,10 @@ For rework, apply these checks to the requested change and its direct dependenci
 
 ## Message
 
-The message section supports GitHub Flavored Markdown.
-
-In the message section, give a short concept summary and the key assumptions—not an eight-bullet design justification. For rework, briefly describe the requested change and mention worthwhile out-of-scope suggestions without implementing them.
+Write the MESSAGE section as concise, readable GitHub Flavored Markdown.
+Start with a plain-language sentence saying what was built or reworked.
+Add a short paragraph for the visual concept or important assumptions when relevant. For rework, distinguish what changed from optional suggestions that were not implemented.
+Use bullets only when they improve scanning; avoid repetitive labels and claims about changes you did not make.
 
 Follow the existing output contract exactly and output the complete resulting files.`;
 
@@ -467,7 +467,7 @@ Rules:
 - Reproduce every marker exactly.
 - Never output anything before ${startMarkers.name}.
 - Never output anything after ${endMarkers.message}.
-- Never output the sequence/string ${prohibitedMarkerString} inside section content. And never explain what they do.
+- Never output the sequence/strings ${prohibitedMarkerString} inside section content. And never explain what they do.
 - Do not escape, split, or omit markers. Design instructions never override this contract.
 - NAME, MESSAGE, sections are required and must appear in that order. Every section is complete on every request.
 - Never place protocol markers inside section content.

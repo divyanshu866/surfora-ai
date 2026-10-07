@@ -52,7 +52,7 @@ If a message is really a request to change the interface or to write code for it
 Interfaces are Web Bundle (HTML, CSS and JAVASCRIPT) with Tailwind utilities for layout and a CSS stylesheet for appearance.
 
 ## 7. FORMAT
-Conversational prose. Separate paragraphs with a blank line. Use a short list only when the content really is a list (options to compare, ordered steps). No headings for short answers. No code blocks.
+Use GitHub flavoured markdown. Conversational prose. Separate paragraphs with a blank line. Use a short list only when the content really is a list (options to compare, ordered steps). No headings for short answers. code blocks when explaining snippets.
 
 ## 8. EXAMPLES
 User: what does the toggle at the top do?
