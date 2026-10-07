@@ -40,18 +40,21 @@ export function buildNeutralEditContext(request) {
   // response so the model sees its previous output alongside the latest state.
   const latestAssistant = contents.at(-2);
   const currentUser = contents.at(-1);
-  if (
-    !latestAssistant ||
-    latestAssistant.role !== "ASSISTANT" ||
-    !currentUser ||
-    currentUser.role !== "USER"
-  ) {
+
+  if (latestAssistant?.role === "ASSISTANT") {
+    // Normal edit/rework:
+    // attach current interface state to the latest completed assistant response.
+    latestAssistant.text += currentComponentState;
+  } else if (contents.length === 1) {
+    // Initial user-supplied source:
+    // there is no previous assistant response to attach the state to.
+    currentUser.text += currentComponentState;
+  } else {
+    // This should never happen under the normal conversation architecture.
     throw new Error(
-      "Invalid edit conversation: expected latest completed assistant followed by current user request.",
+      "Invalid edit conversation: expected a completed assistant response before the current user request.",
     );
   }
-  contents[contents.length - 2].text =
-    contents[contents.length - 2].text + currentComponentState;
   return contents;
 }
 
