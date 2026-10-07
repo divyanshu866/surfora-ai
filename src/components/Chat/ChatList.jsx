@@ -353,7 +353,7 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
           w-full
           overflow-x-hidden
           overflow-y-auto
-          px-4
+          px-5
           pt-8
           pb-34
           sm:px-6
