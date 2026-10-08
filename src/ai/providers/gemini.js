@@ -1,6 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 import { toGeminiContext } from "../../app/api/ai/buildEditContents";
-const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenAI({
+  vertexai: false,
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
 export async function* generateWithGemini(
   systemPrompt,
