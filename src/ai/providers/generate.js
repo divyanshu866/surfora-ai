@@ -1,6 +1,8 @@
 import { generateWithGemini } from "./gemini";
+import { generateWithGeminiAP } from "./geminiAgentPlatform";
 import { generateWithOpenAI } from "./openai";
 import { generateWithZAI } from "./zai";
+const useGoogleAgentPlatform = process.env.GOOGLE_AGENT_PLATFORM === "true";
 export async function generate(
   systemPrompt,
   contents,
@@ -51,6 +53,15 @@ export async function generate(
       );
 
     case "gemini-3.8-flash":
+      if (useGoogleAgentPlatform) {
+        return await generateWithGeminiAP(
+          systemPrompt,
+          contents,
+          modelValue,
+          effortValue,
+          webSearchEnabeled,
+        );
+      }
       return await generateWithGemini(
         systemPrompt,
         contents,
@@ -59,6 +70,15 @@ export async function generate(
         webSearchEnabeled,
       );
     case "gemini-3.5-flash-lite":
+      if (useGoogleAgentPlatform) {
+        return await generateWithGeminiAP(
+          systemPrompt,
+          contents,
+          modelValue,
+          effortValue,
+          webSearchEnabeled,
+        );
+      }
       return await generateWithGemini(
         systemPrompt,
         contents,
