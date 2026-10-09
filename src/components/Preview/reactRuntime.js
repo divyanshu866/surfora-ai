@@ -1,4 +1,4 @@
-import * as esbuild from "esbuild-wasm";
+import * as esbuild from "esbuild-wasm/esm/browser.js";
 import { SERIALIZE_CONSOLE_VALUE_SOURCE } from "@/components/Preview/consoleSerializer";
 import { DEFAULT_JSX } from "@/components/Preview/defaults";
 

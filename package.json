@@ -23,10 +23,10 @@
     "highlight.js": "^11.11.1",
     "lucide-react": "^0.525.0",
     "motion": "^14.0.0",
-    "next": "16.0.10",
+    "next": "^16.4.0",
     "openai": "^5.10.2",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "react-markdown": "^10.1.0",
     "rehype-highlight": "^7.0.2",
     "remark-gfm": "^4.0.1",
@@ -36,14 +36,21 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "baseline-browser-mapping": "^2.11.28",
     "eslint": "^9",
-    "eslint-config-next": "^16.3.5",
+    "eslint-config-next": "^16.4.0",
     "hookdeck-cli": "^3.0.3",
     "postcss": "^8.5.6",
     "prisma": "^7.10.0",
     "tailwindcss": "^4.1.11",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@prisma/config": {
+      "deepmerge-ts": "^8.0.1"
+    },
+    "mysql2": "^3.24.5"
   }
 }
