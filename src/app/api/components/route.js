@@ -8,9 +8,8 @@ import { getGenerationUsage } from "@/lib/billing/generation-usage";
 
 export async function POST(request) {
   // 1. Check session
-  // console.log("REACHED COMP/POST==> REQ=>");
-  // console.dir(request, { depth: null });
-  const session = await getSession(); // ← reads cookies from `request` internally
+  const session = await getSession();
+
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -32,91 +31,88 @@ export async function POST(request) {
   let component;
   // 3. Create component tied to the authenticated user
   try {
-    component = await prisma.$transaction(
-      async (tx) => {
-        //If component is manually codes (no prompts)
-        if (messages.length < 2) {
-          const component = await tx.component.create({
-            data: {
-              name: name.trim() || "New Project",
-              html: html.trim() || "",
-              css: css.trim() || "",
-              js: js.trim() || "",
-              jsx: jsx.trim() || "",
-              targetTech:
-                targetTech === "HTML" ? TargetTech.HTML : TargetTech.REACT,
-              user: { connect: { id: session.user.id } },
+    // If component was manually coded (no prompts)
+    if (messages.length < 2) {
+      component = await prisma.component.create({
+        data: {
+          name: name.trim() || "New Project",
+          html: html.trim() || "",
+          css: css.trim() || "",
+          js: js.trim() || "",
+          jsx: jsx.trim() || "",
+          targetTech:
+            targetTech === "HTML" ? TargetTech.HTML : TargetTech.REACT,
+          user: {
+            connect: { id: session.user.id },
+          },
+        },
+        include: {
+          prompts: {
+            orderBy: {
+              id: "asc",
+            },
+          },
+        },
+      });
+    } else {
+      // If component was AI-generated (user prompt + model response)
+      component = await prisma.component.create({
+        data: {
+          name: name.trim() || "New Project",
+          html: html.trim() || "",
+          css: css.trim() || "",
+          js: js.trim() || "",
+          jsx: jsx.trim() || "",
+          targetTech:
+            targetTech === "HTML" ? TargetTech.HTML : TargetTech.REACT,
+          user: {
+            connect: { id: session.user.id },
+          },
+          prompts: {
+            create: [
+              {
+                message: messages[messages.length - 2]?.message,
+                role: PromptRole.USER,
+
+                aiRequest: usageMetadata
+                  ? {
+                      create: {
+                        model,
+                        effort,
+                        targetTech:
+                          targetTech === "HTML"
+                            ? TargetTech.HTML
+                            : TargetTech.REACT,
+                        inputTokens: usageMetadata.inputTokens ?? 0,
+                        outputTokens: usageMetadata.outputTokens ?? 0,
+                        thinkingTokens: usageMetadata.reasoningTokens ?? 0,
+                        totalTokens: usageMetadata.totalTokens ?? 0,
+                      },
+                    }
+                  : undefined,
+              },
+              {
+                message: messages[messages.length - 1]?.message,
+                role: PromptRole.ASSISTANT,
+              },
+            ],
+          },
+        },
+        include: {
+          prompts: {
+            orderBy: {
+              id: "asc",
             },
             include: {
-              prompts: {
-                orderBy: {
-                  id: "asc",
-                },
-              },
-            },
-          });
-
-          return component;
-        }
-        //If component is AI Generated (User Prompt + Model Response)
-        const component = await tx.component.create({
-          data: {
-            name: name.trim() || "New Project",
-            html: html.trim() || "",
-            css: css.trim() || "",
-            js: js.trim() || "",
-            jsx: jsx.trim() || "",
-            targetTech:
-              targetTech === "HTML" ? TargetTech.HTML : TargetTech.REACT,
-            user: { connect: { id: session.user.id } },
-            prompts: {
-              create: [
-                {
-                  message: messages[messages.length - 2]?.message,
-                  role: PromptRole.USER,
-
-                  aiRequest: usageMetadata
-                    ? {
-                        create: {
-                          model,
-                          effort,
-                          targetTech:
-                            targetTech === "HTML"
-                              ? TargetTech.HTML
-                              : TargetTech.REACT,
-                          inputTokens: usageMetadata.inputTokens ?? 0,
-                          outputTokens: usageMetadata.outputTokens ?? 0,
-                          thinkingTokens: usageMetadata?.reasoningTokens ?? 0,
-                          totalTokens: usageMetadata?.totalTokens ?? 0,
-                        },
-                      }
-                    : undefined,
-                },
-                {
-                  message: messages[messages.length - 1]?.message,
-                  role: PromptRole.ASSISTANT,
-                },
-              ],
+              aiRequest: true,
             },
           },
-          include: {
-            prompts: {
-              orderBy: {
-                id: "asc",
-              },
-              include: {
-                aiRequest: true,
-              },
-            },
-          },
-        });
-        return component;
-      },
-      {
-        timeout: 10_000,
-      },
-    );
+        },
+      });
+    }
   } catch (error) {
+    console.error("POST /api/components failed:", error);
+
     return NextResponse.json(
       {
         error: error.message,
@@ -126,6 +122,7 @@ export async function POST(request) {
       { status: 500 },
     );
   }
+
   return NextResponse.json(component, { status: 201 });
 }
 
