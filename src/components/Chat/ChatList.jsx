@@ -31,7 +31,7 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
   const {
     reworkUI,
     activeMessages,
-    activeComponentIndex,
+    activeComponentId,
     isGenerating,
     showPreview,
     setShowPreview,
@@ -52,7 +52,7 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
   const pendingRestoreScrollTopRef = useRef(null);
 
   // Tracks the currently active component.
-  const previousComponentIdRef = useRef(activeComponentIndex);
+  const previousComponentIdRef = useRef(activeComponentId);
 
   const [bottomSpacerHeight, setBottomSpacerHeight] = useState(0);
 
@@ -79,7 +79,7 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
    * When the user switches to another component, immediately
    * show the bottom of that component's conversation.
    *
-   * This is intentionally driven by activeComponentIndex rather
+   * This is intentionally driven by activeComponentId rather
    * than activeMessages, so streaming updates cannot trigger it.
    */
   useLayoutEffect(() => {
@@ -90,11 +90,11 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
     }
 
     // Ignore initial mount.
-    if (previousComponentIdRef.current === activeComponentIndex) {
+    if (previousComponentIdRef.current === activeComponentId) {
       return;
     }
 
-    previousComponentIdRef.current = activeComponentIndex;
+    previousComponentIdRef.current = activeComponentId;
 
     // Reset generation-specific state for the new component.
     generationAnchorAppliedRef.current = false;
@@ -116,7 +116,7 @@ const ChatList = ({ resolvedGenerationMode, isGeneratingCode }) => {
         behavior: "auto",
       });
     });
-  }, [activeComponentIndex]);
+  }, [activeComponentId]);
 
   /*
    * ---------------------------------------------------------

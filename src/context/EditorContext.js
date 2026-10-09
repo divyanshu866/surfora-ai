@@ -15,8 +15,6 @@ export function EditorProvider({ children }) {
   const [generationUsage, setGenerationUsage] = useState(null);
   const [generationLimitModalOpen, setGenerationLimitModalOpen] =
     useState(false);
-  const [components, setComponents] = useState([]);
-  const [reworkUI, setReworkUI] = useState(false);
 
   const [activeComponent, setActiveComponent] = useState({
     id: "",
@@ -28,35 +26,58 @@ export function EditorProvider({ children }) {
     js: "",
     jsx: EMPTY_JSX,
   });
-  const [activeComponentIndex, setActiveComponentIndex] = useState(null);
+  //Sidebar
+  const [components, setComponents] = useState([]);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const [activeMessages, setActiveMessages] = useState([]);
+  const [reworkUI, setReworkUI] = useState(false);
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingCode, setIsGeneratingCode] = useState(false);
-
-  const [showPreview, setShowPreview] = useState(false);
-  const [isMaximised, setIsMaximised] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
   const [changeDesc, setChangeDesc] = useState("");
 
+  const [isSaving, setIsSaving] = useState(false);
+
   //EsBuild
+  const [htmlPreviewDocument, setHtmlPreviewDocument] = useState("");
+  const [reactPreviewDocument, setReactPreviewDocument] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
+  const [isMaximised, setIsMaximised] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
 
-  const [isSaving, setIsSaving] = useState(false);
-  const [htmlPreviewDocument, setHtmlPreviewDocument] = useState("");
+  const [activeComponentId, setActiveComponentId] = useState(null);
 
-  const [reactPreviewDocument, setReactPreviewDocument] = useState("");
+  function sortComponents(items) {
+    return [...items].sort((a, b) => {
+      const aTime = Date.parse(a.updatedAt ?? "") || 0;
+      const bTime = Date.parse(b.updatedAt ?? "") || 0;
 
-  const saveComponent = async (component) => {
-    if (!component?.name?.trim()) {
-      component.name = "New Project";
+      return bTime - aTime || Number(b.id) - Number(a.id);
+    });
+  }
+
+  function upsertComponent(savedComponent) {
+    if (savedComponent?.id == null) {
+      throw new Error("Cannot update the list without a component ID.");
     }
+
+    setComponents((previous) =>
+      sortComponents([
+        ...previous.filter(
+          (component) => String(component.id) !== String(savedComponent.id),
+        ),
+        savedComponent,
+      ]),
+    );
+  }
+  const saveComponent = async (component) => {
+    const isNew = component?.id == null || component.id === "";
+
     const payload = {
       id: component?.id ?? "",
       messages: Array.isArray(component?.messages) ? component.messages : [],
-      name: String(component?.name ?? ""),
+      name: String(component?.name ?? "").trim() || "New Project",
       html: String(component?.html ?? ""),
       css: String(component?.css ?? ""),
       js: String(component?.js ?? ""),
@@ -66,52 +87,60 @@ export function EditorProvider({ children }) {
       model: component?.model?.value ?? "",
       effort: component?.effort ?? "",
     };
-    // Is New Component generation?
-    if (!component?.id) {
-      const res = await fetch("/api/components", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const created = await res.json();
-      setActiveMessages(created?.prompts || []);
-      setComponents((prev) => [created, ...prev]);
-      setActiveComponentIndex(0);
-      setActiveComponent({
-        id: created.id,
-        messages: created.prompts || [],
-        name: created.name,
-        targetTech: created.targetTech,
-        html: created.html,
-        css: created.css,
-        js: created.js,
-        jsx: created.jsx,
-      });
-    } else {
-      // Update existing component
-      const res = await fetch(`/api/components/${component.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const updated = await res.json();
-      setComponents((prev) =>
-        prev.map((c) => (c.id === updated.id ? updated : c)),
+
+    setIsSaving(true);
+
+    try {
+      const res = await fetch(
+        isNew ? "/api/components" : `/api/components/${component.id}`,
+        {
+          method: isNew ? "POST" : "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
       );
 
-      setActiveComponent({
-        id: updated.id,
-        messages: updated.prompts || [],
-        name: updated.name,
-        html: updated.html,
-        css: updated.css,
-        js: updated.js,
-        targetTech: updated.targetTech,
-        jsx: updated.jsx,
-      });
-      setActiveMessages(updated?.prompts || []);
+      const saved = await res.json();
+
+      if (!res.ok) {
+        throw new Error(
+          saved?.error || `Failed to save component (${res.status}).`,
+        );
+      }
+
+      if (saved?.id == null || !saved.updatedAt) {
+        throw new Error(
+          "The server response is missing the component ID or updatedAt.",
+        );
+      }
+
+      // Store the COMPLETE API response in the sidebar list.
+      upsertComponent(saved);
+
+      // Update the editor using its expected state shape.
+      const editorComponent = {
+        id: saved.id,
+        messages: saved.prompts || [],
+        name: saved.name,
+        targetTech: saved.targetTech,
+        html: saved.html,
+        css: saved.css,
+        js: saved.js,
+        jsx: saved.jsx,
+      };
+
+      setActiveComponent(editorComponent);
+      setActiveMessages(saved.prompts || []);
+
+      // Selection will be made ID-based below.
+      setActiveComponentId(saved.id);
+
+      return saved;
+    } finally {
+      setIsSaving(false);
     }
   };
+
   const updatePreview = async (
     component = {
       id: "",
@@ -170,8 +199,8 @@ export function EditorProvider({ children }) {
         setSidebarCollapsed,
         components,
         setComponents,
-        activeComponentIndex,
-        setActiveComponentIndex,
+        activeComponentId,
+        setActiveComponentId,
         changeDesc,
         setChangeDesc,
         isGenerating,

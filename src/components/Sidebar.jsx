@@ -1,60 +1,51 @@
 "use client";
 
-import { Plus, Sparkles, Trash, MoreHorizontal } from "lucide-react";
-import { EMPTY_JSX } from "@/components/Preview/defaults";
+import { Plus, Trash, MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useEditorContext } from "@/context/EditorContext";
-import { useConsole } from "@/context/ConsoleContext";
-import { AI_MODELS } from "@/ai/models";
 import Image from "next/image";
 
-export default function Sidebar() {
-  // const pathname = usePathname();
-  const [isMobile, setIsMobile] = useState(false);
-  const [showAiPanel, setShowAiPanel] = useState(false);
-  const [chatMenu, setChatMenu] = useState(null);
-  const [mouseClick, setMouseClick] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].value);
+import { EMPTY_JSX } from "@/components/Preview/defaults";
+import { useEditorContext } from "@/context/EditorContext";
+import { useConsole } from "@/context/ConsoleContext";
 
-  useEffect(() => {
-    console.log(selectedModel);
-  }, [selectedModel]);
+export default function Sidebar() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [chatMenu, setChatMenu] = useState(null);
 
   const {
     setSelectedVisualStyle,
     components,
-    setActiveMessages,
     setComponents,
     activeComponent,
     setActiveComponent,
-    activeComponentIndex,
-    setActiveComponentIndex,
-    activeEditor,
+    activeComponentId,
+    setActiveComponentId,
+    setActiveMessages,
     setActiveEditor,
     setChangeDesc,
     isGenerating,
-    setIsGenerating,
     showPreview,
     setShowPreview,
     updatePreview,
     sidebarCollapsed,
     setSidebarCollapsed,
-    reworkUI,
     setReworkUI,
     isMaximised,
     setIsMaximised,
     targetTech,
-    generationUsage,
+    setTargetTech,
     setGenerationUsage,
   } = useEditorContext();
 
-  const { setConsoleLogs, showConsole, setShowConsole } = useConsole();
+  const { setConsoleLogs } = useConsole();
 
+  // Keep the sidebar responsive to viewport changes.
   useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 767px)");
 
     const updateViewport = () => {
       const mobile = mobileQuery.matches;
+
       setIsMobile(mobile);
 
       if (mobile) {
@@ -70,45 +61,17 @@ export default function Sidebar() {
     };
   }, [setSidebarCollapsed]);
 
-  async function deleteComponent(id, componentIndex) {
-    setChatMenu(null);
-
-    //if requested delete component was active
-    const wasActive = activeComponent?.id === id;
-    const activeComponentIndexLocal = activeComponentIndex;
-
-    if (wasActive) {
-      clearScreen();
-      setActiveEditor("AI");
-    }
-
-    // Implementation for deleting a component
-    const res = await fetch(`/api/components/${id}`, {
-      method: "DELETE",
-    });
-
-    if (!res.ok) {
-      console.error("Failed to delete component");
-      return;
-    }
-
-    // Handle active component highlighting
-    if (
-      activeComponentIndexLocal != 0 &&
-      activeComponentIndexLocal > componentIndex
-    ) {
-      setActiveComponentIndex(activeComponentIndexLocal - 1);
-    }
-
-    // Update the components state after deletion
-    setComponents((prev) => prev.filter((c) => c.id !== id));
-  }
-
-  const hideChatMenu = () => {
-    setChatMenu(null);
-  };
-
+  // Close the sidebar on mobile when the selected component changes.
   useEffect(() => {
+    if (isMobile) {
+      setSidebarCollapsed(true);
+    }
+  }, [activeComponentId, isMobile, setSidebarCollapsed]);
+
+  // Close the contextual menu when clicking outside it.
+  useEffect(() => {
+    const hideChatMenu = () => setChatMenu(null);
+
     window.addEventListener("mousedown", hideChatMenu);
 
     return () => {
@@ -116,68 +79,126 @@ export default function Sidebar() {
     };
   }, []);
 
-  // Hide the sidebar when a component is selected on mobile
+  // Fetch the initial component list.
   useEffect(() => {
-    isMobile && setSidebarCollapsed(true);
-  }, [activeComponentIndex]);
+    let cancelled = false;
 
-  function updateActiveComponent(index) {
-    //prevent switching components while generating
-    if (isGenerating) {
-      return;
-    }
-
-    if (showPreview == false && !isMobile) {
-      setShowPreview(true);
-    }
-
-    setActiveComponentIndex(index);
-
-    if (index != null && index >= 0) {
-      setReworkUI(true);
-    }
-
-    setActiveMessages(components[index]?.prompts || []);
-    setChangeDesc("");
-  }
-
-  // Fetch components on initial load
-  useEffect(() => {
     async function fetchComponents() {
-      const res = await fetch("/api/components");
+      try {
+        const res = await fetch("/api/components");
 
-      if (res.ok) {
-        const { components, generationUsage } = await res.json();
+        if (!res.ok) {
+          throw new Error("Failed to fetch components.");
+        }
 
-        setComponents(components);
-        setGenerationUsage(generationUsage);
+        const data = await res.json();
 
-        console.log("Fetched components>>>>:", components);
-        console.log("Generation usage>>>>:", generationUsage);
-      } else {
-        console.error("Failed to fetch components");
+        if (cancelled) return;
+
+        setComponents(Array.isArray(data.components) ? data.components : []);
+        setGenerationUsage(data.generationUsage);
+      } catch (error) {
+        if (!cancelled) {
+          console.error("Failed to load components:", error);
+        }
       }
     }
 
     fetchComponents();
-  }, []);
 
-  const clearScreen = (name, html, css, js, jsx = EMPTY_JSX) => {
-    if (isGenerating) {
-      return;
+    return () => {
+      cancelled = true;
+    };
+  }, [setComponents, setGenerationUsage]);
+
+  function updateActiveComponent(componentId) {
+    // Prevent switching projects while generation is running.
+    if (isGenerating) return;
+
+    const component = components.find(
+      (item) => String(item.id) === String(componentId),
+    );
+
+    if (!component) return;
+
+    if (!showPreview && !isMobile) {
+      setShowPreview(true);
     }
+
+    const prompts = component.prompts || [];
+
+    // Store selection by stable ID, never by array position.
+    setActiveComponentId(component.id);
+
+    setActiveComponent({
+      id: component.id,
+      messages: prompts,
+      name: component.name,
+      targetTech: component.targetTech ?? "REACT",
+      html: component.html ?? "",
+      css: component.css ?? "",
+      js: component.js ?? "",
+      jsx: component.jsx ?? "",
+    });
+
+    setActiveMessages(prompts);
+    setTargetTech(component.targetTech ?? "REACT");
+    setReworkUI(true);
+    setChangeDesc("");
+  }
+
+  async function deleteComponent(id) {
+    if (isGenerating) return;
+
+    setChatMenu(null);
+
+    const deletedId = String(id);
+    const wasActive =
+      deletedId === String(activeComponentId ?? activeComponent?.id ?? "");
+
+    try {
+      const res = await fetch(`/api/components/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+
+        throw new Error(errorData?.error || "Failed to delete component.");
+      }
+
+      // Remove the deleted item. Other selection IDs remain unchanged.
+      setComponents((previous) =>
+        previous.filter((component) => String(component.id) !== deletedId),
+      );
+
+      // Clear the editor only after a successful deletion.
+      if (wasActive) {
+        clearScreen();
+        setActiveEditor("AI");
+      }
+    } catch (error) {
+      console.error("Failed to delete component:", error);
+    }
+  }
+
+  function clearScreen(name, html, css, js, jsx = EMPTY_JSX) {
+    if (isGenerating) return;
 
     setSelectedVisualStyle("Custom style");
     setActiveMessages([]);
     setReworkUI(false);
     setShowPreview(false);
-    setActiveComponentIndex(null);
+
+    // No component is selected for a new project.
+    setActiveComponentId(null);
     setActiveEditor("AI");
+
     setActiveComponent({
       id: "",
       messages: [],
       name: name ?? "",
-      targetTech: targetTech,
+      targetTech,
       jsx: jsx ?? "",
       html: html ?? "",
       css: css ?? "",
@@ -186,8 +207,7 @@ export default function Sidebar() {
 
     setConsoleLogs([]);
     updatePreview();
-    console.log("cleared");
-  };
+  }
 
   return (
     <aside
@@ -213,6 +233,7 @@ export default function Sidebar() {
       >
         <header className="relative shrink-0 border-b border-darkBorder p-4">
           <button
+            type="button"
             disabled={isGenerating}
             onClick={() => {
               clearScreen();
@@ -221,12 +242,14 @@ export default function Sidebar() {
                 setIsMaximised(false);
               }
             }}
-            className="group flex w-full items-center gap-3 overflow-hidden rounded-xl border border-lightBorder bg-white/3 px-5 py-3 text-sm font-medium text-white transition-all duration-150 hover:border-purple-500/30 hover:bg-white/6 hover:shadow-[0_0_30px_rgba(168,85,247,0.12)] active:scale-[0.98] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            className="group flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-xl border border-lightBorder bg-white/3 px-5 py-3 text-sm font-medium text-white transition-all duration-150 hover:border-purple-500/30 hover:bg-white/6 hover:shadow-[0_0_30px_rgba(168,85,247,0.12)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="rounded-lg bg-white/5 p-1">
               <Plus className="size-5 transition-transform duration-300 group-hover:rotate-90" />
             </span>
+
             <span className="flex-1 text-left">New Project</span>
+
             <span className="text-xs text-neutral-500 transition-colors duration-100 group-hover:text-neutral-300">
               ⌘ K
             </span>
@@ -242,71 +265,88 @@ export default function Sidebar() {
           </h2>
 
           <ul className="space-y-1">
-            {components.map((c, i) => (
-              <li
-                key={c.id ?? i}
-                className={`group relative overflow-visible rounded-lg border text-sm ${
-                  i === activeComponentIndex
-                    ? "border-neutral-800 bg-neutral-900"
-                    : "border-transparent bg-transparent hover:border-lightBorder hover:bg-white/5"
-                }`}
-              >
-                <button
-                  type="button"
-                  disabled={isGenerating}
-                  onClick={() => updateActiveComponent(i)}
-                  className="flex min-h-10 w-full min-w-0 items-center gap-3 rounded-lg py-2 pl-4 pr-11 text-left cursor-pointer disabled:cursor-not-allowed"
+            {components.map((component) => {
+              const componentId = String(component.id);
+              const isActive =
+                activeComponentId != null &&
+                componentId === String(activeComponentId);
+              const isMenuOpen = chatMenu === componentId;
+
+              return (
+                <li
+                  key={component.id}
+                  className={`group relative overflow-visible rounded-lg border text-sm ${
+                    isActive
+                      ? "border-neutral-800 bg-neutral-900"
+                      : "border-transparent bg-transparent hover:border-lightBorder hover:bg-white/5"
+                  }`}
                 >
-                  {c.targetTech === "REACT" && (
-                    <Image src="/jsx.svg" width={12} height={12} alt="React" />
+                  <button
+                    type="button"
+                    disabled={isGenerating}
+                    onClick={() => updateActiveComponent(component.id)}
+                    className="flex min-h-10 w-full min-w-0 cursor-pointer items-center gap-3 rounded-lg py-2 pl-4 pr-11 text-left disabled:cursor-not-allowed"
+                  >
+                    {component.targetTech === "REACT" && (
+                      <Image
+                        src="/jsx.svg"
+                        width={12}
+                        height={12}
+                        alt="React"
+                      />
+                    )}
+
+                    {component.targetTech === "HTML" && (
+                      <Image
+                        src="/globe2_red.svg"
+                        width={12}
+                        height={12}
+                        alt="Web Bundle"
+                      />
+                    )}
+
+                    <span className="truncate font-medium text-white">
+                      {component.name}
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    aria-label={`More actions for ${component.name}`}
+                    aria-expanded={isMenuOpen}
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onClick={(event) => {
+                      event.stopPropagation();
+
+                      setChatMenu((current) =>
+                        current === componentId ? null : componentId,
+                      );
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-neutral-400 transition hover:text-white focus-visible:opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                  >
+                    <MoreHorizontal size={15} />
+                  </button>
+
+                  {isMenuOpen && (
+                    <div className="absolute right-2 top-0 z-50 w-48 overflow-hidden rounded-2xl border border-lightBorder bg-neutral-900/95 shadow-2xl backdrop-blur-xl">
+                      <button
+                        type="button"
+                        disabled={isGenerating}
+                        onMouseDown={(event) => event.stopPropagation()}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          deleteComponent(component.id);
+                        }}
+                        className="flex w-full items-center gap-3 px-4 py-2 text-red-400 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <Trash size={16} />
+                        Delete project
+                      </button>
+                    </div>
                   )}
-
-                  {c.targetTech === "HTML" && (
-                    <Image
-                      src="/globe2_red.svg"
-                      width={12}
-                      height={12}
-                      alt="Web Bundle"
-                    />
-                  )}
-
-                  <span className="truncate font-medium text-white">
-                    {c.name}
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  aria-label={`More actions for ${c.name}`}
-                  aria-expanded={chatMenu === i}
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setChatMenu(chatMenu === i ? null : i);
-                  }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-neutral-400 transition hover:text-white focus-visible:opacity-100 md:opacity-0 md:group-hover:opacity-100"
-                >
-                  <MoreHorizontal size={15} />
-                </button>
-
-                {chatMenu === i && (
-                  <div className="absolute right-2 top-0 z-50 w-48 overflow-hidden rounded-2xl border border-lightBorder bg-neutral-900/95 shadow-2xl backdrop-blur-xl">
-                    <button
-                      type="button"
-                      onMouseDown={(e) => e.stopPropagation()}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteComponent(c.id, i);
-                      }}
-                      className="flex w-full items-center gap-3 px-4 py-2 text-red-400 transition hover:bg-red-500/10"
-                    >
-                      <Trash size={16} />
-                      Delete project
-                    </button>
-                  </div>
-                )}
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>

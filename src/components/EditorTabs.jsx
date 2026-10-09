@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useState } from "react";
 
 const EditorTabs = ({
-  activeComponentIndex,
   activeEditor,
   setActiveEditor,
   targetTech,

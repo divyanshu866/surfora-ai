@@ -155,9 +155,14 @@ export async function GET() {
             },
           },
         },
-        orderBy: {
-          id: "desc",
-        },
+        orderBy: [
+          {
+            updatedAt: "desc",
+          },
+          {
+            id: "desc",
+          },
+        ],
       }),
 
       getUserEntitlement(userId),

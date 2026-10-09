@@ -2,7 +2,7 @@ import { Eye, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 const AIEditorTabs = ({
-  activeComponentIndex,
+  activeComponentId,
   activeEditor,
   setActiveEditor,
   targetTech,
@@ -166,7 +166,7 @@ const AIEditorTabs = ({
           </button>
         )}
 
-        {activeComponentIndex != null && (
+        {activeComponentId != null && (
           <div
             className="
               hidden h-8 items-center

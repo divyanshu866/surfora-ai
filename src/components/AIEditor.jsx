@@ -37,8 +37,8 @@ const AIEditor = ({ user, isMobile }) => {
     setActiveEditor,
     activeComponent,
     setActiveComponent,
-    activeComponentIndex,
-    setActiveComponentIndex,
+    activeComponentId,
+    setActiveComponentId,
     reworkUI,
     setReworkUI,
     previewKey,
@@ -716,7 +716,7 @@ const AIEditor = ({ user, isMobile }) => {
   const clearScreen = (name, html, css, js, jsx, targetTech) => {
     console.log("Editor cleared from AI-EDITOR");
     setSelectedVisualStyle("Custom style");
-    setActiveComponentIndex(null);
+    setActiveComponentId(null);
 
     setActiveComponent({
       id: "",
@@ -756,7 +756,7 @@ const AIEditor = ({ user, isMobile }) => {
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [isGenerating, activeComponentIndex]);
+  }, [isGenerating, activeComponentId]);
 
   return (
     <div
