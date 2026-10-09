@@ -37,6 +37,9 @@ export async function openProCheckout(userId: string, yearly: boolean) {
   if (!paddle) {
     throw new Error("Failed to initialize Paddle.js");
   }
+  if (!userId) {
+    throw new Error("UserId is unavailable");
+  }
 
   const priceId = yearly
     ? process.env.NEXT_PUBLIC_PADDLE_PREMIUM_YEARLY_PRICE_ID
@@ -44,7 +47,7 @@ export async function openProCheckout(userId: string, yearly: boolean) {
 
   if (!priceId) {
     throw new Error(
-      "NEXT_PUBLIC_PADDLE_PREMIUM_MONTHLY_PRICE_ID is not configured",
+      `${yearly ? "NEXT_PUBLIC_PADDLE_PREMIUM_YEARLY_PRICE_ID" : "NEXT_PUBLIC_PADDLE_PREMIUM_MONTHLY_PRICE_ID"}  is not configured`,
     );
   }
 
