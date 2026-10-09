@@ -25,7 +25,7 @@ export default async function UpgradePage() {
             </div>
           </div>
 
-          <UpgradeCard session={session?.user?.id} />
+          <UpgradeCard userId={session?.user?.id} />
         </section>
 
         <ModelAccess />
