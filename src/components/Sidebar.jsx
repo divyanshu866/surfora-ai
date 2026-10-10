@@ -45,7 +45,6 @@ export default function Sidebar() {
 
     const updateViewport = () => {
       const mobile = mobileQuery.matches;
-
       setIsMobile(mobile);
 
       if (mobile) {
@@ -163,7 +162,6 @@ export default function Sidebar() {
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => null);
-
         throw new Error(errorData?.error || "Failed to delete component.");
       }
 
@@ -219,19 +217,19 @@ export default function Sidebar() {
           ? "w-0 border-0"
           : `${
               isMobile
-                ? "border-b w-[min(16.25rem,calc(100vw-1rem))]"
-                : "w-[16.25rem]"
-            } rounded-xl border-r border-darkBorder`
+                ? "border-b w-[min(15.25rem,calc(100vw-1rem))]"
+                : "w-[15.25rem]"
+            } rounded-xl border-r border-lightBorder`
       }`}
     >
       <div
-        className={`flex h-full w-[min(16.25rem,calc(100vw-1rem))] shrink-0 flex-col transition-[opacity,transform] duration-150 ease-out ${
+        className={`flex h-full w-[min(15.25rem,calc(100vw-1rem))] shrink-0 flex-col transition-[opacity,transform] duration-150 ease-out ${
           sidebarCollapsed
             ? "pointer-events-none -translate-x-2 opacity-0"
             : "translate-x-0 opacity-100"
         }`}
       >
-        <header className="relative shrink-0 border-b border-darkBorder p-4">
+        <header className="relative shrink-0 border-b border-[#1e1d21] px-2.5 py-2">
           <button
             type="button"
             disabled={isGenerating}
@@ -242,15 +240,15 @@ export default function Sidebar() {
                 setIsMaximised(false);
               }
             }}
-            className="group flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-xl border border-lightBorder bg-white/3 px-5 py-3 text-sm font-medium text-white transition-all duration-150 hover:border-purple-500/30 hover:bg-white/6 hover:shadow-[0_0_30px_rgba(168,85,247,0.12)] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+            className="group flex h-9 w-full cursor-pointer items-center gap-2.5 overflow-hidden rounded-lg border border-[#29272d] bg-[#101012] px-2.5 text-[12px] font-medium tracking-[-0.015em] text-zinc-100 transition-[background,border-color,box-shadow] duration-150 hover:border-violet-400/30 hover:bg-[#15131a] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-400/50 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <span className="rounded-lg bg-white/5 p-1">
-              <Plus className="size-5 transition-transform duration-300 group-hover:rotate-90" />
+            <span className="flex size-6 shrink-0 items-center justify-center rounded-md border border-white/[0.04] bg-white/[0.04] text-zinc-100 transition-colors group-hover:bg-violet-400/[0.12]">
+              <Plus className="size-4 transition-transform duration-200 group-hover:rotate-90" />
             </span>
 
             <span className="flex-1 text-left">New Project</span>
 
-            <span className="text-xs text-neutral-500 transition-colors duration-100 group-hover:text-neutral-300">
+            <span className="rounded border border-white/[0.045] bg-white/[0.02] px-1 py-0.5 text-[9px] font-medium tracking-wide text-zinc-500 transition-colors group-hover:text-zinc-400">
               ⌘ K
             </span>
           </button>
@@ -258,13 +256,13 @@ export default function Sidebar() {
 
         <nav
           aria-label="Recent projects"
-          className="mt-3 min-h-0 w-full flex-1 overflow-y-auto overscroll-contain px-4 pb-4 text-nowrap"
+          className="min-h-0 w-full flex-1 overflow-y-auto overscroll-contain px-2 pb-2 pt-3 text-nowrap [scrollbar-color:#343238_transparent] [scrollbar-width:thin]"
         >
-          <h2 className="mb-4 px-3 text-xs font-semibold uppercase tracking-wider text-neutral-600">
+          <h2 className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.13em] text-zinc-500/90">
             Recent Projects
           </h2>
 
-          <ul className="space-y-1">
+          <ul className="space-y-0.5">
             {components.map((component) => {
               const componentId = String(component.id);
               const isActive =
@@ -275,37 +273,49 @@ export default function Sidebar() {
               return (
                 <li
                   key={component.id}
-                  className={`group relative overflow-visible rounded-lg border text-sm ${
+                  className={`group relative overflow-visible rounded-md border border-transparent text-[12px] transition-colors duration-150 ${
                     isActive
-                      ? "border-neutral-800 bg-neutral-900"
-                      : "border-transparent bg-transparent hover:border-lightBorder hover:bg-white/5"
+                      ? "border-transparent bg-[#141216] before:absolute before:inset-y-2 before:left-0.5 before:w-px before:rounded-r-full before:bg-violet-400/75"
+                      : "border-transparent bg-transparent hover:bg-white/[0.035]"
                   }`}
                 >
                   <button
                     type="button"
                     disabled={isGenerating}
                     onClick={() => updateActiveComponent(component.id)}
-                    className="flex min-h-10 w-full min-w-0 cursor-pointer items-center gap-3 rounded-lg py-2 pl-4 pr-11 text-left disabled:cursor-not-allowed"
+                    className="flex min-h-8 w-full min-w-0 cursor-pointer items-center gap-2 rounded-md py-1 pl-2 pr-8 text-left transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-400/45 disabled:cursor-not-allowed"
                   >
                     {component.targetTech === "REACT" && (
-                      <Image
-                        src="/jsx.svg"
-                        width={12}
-                        height={12}
-                        alt="React"
-                      />
+                      <span className="flex size-5 shrink-0 items-center justify-center">
+                        <Image
+                          src="/jsx.svg"
+                          width={12}
+                          height={12}
+                          alt="React"
+                          className="opacity-90"
+                        />
+                      </span>
                     )}
 
                     {component.targetTech === "HTML" && (
-                      <Image
-                        src="/globe2_red.svg"
-                        width={12}
-                        height={12}
-                        alt="Web Bundle"
-                      />
+                      <span className="flex size-5 shrink-0 items-center justify-center">
+                        <Image
+                          src="/globe2_red.svg"
+                          width={12}
+                          height={12}
+                          alt="Web Bundle"
+                          className="opacity-90"
+                        />
+                      </span>
                     )}
 
-                    <span className="truncate font-medium text-white">
+                    <span
+                      className={`min-w-0 truncate font-normal tracking-[-0.012em] transition-colors ${
+                        isActive
+                          ? "text-zinc-50"
+                          : "text-zinc-300 group-hover:text-zinc-100"
+                      }`}
+                    >
                       {component.name}
                     </span>
                   </button>
@@ -317,18 +327,17 @@ export default function Sidebar() {
                     onMouseDown={(event) => event.stopPropagation()}
                     onClick={(event) => {
                       event.stopPropagation();
-
                       setChatMenu((current) =>
                         current === componentId ? null : componentId,
                       );
                     }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-neutral-400 transition hover:text-white focus-visible:opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                    className="absolute right-1 top-1/2 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-zinc-500 opacity-100 transition-[background,color,opacity] duration-150 hover:bg-white/[0.07] hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/50 md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100"
                   >
                     <MoreHorizontal size={15} />
                   </button>
 
                   {isMenuOpen && (
-                    <div className="absolute right-2 top-0 z-50 w-48 overflow-hidden rounded-2xl border border-lightBorder bg-neutral-900/95 shadow-2xl backdrop-blur-xl">
+                    <div className="absolute right-1 top-1 z-50 w-40 overflow-hidden rounded-lg border border-[#29272d] bg-[#111113]/95 p-1 shadow-[0_10px_28px_rgba(0,0,0,0.35)] backdrop-blur-lg">
                       <button
                         type="button"
                         disabled={isGenerating}
@@ -337,9 +346,9 @@ export default function Sidebar() {
                           event.stopPropagation();
                           deleteComponent(component.id);
                         }}
-                        className="flex w-full items-center gap-3 px-4 py-2 text-red-400 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex min-h-8 w-full items-center gap-2 rounded-md px-2 text-[11.5px] font-medium text-red-300 transition-colors hover:bg-red-400/[0.09] hover:text-red-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-red-300/40 disabled:cursor-not-allowed disabled:opacity-50"
                       >
-                        <Trash size={16} />
+                        <Trash size={13} />
                         Delete project
                       </button>
                     </div>

@@ -939,33 +939,32 @@ const AIEditor = ({ user, isMobile }) => {
             {/* Composer */}
             <div
               className={`
-      pointer-events-auto flex w-full min-w-0 flex-col
-      border transition-all duration-200
-      focus-within:ring-2 focus-within:ring-violet-400/12
-      ${
-        reworkUI
-          ? `
-            rounded-2xl border-violet-300/20
-            bg-[#120f15]
-            p-3
-            shadow-[0_-20px_48px_-28px_rgba(0,0,0,0.9)]
-            focus-within:border-violet-400/45
-            max-[639px]:rounded-[18px] max-[639px]:p-2
-          `
-          : `
-            rounded-2xl
-            ${
-              generationMode === "ASK"
-                ? "border-emerald-400/30 bg-[#0f1612]/92"
-                : "border-lightBorder bg-white/3"
-            }
-            p-3
-            shadow-[0_16px_48px_-28px_rgba(0,0,0,0.85)]
-            focus-within:border-violet-400/40
-            max-[639px]:rounded-[18px] max-[639px]:p-2
-          `
-      }
-    `}
+    pointer-events-auto flex w-full min-w-0 flex-col overflow-hidden
+    border transition-[background-color,border-color,box-shadow] duration-200
+    focus-within:ring-1 focus-within:ring-violet-400/10
+    ${
+      reworkUI
+        ? `
+          rounded-[12px] border-[#302936]
+          bg-[#0d0c10] p-2.5
+          shadow-[0_10px_30px_-24px_rgba(0,0,0,0.9)]
+          focus-within:border-violet-400/35
+          max-[639px]:rounded-[11px] max-[639px]:p-2
+        `
+        : `
+          rounded-[12px]
+          ${
+            generationMode === "ASK"
+              ? "border-emerald-400/20 bg-[#0d100e]"
+              : "border-[#28262c] bg-[#0d0d0f]"
+          }
+          p-2.5
+          shadow-[0_10px_30px_-24px_rgba(0,0,0,0.75)]
+          focus-within:border-violet-400/30
+          max-[639px]:rounded-[11px] max-[639px]:p-2
+        `
+    }
+  `}
             >
               <label htmlFor="prompt" className="sr-only">
                 Describe your changes
@@ -985,24 +984,18 @@ const AIEditor = ({ user, isMobile }) => {
                     : "Describe what you want to build..."
                 }
                 className={`
-        m-0 w-full min-w-0 resize-none overflow-y-auto
-        bg-transparent px-2.5
-        text-[15px] font-normal leading-[1.55]
-        tracking-[-0.01em] text-white/[0.92]
-        outline-none
-        placeholder:text-white/35
-        disabled:cursor-not-allowed disabled:opacity-50
-        sm:text-[14.5px]
-        ${
-          reworkUI
-            ? "max-h-[140px] min-h-10 py-1.5"
-            : "max-h-[220px] min-h-12 py-2.5"
-        }
-        max-[639px]:max-h-[120px] max-[639px]:min-h-10
-        max-[639px]:px-2 max-[639px]:py-2
-        max-[639px]:text-[16px] max-[639px]:leading-5
-        max-[639px]:tracking-[-0.005em]
-      `}
+      m-0 w-full min-w-0 resize-none overflow-y-auto
+      bg-transparent px-2
+      text-[13.5px] font-normal leading-[1.55]
+      tracking-[-0.012em] text-zinc-100
+      outline-none placeholder:text-zinc-600
+      disabled:cursor-not-allowed disabled:opacity-50
+      ${reworkUI ? "max-h-[140px] min-h-9 py-1.5" : "max-h-[220px] min-h-11 py-2"}
+      max-[639px]:max-h-[120px] max-[639px]:min-h-9
+      max-[639px]:px-1.5 max-[639px]:py-2
+      max-[639px]:text-[16px] max-[639px]:leading-5
+      max-[639px]:tracking-[-0.005em]
+    `}
                 onChange={(e) => {
                   setChangeDesc(e.target.value);
                   e.target.style.height = "0px";
@@ -1028,13 +1021,13 @@ const AIEditor = ({ user, isMobile }) => {
               {/* Composer controls */}
               <div
                 className={`
-        flex w-full min-w-0 items-center justify-end gap-1.5
-        border-t border-white/[0.06]
-        px-0.5
-        ${reworkUI ? "mt-1 pt-2.5" : "mt-1.5 pt-2.5"}
-        sm:gap-2
-        max-[639px]:mt-1 max-[639px]:gap-1 max-[639px]:pt-2 max-[639px]:px-0
-      `}
+      flex w-full min-w-0 items-center justify-end gap-1
+      border-t border-white/[0.045] px-0.5
+      ${reworkUI ? "mt-1.5 pt-2" : "mt-2 pt-2"}
+      sm:gap-1
+      max-[639px]:mt-1 max-[639px]:gap-0.5
+      max-[639px]:pt-1.5 max-[639px]:px-0
+    `}
               >
                 {/* Generation mode */}
                 <select
@@ -1044,20 +1037,19 @@ const AIEditor = ({ user, isMobile }) => {
                   disabled={isGenerating}
                   onChange={(e) => setGenerationMode(e.target.value)}
                   className={`
-          min-w-0 cursor-pointer appearance-none
-          rounded-lg border border-transparent
-          bg-transparent px-2.5
-          text-[13px] font-medium tracking-[-0.01em]
-          text-white/55 outline-none transition-all
-          [color-scheme:dark]
-          hover:bg-white/[0.05] hover:text-white/80
-          focus-visible:border-violet-400/35
-          focus-visible:bg-violet-400/[0.05]
-          disabled:cursor-not-allowed disabled:opacity-50
-          ${reworkUI ? "h-9" : "h-10"}
-          max-[639px]:h-8 max-[639px]:rounded-md
-          max-[639px]:px-2 max-[639px]:text-[13px]
-        `}
+        min-w-0 cursor-pointer appearance-none rounded-[7px]
+        border border-transparent bg-transparent px-2
+        text-[11.5px] font-medium tracking-[-0.01em]
+        text-zinc-500 outline-none transition-colors
+        [color-scheme:dark]
+        hover:bg-white/[0.035] hover:text-zinc-300
+        focus-visible:border-violet-400/25
+        focus-visible:bg-violet-400/[0.035]
+        disabled:cursor-not-allowed disabled:opacity-50
+        h-7
+        max-[639px]:h-8 max-[639px]:rounded-md max-[639px]:px-1.5
+        max-[639px]:text-[12px]
+      `}
                 >
                   <option value="AUTO" className="bg-[#18171d] text-white">
                     Auto
@@ -1078,23 +1070,23 @@ const AIEditor = ({ user, isMobile }) => {
                       setSelectedVisualStyle("Custom style");
                     }}
                     className={`
-            flex h-9 w-9 shrink-0 items-center justify-center
-            rounded-[10px] transition-all duration-150
-            focus-visible:outline-none focus-visible:ring-2
-            focus-visible:ring-violet-400/35
-            ${
-              showFilters
-                ? "bg-violet-500/15 text-violet-300"
-                : "text-white/40 hover:bg-white/[0.05] hover:text-white/75"
-            }
-            max-[639px]:h-8 max-[639px]:w-8 max-[639px]:rounded-[9px]
-          `}
+          flex h-7 w-7 shrink-0 items-center justify-center
+          rounded-[7px] border border-transparent
+          transition-colors duration-150
+          focus-visible:outline-none focus-visible:ring-2
+          focus-visible:ring-violet-400/30
+          ${
+            showFilters
+              ? "border-violet-400/15 bg-violet-400/[0.08] text-violet-300"
+              : "text-zinc-600 hover:bg-white/[0.04] hover:text-zinc-300"
+          }
+          max-[639px]:h-8 max-[639px]:w-8
+        `}
                   >
                     <SlidersHorizontal
-                      size={16}
-                      strokeWidth={1.75}
+                      size={14}
+                      strokeWidth={1.7}
                       aria-hidden="true"
-                      className="max-[639px]:h-[15px] max-[639px]:w-[15px]"
                     />
                   </button>
                 )}
@@ -1108,24 +1100,20 @@ const AIEditor = ({ user, isMobile }) => {
                     setWebSearchEnabeled((prev) => !prev);
                   }}
                   className={`
-          flex h-9 w-9 shrink-0 items-center justify-center
-          rounded-[10px] transition-all duration-150
-          focus-visible:outline-none focus-visible:ring-2
-          focus-visible:ring-violet-400/35
-          ${
-            webSearchEnabeled
-              ? "bg-violet-500/15 text-violet-300"
-              : "text-white/40 hover:bg-white/[0.05] hover:text-white/75"
-          }
-          max-[639px]:h-8 max-[639px]:w-8 max-[639px]:rounded-[9px]
-        `}
+        flex h-7 w-7 shrink-0 items-center justify-center
+        rounded-[7px] border border-transparent
+        transition-colors duration-150
+        focus-visible:outline-none focus-visible:ring-2
+        focus-visible:ring-violet-400/30
+        ${
+          webSearchEnabeled
+            ? "border-violet-400/15 bg-violet-400/[0.08] text-violet-300"
+            : "text-zinc-600 hover:bg-white/[0.04] hover:text-zinc-300"
+        }
+        max-[639px]:h-8 max-[639px]:w-8
+      `}
                 >
-                  <Search
-                    size={16}
-                    strokeWidth={1.75}
-                    aria-hidden="true"
-                    className="max-[639px]:h-[15px] max-[639px]:w-[15px]"
-                  />
+                  <Search size={14} strokeWidth={1.7} aria-hidden="true" />
                 </button>
 
                 {/* Submit */}
@@ -1141,30 +1129,30 @@ const AIEditor = ({ user, isMobile }) => {
                   }}
                   disabled={isGenerating || !changeDesc.trim()}
                   className={`
-          flex shrink-0 items-center justify-center
-          rounded-xl bg-violet-600 text-white
-          shadow-[0_4px_18px_-6px_rgba(124,58,237,0.75)]
-          transition-all duration-150
-          hover:bg-violet-500
-          active:scale-[0.96]
-          focus-visible:outline-none
-          focus-visible:ring-2 focus-visible:ring-violet-300/60
-          focus-visible:ring-offset-2 focus-visible:ring-offset-[#111114]
-          disabled:cursor-not-allowed disabled:opacity-35
-          disabled:shadow-none disabled:hover:bg-violet-600
-          ${reworkUI ? "h-9 w-9" : "h-10 w-10"}
-          max-[639px]:h-8 max-[639px]:w-8 max-[639px]:rounded-[10px]
-        `}
+        ml-0.5 flex h-7 w-7 shrink-0 items-center justify-center
+        rounded-[7px] border border-violet-300/[0.12]
+        bg-[#5725a8] text-white
+        shadow-[0_2px_10px_-6px_rgba(139,92,246,0.65)]
+        transition-[background-color,transform,box-shadow] duration-150
+        hover:bg-[#6932c4]
+        active:scale-[0.96]
+        focus-visible:outline-none
+        focus-visible:ring-2 focus-visible:ring-violet-300/50
+        focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d0d0f]
+        disabled:cursor-not-allowed disabled:opacity-35
+        disabled:shadow-none disabled:hover:bg-[#5725a8]
+        max-[639px]:h-8 max-[639px]:w-8 max-[639px]:rounded-lg
+      `}
                 >
                   {isGenerating ? (
                     <span
-                      className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white max-[639px]:h-3.5 max-[639px]:w-3.5"
+                      className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white"
                       aria-hidden="true"
                     />
                   ) : (
                     <ArrowUp
-                      className="h-[18px] w-[18px] max-[639px]:h-4 max-[639px]:w-4"
-                      strokeWidth={2.1}
+                      className="h-4 w-4"
+                      strokeWidth={1.9}
                       aria-hidden="true"
                     />
                   )}
