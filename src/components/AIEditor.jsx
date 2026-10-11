@@ -976,7 +976,6 @@ const AIEditor = ({ user, isMobile }) => {
                 name="prompt"
                 id="prompt"
                 value={changeDesc}
-                disabled={isGenerating}
                 rows={1}
                 placeholder={
                   activeComponent.id
@@ -1007,7 +1006,7 @@ const AIEditor = ({ user, isMobile }) => {
                   e.target.value.length < 1 && setIsExpanded(false);
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.key === "Enter" && !e.shiftKey && !isGenerating) {
                     e.preventDefault();
                     activeComponent.id === "" ? generateComponent() : rework();
                     if (promptAreaRef.current) {
