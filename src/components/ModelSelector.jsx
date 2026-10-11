@@ -8,37 +8,30 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 
-import { AI_MODELS } from "@/ai/models";
-import { hasPlanAccess } from "@/lib/billing/plans";
-
-const EFFORT_LABELS = {
-  none: "None",
-  minimal: "Minimal",
-  low: "Low",
-  medium: "Medium",
-  high: "High",
-  xhigh: "XHigh",
-  max: "Max",
-};
-
-const EFFORT_DESCRIPTIONS = {
-  none: "No reasoning",
-  minimal: "Minimal reasoning",
-  low: "Fast reasoning",
-  medium: "Balanced reasoning",
-  high: "Deeper reasoning",
-  xhigh: "Extended reasoning",
-  max: "Maximum reasoning",
-};
+import { AI_MODELS, EFFORT_OPTIONS } from "@/ai/models";
+import { hasPlanAccess, getRequiredPlanForEffort } from "@/lib/billing/plans";
 
 function getModelEfforts(model) {
-  if (!model?.allowedEfforts) {
-    return [];
+  return [...new Set(Object.values(model?.allowedEfforts ?? {}).flat())];
+}
+
+function getPlanEfforts(model, plan = "FREE") {
+  const efforts = model?.allowedEfforts?.[plan];
+  return Array.isArray(efforts) ? efforts : [];
+}
+
+function getDefaultEffort(model, plan = "FREE") {
+  const efforts = getPlanEfforts(model, plan);
+
+  if (efforts.includes(model?.defaultEffort)) {
+    return model.defaultEffort;
   }
 
-  return [
-    ...new Set(Object.values(model.allowedEfforts).flat().filter(Boolean)),
-  ];
+  if (efforts.includes("low")) {
+    return "low";
+  }
+
+  return efforts[0] ?? null;
 }
 
 export default function ModelSelector({
@@ -69,6 +62,17 @@ export default function ModelSelector({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  useEffect(() => {
+    if (!selectedModel) {
+      return;
+    }
+
+    const planEfforts = getPlanEfforts(selectedModel, userPlan);
+
+    if (!planEfforts.includes(selectedEffort)) {
+      setSelectedEffort(getDefaultEffort(selectedModel, userPlan));
+    }
+  }, [selectedModel, selectedEffort, setSelectedEffort, userPlan]);
 
   const handleModelSelect = (model) => {
     const canAccess = hasPlanAccess(userPlan, model.minimumPlan);
@@ -80,10 +84,42 @@ export default function ModelSelector({
     }
 
     setSelectedModel(model);
-    setSelectedEffort(model.defaultEffort);
+    setSelectedEffort(getDefaultEffort(model, userPlan));
   };
 
   const handleEffortSelect = (effort) => {
+    const planEfforts = getPlanEfforts(selectedModel, userPlan);
+
+    if (!planEfforts.includes(effort)) {
+      const requiredPlan = getRequiredPlanForEffort(
+        selectedModel,
+        effort,
+        userPlan,
+      );
+
+      if (!requiredPlan) {
+        console.error(
+          "No eligible upgrade plan configured for effort:",
+          selectedModel?.value,
+          effort,
+        );
+        return;
+      }
+
+      setOpen(false);
+
+      onPlanRequired?.({
+        ...selectedModel,
+        label: `${EFFORT_OPTIONS[effort]?.label ?? effort} effort`,
+        description: `${
+          EFFORT_OPTIONS[effort]?.description ?? "Advanced reasoning"
+        } is available with the ${requiredPlan} plan.`,
+        minimumPlan: requiredPlan,
+      });
+
+      return;
+    }
+
     setSelectedEffort(effort);
   };
 
@@ -168,7 +204,7 @@ export default function ModelSelector({
             }
           `}
                 >
-                  {EFFORT_LABELS[selectedEffort] ?? selectedEffort}
+                  {EFFORT_OPTIONS[selectedEffort]?.label ?? selectedEffort}
                 </span>
               </>
             ) : null}
@@ -282,6 +318,18 @@ export default function ModelSelector({
                 <div className="grid grid-cols-2 gap-1">
                   {availableEfforts.map((effort) => {
                     const isSelected = selectedEffort === effort;
+                    const isLocked = !getPlanEfforts(
+                      selectedModel,
+                      userPlan,
+                    ).includes(effort);
+
+                    const requiredPlan = isLocked
+                      ? getRequiredPlanForEffort(
+                          selectedModel,
+                          effort,
+                          userPlan,
+                        )
+                      : null;
 
                     return (
                       <button
@@ -291,15 +339,28 @@ export default function ModelSelector({
                         className={`group rounded-lg px-2.5 py-2 text-left transition-all ${
                           isSelected
                             ? "bg-violet-400/[0.10] ring-1 ring-violet-400/20"
-                            : "hover:bg-white/[0.05]"
+                            : isLocked
+                              ? "bg-white/[0.015] hover:bg-white/[0.045]"
+                              : "hover:bg-white/[0.05]"
                         }`}
                       >
                         <div
-                          className={`text-[11px] font-medium ${
-                            isSelected ? "text-violet-200" : "text-neutral-300"
+                          className={`flex items-center justify-between gap-2 text-[11px] font-medium ${
+                            isSelected
+                              ? "text-violet-200"
+                              : isLocked
+                                ? "text-neutral-500"
+                                : "text-neutral-300"
                           }`}
                         >
-                          {EFFORT_LABELS[effort] ?? effort}
+                          <span>{EFFORT_OPTIONS[effort]?.label ?? effort}</span>
+
+                          {isLocked && (
+                            <span className="flex shrink-0 items-center gap-1 text-[8px] font-medium uppercase tracking-wide text-amber-300/70">
+                              <Lock width={10} height={10} />
+                              {requiredPlan}
+                            </span>
+                          )}
                         </div>
 
                         <div
@@ -309,7 +370,7 @@ export default function ModelSelector({
                               : "text-neutral-600"
                           }`}
                         >
-                          {EFFORT_DESCRIPTIONS[effort] ?? ""}
+                          {EFFORT_OPTIONS[effort]?.description ?? ""}
                         </div>
                       </button>
                     );

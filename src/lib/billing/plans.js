@@ -24,3 +24,25 @@ export function hasPlanAccess(userPlan, requiredPlan) {
 
   return userLevel >= requiredLevel;
 }
+
+export function getRequiredPlanForEffort(model, effort, currentPlan = "FREE") {
+  const currentLevel = PLAN_LEVELS[currentPlan];
+
+  if (currentLevel === undefined) {
+    return null;
+  }
+
+  return (
+    Object.entries(model?.allowedEfforts ?? {})
+      .filter(
+        ([plan, efforts]) =>
+          PLAN_LEVELS[plan] !== undefined &&
+          PLAN_LEVELS[plan] > currentLevel &&
+          Array.isArray(efforts) &&
+          efforts.includes(effort),
+      )
+      .sort(
+        ([planA], [planB]) => PLAN_LEVELS[planA] - PLAN_LEVELS[planB],
+      )[0]?.[0] ?? null
+  );
+}

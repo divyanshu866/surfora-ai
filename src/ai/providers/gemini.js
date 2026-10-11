@@ -12,11 +12,13 @@ export async function* generateWithGemini(
   thinkingLevel = "low",
   webSearchEnabeled = false,
 ) {
+  console.log("USING GOOGLE AI PROVIDER=====>");
   console.log("ModelValue=====>", modelValue);
   console.log("ThinkingLevel=====>", thinkingLevel);
   // console.log("WEB_SEARCH GEMINI=====>", webSearchEnabeled);
-  const contents = toGeminiContext(context);
   // console.log("GEMINI CONTEXT=========>");
+
+  const contents = toGeminiContext(context);
   // console.dir(contents, { depth: null });
   const stream = await genAI.models.generateContentStream({
     model: modelValue,

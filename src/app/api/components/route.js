@@ -4,8 +4,8 @@ import { getSession } from "@/lib/get-session";
 import { prisma } from "@/lib/prisma";
 import { PromptRole, TargetTech } from "@/generated/prisma/client";
 import { getUserEntitlement } from "@/lib/billing/entitlements";
-import { getGenerationUsage } from "@/lib/billing/generation-usage";
 
+import { getCreditUsage } from "@/lib/billing/credit-usage";
 export async function POST(request) {
   // 1. Check session
   const session = await getSession();
@@ -165,12 +165,12 @@ export async function GET() {
       getUserEntitlement(userId),
     ]);
 
-    const generationUsage = await getGenerationUsage(userId, entitlement);
+    const creditUsage = await getCreditUsage(userId, entitlement);
 
     return NextResponse.json(
       {
         components,
-        generationUsage,
+        creditUsage,
       },
       { status: 200 },
     );

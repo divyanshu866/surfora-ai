@@ -1,17 +1,15 @@
 "use client";
-
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Crown, LogOut } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { useEditorContext } from "@/context/EditorContext";
 
 import GenerationUsageIndicator from "@/components/GenerationUsageIndicator";
 
 const Profile = ({ user }) => {
-  const { generationUsage, setGenerationUsage, setGenerationLimitModalOpen } =
-    useEditorContext();
+  const { creditUsage, setGenerationLimitModalOpen } = useEditorContext();
 
   const router = useRouter();
   const containerRef = useRef(null);
@@ -67,8 +65,22 @@ const Profile = ({ user }) => {
 
   const displayName = user?.name || "SurforaAI user";
   const email = user?.email || "";
-  const plan = generationUsage?.plan ?? "FREE";
+
+  // Normalize plan casing and recognise every paid tier. Hide the upgrade
+  // action until usage has loaded and explicitly confirms the account is Free.
+  const rawPlan = creditUsage?.plan;
+  const plan = typeof rawPlan === "string" ? rawPlan.toUpperCase() : null;
+  const isFree = plan === "FREE";
   const isPro = plan === "PRO";
+  const isMax = plan === "MAX";
+  const isPaidPlan = isPro || isMax;
+  const planLabel = isMax
+    ? "Max"
+    : isPro
+      ? "Pro"
+      : isFree
+        ? "Free"
+        : "Loading…";
 
   return (
     <div ref={containerRef} className="relative z-[105]">
@@ -150,33 +162,33 @@ const Profile = ({ user }) => {
 
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-sm font-semibold text-neutral-100">
-                      {isPro ? "Pro" : "Free"}
+                      {planLabel}
                     </span>
 
-                    <span
-                      className={[
-                        "rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide",
-                        isPro
-                          ? "bg-violet-400/15 text-violet-200"
-                          : "bg-white/[0.08] text-neutral-300",
-                      ].join(" ")}
-                    >
-                      {isPro ? "Active" : "Current"}
-                    </span>
+                    {plan && (
+                      <span
+                        className={[
+                          "rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide",
+                          isPaidPlan
+                            ? "bg-violet-400/15 text-violet-200"
+                            : "bg-white/[0.08] text-neutral-300",
+                        ].join(" ")}
+                      >
+                        {isPaidPlan ? "Active" : isFree ? "Current" : ""}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
 
               <GenerationUsageIndicator
-                generationUsage={generationUsage}
-                onLimitReached={() => {
-                  setGenerationLimitModalOpen(true);
-                }}
+                creditUsage={creditUsage}
+                onLimitReached={() => setGenerationLimitModalOpen(true)}
               />
             </div>
           </div>
 
-          {!isPro && (
+          {isFree && (
             <div className="px-4 pt-3">
               <button
                 type="button"
@@ -215,7 +227,12 @@ const Profile = ({ user }) => {
             </div>
           )}
 
-          <div className={["px-4 pb-4", isPro ? "pt-3" : "pt-1"].join(" ")}>
+          <div
+            className={[
+              "px-4 pb-4",
+              isPaidPlan ? "pt-3" : isFree ? "pt-1" : "pt-3",
+            ].join(" ")}
+          >
             <button
               type="button"
               role="menuitem"

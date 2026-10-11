@@ -36,7 +36,11 @@ model User {
   //Application specific relations
   components Component[]
   subscriptions Subscription[]
-  generationUsage GenerationUsage[]
+
+  //New Credit based accounting
+  creditUsagePeriods CreditUsagePeriod[]
+  creditCharges      CreditCharge[]
+
   @@unique([email])
   @@map("user")
 }
@@ -200,16 +204,43 @@ model Subscription {
   @@index([userId, status])
   @@index([provider, providerCustomerId])
 }
-model GenerationUsage {
-  id              String   @id @default(cuid())
-  userId          String
-  periodStart     DateTime
-  generationsUsed Int      @default(0)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+
+//New Credit based accounting
+enum CreditPeriodType {
+  DAILY
+  MONTHLY
+  SUBSCRIPTION
+}
+
+model CreditUsagePeriod {
+  id          String           @id @default(cuid())
+  userId      String
+  periodType  CreditPeriodType
+  periodStart DateTime
+  periodEnd   DateTime
+  creditsUsed Int              @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, periodStart])
-  @@index([userId])
+  @@unique([userId, periodType, periodStart])
+  @@index([userId, periodType, periodEnd])
+}
+
+model CreditCharge {
+  id        String   @id @default(cuid())
+  userId    String
+
+  model     String
+  effort    String
+  task      String
+  plan      String
+  credits   Int
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }

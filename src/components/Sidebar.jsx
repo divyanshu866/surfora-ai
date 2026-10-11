@@ -34,7 +34,7 @@ export default function Sidebar() {
     setIsMaximised,
     targetTech,
     setTargetTech,
-    setGenerationUsage,
+    setCreditUsage,
   } = useEditorContext();
 
   const { setConsoleLogs } = useConsole();
@@ -95,7 +95,7 @@ export default function Sidebar() {
         if (cancelled) return;
 
         setComponents(Array.isArray(data.components) ? data.components : []);
-        setGenerationUsage(data.generationUsage);
+        setCreditUsage(data.creditUsage);
       } catch (error) {
         if (!cancelled) {
           console.error("Failed to load components:", error);
@@ -108,7 +108,7 @@ export default function Sidebar() {
     return () => {
       cancelled = true;
     };
-  }, [setComponents, setGenerationUsage]);
+  }, [setComponents, setCreditUsage]);
 
   function updateActiveComponent(componentId) {
     // Prevent switching projects while generation is running.

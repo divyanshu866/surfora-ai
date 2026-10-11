@@ -6,13 +6,13 @@ import CheckoutModal from "./CheckoutModal";
 import { PaddleUpgradeButton } from "./PaddleUpgradeButton";
 
 const PRO_FEATURES = [
-  "More AI capabilities",
-  "Higher generation capacity",
-  "GPT-6 Luna — broader effort range",
-  "GPT-6 Sol — advanced reasoning",
-  "Gemini 3.8 Flash",
-  "GLM 5.3 Flash",
+  "1,000 credits each subscription month",
+  "GPT-6 Sol — advanced model access",
+  "Gemini 3.8 Flash — advanced model access",
+  "GPT-6 Luna — expanded effort range",
+  "Higher effort levels on supported models",
   "Full interface generation + rework workflow",
+  "Live preview with React + Web Bundle output",
 ];
 
 function BillingToggle({ yearly, onChange }) {

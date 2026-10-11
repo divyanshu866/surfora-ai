@@ -12,7 +12,6 @@ import TargetTechTabs from "./TargetTechTabs";
 import GenerationSuggestions from "./GenerationSuggestions";
 import PlanRequiredModal from "@/components/upgrade/PlanRequiredModal";
 import GenerationLimitModal from "@/components/GenerationLimitModal";
-import GenerationUsageIndicator from "@/components/GenerationUsageIndicator";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
@@ -56,8 +55,8 @@ const AIEditor = ({ user, isMobile }) => {
     selectedVisualStyle,
     setSelectedVisualStyle,
     targetTech,
-    generationUsage,
-    setGenerationUsage,
+    creditUsage,
+    setCreditUsage,
     generationLimitModalOpen,
     setGenerationLimitModalOpen,
   } = useEditorContext();
@@ -232,7 +231,8 @@ const AIEditor = ({ user, isMobile }) => {
   ]);
 
   const promptAreaRef = useRef(null);
-  const generationLimitReached = generationUsage?.remaining === 0;
+  const generationLimitReached = creditUsage?.remaining === 0;
+  const [requestedCredits, setRequestedCredits] = useState(null);
 
   const handleAIResponseError = async (response) => {
     let errorData = null;
@@ -254,7 +254,12 @@ const AIEditor = ({ user, isMobile }) => {
 
       return true;
     }
-
+    if (errorData?.error === "EFFORT_PLAN_REQUIRED") {
+      alert(
+        `${errorData.effort} effort requires Pro. Upgrade your plan to use it.`,
+      );
+      return true;
+    }
     if (errorData?.error === "INVALID_MODEL") {
       alert("The selected AI model is not available.");
       return true;
@@ -265,17 +270,17 @@ const AIEditor = ({ user, isMobile }) => {
       return true;
     }
 
-    if (errorData?.error === "GENERATION_LIMIT_REACHED") {
-      setGenerationUsage((previous) => {
-        if (!previous) return previous;
+    if (errorData?.error === "INSUFFICIENT_CREDITS") {
+      setCreditUsage((previous) => ({
+        ...(previous ?? {}),
+        plan: errorData.plan ?? previous?.plan ?? "FREE",
+        remaining: Number(errorData.remaining ?? 0),
+        periods: errorData.periods ?? previous?.periods ?? {},
+      }));
 
-        return {
-          ...previous,
-          used: errorData.limit,
-          remaining: 0,
-          limit: errorData.limit,
-        };
-      });
+      setRequestedCredits(
+        Number.isFinite(Number(errorData.cost)) ? Number(errorData.cost) : null,
+      );
 
       setGenerationLimitModalOpen(true);
       return true;
@@ -283,9 +288,46 @@ const AIEditor = ({ user, isMobile }) => {
 
     return false;
   };
+  const updateCreditUsageFromResponse = (response) => {
+    const remainingHeader = response.headers.get("X-Credits-Remaining");
+    const costHeader = response.headers.get("X-Credit-Cost");
 
+    if (remainingHeader === null || costHeader === null) {
+      return;
+    }
+
+    const remaining = Number(remainingHeader);
+    const cost = Number(costHeader);
+
+    if (!Number.isFinite(remaining) || !Number.isFinite(cost)) {
+      console.error("Invalid credit headers returned by /api/ai");
+      return;
+    }
+
+    setCreditUsage((previous) => {
+      if (!previous) return previous;
+
+      const periods = Object.fromEntries(
+        Object.entries(previous.periods ?? {}).map(([key, period]) => [
+          key,
+          {
+            ...period,
+            used: period.used + cost,
+            remaining: Math.max(period.remaining - cost, 0),
+          },
+        ]),
+      );
+
+      return {
+        ...previous,
+        remaining,
+        periods,
+      };
+    });
+  };
   const generateComponent = async (promptOverride) => {
-    if (generationUsage?.remaining === 0) {
+    if (creditUsage?.remaining === 0) {
+      setRequestedCredits(null);
       setGenerationLimitModalOpen(true);
       return;
     }
@@ -389,25 +431,7 @@ const AIEditor = ({ user, isMobile }) => {
         throw new Error(`Failed: ${response.status}`);
       }
 
-      const generationsRemaining = response.headers.get(
-        "X-Generations-Remaining",
-      );
-
-      if (generationsRemaining !== null) {
-        const remaining = Number(generationsRemaining);
-
-        setGenerationUsage((previous) => {
-          if (!previous) {
-            return previous;
-          }
-
-          return {
-            ...previous,
-            remaining,
-            used: previous.limit - remaining,
-          };
-        });
-      }
+      updateCreditUsageFromResponse(response);
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -503,7 +527,8 @@ const AIEditor = ({ user, isMobile }) => {
   };
 
   async function rework() {
-    if (generationUsage?.remaining === 0) {
+    if (creditUsage?.remaining === 0) {
+      setRequestedCredits(null);
       setGenerationLimitModalOpen(true);
       return;
     }
@@ -600,25 +625,7 @@ const AIEditor = ({ user, isMobile }) => {
         throw new Error(`Failed: ${response.status}`);
       }
 
-      const generationsRemaining = response.headers.get(
-        "X-Generations-Remaining",
-      );
-
-      if (generationsRemaining !== null) {
-        const remaining = Number(generationsRemaining);
-
-        setGenerationUsage((previous) => {
-          if (!previous) {
-            return previous;
-          }
-
-          return {
-            ...previous,
-            remaining,
-            used: previous.limit - remaining,
-          };
-        });
-      }
+      updateCreditUsageFromResponse(response);
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -767,7 +774,7 @@ const AIEditor = ({ user, isMobile }) => {
         setSelectedModel={setSelectedModel}
         selectedEffort={selectedEffort}
         setSelectedEffort={setSelectedEffort}
-        userPlan={generationUsage?.plan}
+        userPlan={creditUsage?.plan}
         reworkUI={reworkUI}
         isMobile={isMobile}
         onPlanRequired={(model) => {
@@ -1165,7 +1172,7 @@ const AIEditor = ({ user, isMobile }) => {
       <PlanRequiredModal
         model={planRequiredModel}
         open={Boolean(planRequiredModel)}
-        currentPlan={generationUsage?.plan ?? "FREE"}
+        currentPlan={creditUsage?.plan ?? "FREE"}
         onClose={() => setPlanRequiredModel(null)}
         onUpgrade={(requiredPlan) => {
           setPlanRequiredModel(null);
@@ -1174,7 +1181,8 @@ const AIEditor = ({ user, isMobile }) => {
       />
       <GenerationLimitModal
         open={generationLimitModalOpen}
-        generationUsage={generationUsage}
+        creditUsage={creditUsage}
+        requestedCredits={requestedCredits}
         onClose={() => setGenerationLimitModalOpen(false)}
         onUpgrade={() => {
           setGenerationLimitModalOpen(false);
