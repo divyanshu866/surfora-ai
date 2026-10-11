@@ -6,11 +6,27 @@ import UpgradeCard from "@/components/upgrade/UpgradeCard";
 import ModelAccess from "@/components/upgrade/ModelAccess";
 import { getSession } from "@/lib/get-session";
 import { redirect } from "next/navigation";
-// Use the same server-side session helper/auth function already used by your app.
-
+import { getUserEntitlement } from "@/lib/billing/entitlements";
+import { getCreditUsage } from "@/lib/billing/credit-usage";
 export default async function UpgradePage() {
   const session = await getSession();
-  session == null && redirect("/sign-in");
+
+  if (!session?.user?.id) {
+    redirect("/sign-in");
+  }
+
+  const entitlement = await getUserEntitlement(session.user.id);
+
+  if (!entitlement?.plan) {
+    throw new Error("Unable to resolve user entitlement");
+  }
+
+  if (entitlement.plan !== "FREE") {
+    redirect("/workspace");
+  }
+
+  const creditUsage = await getCreditUsage(session.user.id, entitlement);
+  const monthlyCreditsUsed = creditUsage.periods.MONTHLY.used;
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-[#070709] text-white antialiased selection:bg-violet-500/25">
       <UpgradeBackground />
@@ -21,11 +37,11 @@ export default async function UpgradePage() {
           <div>
             <UpgradeHero />
             <div className="mt-8 max-w-xl">
-              <CurrentPlanCard />
+              <CurrentPlanCard monthlyCreditsUsed={monthlyCreditsUsed} />
             </div>
           </div>
 
-          <UpgradeCard userId={session?.user?.id} />
+          <UpgradeCard userId={session.user.id} />
         </section>
 
         <ModelAccess />
