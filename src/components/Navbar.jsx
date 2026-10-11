@@ -71,15 +71,15 @@ export default function Navbar({ user }) {
   }
 
   const iconBtn =
-    "group flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080a] active:scale-95";
+    "group flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] border transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080a] active:scale-[0.97]";
 
   return (
     <nav
       aria-label="Workspace"
-      className="relative z-50 h-12 w-full border-b border-white/[0.08] bg-[#08080a]"
+      className="relative z-50 h-11 w-full border-b border-[#1d1c20] bg-[#08080a]"
     >
-      <div className="mx-auto flex h-full w-full max-w-[1800px] items-center gap-2 px-2.5 sm:gap-3 sm:px-3 lg:px-4">
-        {/* ── Brand / sidebar toggle ── */}
+      <div className="mx-auto flex h-full w-full items-center gap-1.5 px-2 sm:gap-2.5 sm:px-3 lg:px-3.5">
+        {/* Brand / sidebar toggle */}
         <div className="flex shrink-0 items-center gap-1.5">
           {/* Mobile: menu + logo */}
           <button
@@ -87,17 +87,17 @@ export default function Navbar({ user }) {
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             aria-label="Toggle sidebar"
             aria-pressed={sidebarCollapsed}
-            className={`${iconBtn} border-white/[0.1] bg-white/[0.04] text-zinc-300 hover:bg-white/[0.08] hover:text-white md:hidden`}
+            className={`${iconBtn} border-[#29272d] bg-[#111114] text-zinc-400 hover:border-[#39343f] hover:bg-[#17151a] hover:text-zinc-100 md:hidden`}
           >
-            <Menu className="h-4 w-4" />
+            <Menu className="h-3.5 w-3.5" />
           </button>
 
           <Image
             src="/newlogo.svg"
-            width={28}
-            height={28}
+            width={26}
+            height={26}
             alt="Surfora AI"
-            className="h-7 w-7 object-contain opacity-90 md:hidden"
+            className="h-6 w-6 object-contain opacity-95 md:hidden"
             priority
           />
 
@@ -107,23 +107,23 @@ export default function Navbar({ user }) {
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             aria-label="Toggle sidebar"
             aria-pressed={sidebarCollapsed}
-            className="group relative hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-zinc-300 transition-colors hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/60 active:scale-95 md:flex"
+            className="group relative hidden h-7 w-7 shrink-0 items-center justify-center rounded-[7px] text-zinc-400 transition-colors hover:bg-white/[0.045] hover:text-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/45 active:scale-[0.97] md:flex"
           >
             <Image
               src="/newlogo.svg"
-              width={40}
-              height={40}
+              width={32}
+              height={32}
               alt=""
               aria-hidden
-              className="absolute h-7 w-7 object-contain opacity-90 transition-opacity duration-150 group-hover:opacity-0"
+              className="absolute h-6 w-6 object-contain opacity-90 transition-opacity duration-150 group-hover:opacity-0"
             />
             <Image
               src="/sidebar.svg"
-              width={20}
-              height={20}
+              width={18}
+              height={18}
               alt=""
               aria-hidden
-              className="absolute h-5 w-5 object-contain opacity-0 transition-opacity duration-150 group-hover:opacity-80"
+              className="absolute h-[18px] w-[18px] object-contain opacity-0 transition-opacity duration-150 group-hover:opacity-75"
             />
           </button>
 
@@ -133,13 +133,13 @@ export default function Navbar({ user }) {
             width={100}
             height={60}
             alt="Surfora AI"
-            className="hidden h-[15px] w-auto object-contain opacity-90 md:block"
+            className="hidden h-[14px] w-auto object-contain opacity-90 md:block"
             priority
           />
         </div>
 
-        {/* ── Project name ── */}
-        <div className="min-w-0 flex-1 md:max-w-[320px] sm:ml-25 md:flex-none">
+        {/* Project name */}
+        <div className="min-w-0 flex-1 sm:ml-4 md:max-w-[280px] md:flex-none lg:ml-10">
           <input
             type="text"
             value={activeComponent?.name ?? ""}
@@ -151,15 +151,15 @@ export default function Navbar({ user }) {
             }
             placeholder="Project name"
             aria-label="Project name"
-            className={`h-8 w-full rounded-lg border bg-[#111114] px-2.5 text-[13px] font-medium tracking-tight outline-none transition-colors placeholder:text-zinc-500 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/15 sm:px-3 ${
+            className={`h-7 w-full rounded-[7px] border bg-[#0e0e11] px-2.5 text-[12px] font-medium tracking-[-0.01em] outline-none transition-[background-color,border-color,box-shadow] duration-150 placeholder:text-zinc-600 focus:border-violet-400/40 focus:bg-[#101014] focus:ring-2 focus:ring-violet-400/[0.08] sm:px-2.5 ${
               activeComponent?.name
-                ? "border-white/[0.1] text-zinc-100"
-                : "border-red-400/40 text-red-200"
+                ? "border-[#29272d] text-zinc-200"
+                : "border-red-400/30 text-red-200"
             }`}
           />
         </div>
 
-        {/* ── Actions ── */}
+        {/* Actions */}
         <div className="ml-auto flex shrink-0 items-center gap-1.5">
           {/* Desktop action buttons */}
           <div className="hidden items-center gap-1.5 sm:flex">
@@ -168,9 +168,9 @@ export default function Navbar({ user }) {
               onClick={onSave}
               title="Save project"
               aria-label="Save project"
-              className={`${iconBtn} border-orange-400/25 bg-orange-400/[0.08] text-orange-200 hover:border-orange-300/45 hover:bg-orange-400/[0.14]`}
+              className={`${iconBtn} border-amber-300/[0.16] bg-amber-300/[0.035] text-amber-200/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] hover:border-amber-200/30 hover:bg-amber-300/[0.075] hover:text-amber-100`}
             >
-              <Save className="h-3.5 w-3.5 transition-transform duration-150 group-hover:scale-110" />
+              <Save className="h-3.5 w-3.5 stroke-1 transition-transform duration-150 group-hover:-translate-y-px" />
             </button>
 
             <button
@@ -181,11 +181,11 @@ export default function Navbar({ user }) {
               aria-pressed={showConsole}
               className={`${iconBtn} ${
                 showConsole
-                  ? "border-pink-400/50 bg-pink-400/[0.16] text-pink-100"
-                  : "border-pink-400/25 bg-pink-400/[0.08] text-pink-200 hover:border-pink-300/45 hover:bg-pink-400/[0.14]"
+                  ? "border-violet-300/35 bg-violet-300/[0.11] text-violet-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_0_1px_rgba(167,139,250,0.04)]"
+                  : "border-violet-300/[0.16] bg-violet-300/[0.035] text-violet-200/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] hover:border-violet-200/30 hover:bg-violet-300/[0.075] hover:text-violet-100"
               }`}
             >
-              <SquareTerminal className="h-3.5 w-3.5 transition-transform duration-150 group-hover:scale-110" />
+              <SquareTerminal className="h-3.5 w-3.5 stroke-1 transition-transform duration-150 group-hover:scale-[1.04]" />
             </button>
 
             <button
@@ -193,9 +193,9 @@ export default function Navbar({ user }) {
               onClick={reRender}
               title="Refresh preview"
               aria-label="Refresh preview"
-              className={`${iconBtn} border-emerald-400/25 bg-emerald-400/[0.08] text-emerald-200 hover:border-emerald-300/45 hover:bg-emerald-400/[0.14]`}
+              className={`${iconBtn} border-teal-300/[0.16] bg-teal-300/[0.035] text-teal-200/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] hover:border-teal-200/30 hover:bg-teal-300/[0.075] hover:text-teal-100`}
             >
-              <RefreshCcw className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-90" />
+              <RefreshCcw className="h-3.5 w-3.5 stroke-1 transition-transform duration-300 group-hover:rotate-[-35deg]" />
             </button>
           </div>
 
@@ -206,23 +206,25 @@ export default function Navbar({ user }) {
               onClick={() => setShowMore((prev) => !prev)}
               aria-label="More actions"
               aria-expanded={showMore}
-              className={`${iconBtn} border-white/[0.1] bg-white/[0.04] text-zinc-300 hover:bg-white/[0.08] hover:text-white`}
+              className={`${iconBtn} border-[#2b2930] bg-[#111114] text-zinc-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.025)] hover:border-[#3b3842] hover:bg-[#17161a] hover:text-zinc-100`}
             >
               <Ellipsis className="h-4 w-4" />
             </button>
 
             {showMore && (
-              <div className="absolute right-0 top-full z-50 mt-1.5 w-48 overflow-hidden rounded-xl border border-white/[0.1] bg-[#111114] p-1 shadow-[0_16px_40px_rgba(0,0,0,0.55)]">
+              <div className="absolute right-0 top-full z-50 mt-2 w-52 overflow-hidden rounded-[10px] border border-[#302d35] bg-[#111114]/[0.98] p-1 shadow-[0_18px_48px_rgba(0,0,0,0.58),inset_0_1px_0_rgba(255,255,255,0.035)] backdrop-blur-xl">
                 <button
                   type="button"
                   onClick={() => {
                     onSave();
                     setShowMore(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white active:bg-white/[0.1]"
+                  className="flex min-h-9 w-full items-center gap-2.5 rounded-[6px] px-2.5 text-left text-[12px] font-medium tracking-[-0.005em] text-zinc-300 transition-colors hover:bg-white/[0.055] hover:text-zinc-50 active:bg-white/[0.08]"
                 >
-                  <Save className="h-4 w-4 text-orange-300" />
-                  Save project
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md border border-amber-300/[0.12] bg-amber-300/[0.045] text-amber-200/90">
+                    <Save className="h-3.5 w-3.5 stroke-1" />
+                  </span>
+                  <span className="flex-1">Save project</span>
                 </button>
 
                 <button
@@ -231,10 +233,23 @@ export default function Navbar({ user }) {
                     setShowConsole((prev) => !prev);
                     setShowMore(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white active:bg-white/[0.1]"
+                  className="flex min-h-9 w-full items-center gap-2.5 rounded-[6px] px-2.5 text-left text-[12px] font-medium tracking-[-0.005em] text-zinc-300 transition-colors hover:bg-white/[0.055] hover:text-zinc-50 active:bg-white/[0.08]"
                 >
-                  <SquareTerminal className="h-4 w-4 text-pink-300" />
-                  {showConsole ? "Hide console" : "Show console"}
+                  <span
+                    className={`flex h-6 w-6 items-center justify-center rounded-md border ${
+                      showConsole
+                        ? "border-violet-300/25 bg-violet-300/[0.11] text-violet-100"
+                        : "border-violet-300/[0.12] bg-violet-300/[0.045] text-violet-200/90"
+                    }`}
+                  >
+                    <SquareTerminal className="h-3.5 w-3.5 stroke-1" />
+                  </span>
+                  <span className="flex-1">
+                    {showConsole ? "Hide console" : "Show console"}
+                  </span>
+                  {showConsole && (
+                    <span className="mr-0.5 h-1.5 w-1.5 rounded-full bg-violet-300/90" />
+                  )}
                 </button>
 
                 <button
@@ -243,18 +258,20 @@ export default function Navbar({ user }) {
                     reRender();
                     setShowMore(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-zinc-300 transition-colors hover:bg-white/[0.06] hover:text-white active:bg-white/[0.1]"
+                  className="flex min-h-9 w-full items-center gap-2.5 rounded-[6px] px-2.5 text-left text-[12px] font-medium tracking-[-0.005em] text-zinc-300 transition-colors hover:bg-white/[0.055] hover:text-zinc-50 active:bg-white/[0.08]"
                 >
-                  <RefreshCcw className="h-4 w-4 text-emerald-300" />
-                  Refresh preview
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md border border-teal-300/[0.12] bg-teal-300/[0.045] text-teal-200/90">
+                    <RefreshCcw className="h-3.5 w-3.5 stroke-[1.7]" />
+                  </span>
+                  <span className="flex-1">Refresh preview</span>
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        {/* ── Profile ── */}
-        <div className="shrink-0 border-l border-white/[0.08] pl-2 sm:pl-2.5">
+        {/* Profile */}
+        <div className="shrink-0 border-l border-[#242228] pl-1.5 sm:pl-2">
           <Profile user={user} />
         </div>
       </div>
