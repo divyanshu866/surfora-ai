@@ -12,7 +12,8 @@ export function EditorProvider({ children }) {
     useState("Custom style");
   const [activeEditor, setActiveEditor] = useState("AI");
   const [targetTech, setTargetTech] = useState("REACT");
-  const [generationUsage, setGenerationUsage] = useState(null);
+  const [creditUsage, setCreditUsage] = useState(null);
+
   const [generationLimitModalOpen, setGenerationLimitModalOpen] =
     useState(false);
 
@@ -219,8 +220,8 @@ export function EditorProvider({ children }) {
         setReworkUI,
         targetTech,
         setTargetTech,
-        generationUsage,
-        setGenerationUsage,
+        creditUsage,
+        setCreditUsage,
         generationLimitModalOpen,
         setGenerationLimitModalOpen,
       }}

@@ -21,8 +21,9 @@ export async function* generateWithGeminiAP(
   thinkingLevel = "low",
   webSearchEnabeled = false,
 ) {
-  // console.log("Gemini model:", modelValue);
-  // console.log("Thinking level:", thinkingLevel);
+  console.log("USING GOOGLE AGENT PLATFORM API PROVIDER=====>");
+  console.log("Gemini model:", modelValue);
+  console.log("Thinking level:", thinkingLevel);
   // console.log("Google Cloud project:", project);
   // console.log("Google Cloud location:", location);
 

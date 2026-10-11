@@ -1,3 +1,4 @@
+//All Models
 export const MODEL_CATALOG = {
   GPT_6_LUNA: {
     label: "GPT-6 Luna",
@@ -103,6 +104,8 @@ export const EFFORT_OPTIONS = {
     description: "Maximum reasoning depth",
   },
 };
+
+//Models actually offered to users
 export const AI_MODELS = [
   MODEL_CATALOG.GPT_6_LUNA,
   MODEL_CATALOG.GPT_6_SOL,

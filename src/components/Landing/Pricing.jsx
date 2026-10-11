@@ -65,13 +65,12 @@ export default function Pricing() {
 
             <div className="space-y-3 text-xs text-white/52">
               {[
-                "Up to 3 generations per day",
-
-                "Maximum 20 generations per month",
-
+                "20 credits per day",
+                "100 credits per month",
                 "GPT-6 Luna — Low + Medium effort",
-
+                "Gemini 3.5 Flash Lite",
                 "GLM 5.3 Flash",
+                "Interface generation and rework",
               ].map((item) => (
                 <div key={item} className="flex gap-2">
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-violet-300/75" />
@@ -131,13 +130,12 @@ export default function Pricing() {
 
             <div className="space-y-3 text-xs text-white/50">
               {[
-                "More AI capabilities",
-
-                "More powerful model and effort configurations",
-
-                "Built for ongoing interface development",
-
-                "Continue the same interface through refinement",
+                "1,000 credits per subscription month",
+                "GPT-6 Sol and Gemini 3.8 Flash",
+                "Broader GPT-6 Luna effort range",
+                "Higher effort levels on supported models",
+                "Full interface generation and rework workflow",
+                "Live preview and React / Web Bundle output",
               ].map((item) => (
                 <div key={item} className="flex gap-2">
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-violet-300" />
