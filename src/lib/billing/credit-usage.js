@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { CREDIT_POLICY, getCreditCost } from "./credit-costs";
-
 function utcDayStart(date) {
   return new Date(
     Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
