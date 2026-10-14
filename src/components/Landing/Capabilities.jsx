@@ -12,8 +12,57 @@ import {
   Zap,
   Check,
 } from "lucide-react";
-import { SectionEyebrow, Surface, models } from "./Helpers";
-
+import { SectionEyebrow, Surface } from "./Helpers";
+export const models = [
+  {
+    name: "GPT-6 Luna",
+    mode: "Fast & efficient",
+    context: "256k tokens",
+    speed: "Ultra fast",
+    badge: "Popular",
+    latency: "140ms",
+    cost: "$0.40 / 1M tokens",
+    iconColor: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+    badgeColor: "bg-amber-400/10 text-amber-300 border-amber-400/30",
+    desc: "Lightweight autonomous agent core optimized for ultra-low latency pipelines and real-time user-facing dialogs.",
+  },
+  {
+    name: "GPT-6 Sol",
+    mode: "Advanced reasoning",
+    context: "512k tokens",
+    speed: "Deep think",
+    badge: "Flagship",
+    latency: "680ms",
+    cost: "$2.50 / 1M tokens",
+    iconColor: "text-purple-400 bg-purple-500/10 border-purple-500/20",
+    badgeColor: "bg-purple-400/10 text-purple-300 border-purple-400/30",
+    desc: "Multi-step analytical reasoning engine for complex mathematical logic, system architecture, and scientific synthesis.",
+  },
+  {
+    name: "Gemini 3.8 Flash",
+    mode: "Fast multimodal",
+    context: "2M tokens",
+    speed: "Near-instant",
+    badge: "Multimodal",
+    latency: "95ms",
+    cost: "$0.65 / 1M tokens",
+    iconColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
+    badgeColor: "bg-cyan-400/10 text-cyan-300 border-cyan-400/30",
+    desc: "High-throughput vision, audio, and large-context document ingestion with continuous real-time vector indexing.",
+  },
+  {
+    name: "GLM 5.3 Flash",
+    mode: "Fast generation",
+    context: "128k tokens",
+    speed: "High throughput",
+    badge: "Cost efficient",
+    latency: "110ms",
+    cost: "$0.18 / 1M tokens",
+    iconColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+    badgeColor: "bg-emerald-400/10 text-emerald-300 border-emerald-400/30",
+    desc: "Hyper-optimized code generation, multilingual structuring, and high-volume background data processing.",
+  },
+];
 const capabilityCards = [
   {
     icon: WandSparkles,
@@ -99,8 +148,10 @@ export default function Capabilities() {
         {/* Header section */}
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <SectionEyebrow>Capabilities</SectionEyebrow>
-
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-400/20 bg-violet-400/[0.06] px-3 py-1 text-[11px] font-mono uppercase tracking-[0.16em] text-violet-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+              Capabilities
+            </div>
             <h2 className="text-4xl font-semibold tracking-[-0.045em] text-white sm:text-5xl sm:leading-[1.12]">
               Everything around the{" "}
               <span className="bg-gradient-to-r from-white via-white to-violet-200 bg-clip-text text-transparent">

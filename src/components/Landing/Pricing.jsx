@@ -9,8 +9,10 @@ export default function Pricing() {
     <section id="pricing" className="px-5 py-20 sm:px-6 lg:px-8 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow>Pricing</SectionEyebrow>
-
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-400/20 bg-violet-400/[0.06] px-3 py-1 text-[11px] font-mono uppercase tracking-[0.16em] text-violet-300">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+            Pricing
+          </div>
           <h2 className="text-4xl font-semibold tracking-[-0.045em] sm:text-5xl">
             Start free. Upgrade when the loop becomes part of your workflow.
           </h2>
