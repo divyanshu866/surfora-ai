@@ -1,38 +1,13 @@
 "use client";
-
-import { useEffect, useMemo, useState } from "react";
-
-import { AnimatePresence, motion } from "motion/react";
-
-import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Code2,
-  Command,
-  Cpu,
-  Gauge,
-  Globe2,
-  Layers3,
-  Monitor,
-  MousePointer2,
-  Play,
-  RotateCcw,
-  Sparkles,
-  WandSparkles,
-  Zap,
-} from "lucide-react";
 import Navbar from "../components/Landing/Navbar";
 import Hero from "../components/Landing/Hero";
 import TheIdea from "../components/Landing/TheIdea";
-import TheWhy from "../components/Landing/TheWhy";
-import Capabilities from "../components/Landing/Capabilities";
 import UseCases from "../components/Landing/UseCases";
+import TheWhy from "../components/Landing/TheWhy";
+import ModelsAndCredits from "../components/Landing/ModelsAndCredits";
 import Pricing from "../components/Landing/Pricing";
 import Start from "../components/Landing/Start";
 import Footer from "../components/Landing/Footer";
-import { Glow } from "../components/Landing/Helpers";
 
 export default function Page() {
   return (
@@ -46,16 +21,11 @@ export default function Page() {
 
       <Hero />
       <TheIdea />
-
-      <TheWhy />
-
-      <Capabilities />
-
       <UseCases />
+      <TheWhy />
+      <ModelsAndCredits />
       <Pricing />
-
       <Start />
-
       <Footer />
     </main>
   );
