@@ -3,96 +3,6 @@ import { SERIALIZE_CONSOLE_VALUE_SOURCE } from "@/components/Preview/consoleSeri
 import { DEFAULT_JSX } from "@/components/Preview/defaults";
 
 const SUPPORTED_REACT_DEPENDENCIES = {
-  exact: {
-    // React
-    react: "https://esm.sh/react@19",
-
-    // Icons
-    "lucide-react": "https://esm.sh/lucide-react",
-
-    // Animation
-    "framer-motion": "https://esm.sh/framer-motion",
-    motion: "https://esm.sh/motion",
-    "canvas-confetti": "https://esm.sh/canvas-confetti",
-
-    // Charts / data visualization
-    recharts: "https://esm.sh/recharts",
-    "react-chartjs-2": "https://esm.sh/react-chartjs-2",
-    "chart.js": "https://esm.sh/chart.js",
-
-    // Dates
-    "date-fns": "https://esm.sh/date-fns",
-    dayjs: "https://esm.sh/dayjs",
-
-    // Forms / validation
-    "react-hook-form": "https://esm.sh/react-hook-form",
-    zod: "https://esm.sh/zod",
-
-    // HTTP / data
-    axios: "https://esm.sh/axios",
-
-    // Markdown
-    "react-markdown": "https://esm.sh/react-markdown",
-
-    // Utilities
-    clsx: "https://esm.sh/clsx",
-    "tailwind-merge": "https://esm.sh/tailwind-merge",
-
-    // UI primitives
-    "@radix-ui/react-dialog":
-      "https://esm.sh/@radix-ui/react-dialog?external=react",
-    "@radix-ui/react-dropdown-menu":
-      "https://esm.sh/@radix-ui/react-dropdown-menu?external=react",
-    "@radix-ui/react-tabs":
-      "https://esm.sh/@radix-ui/react-tabs?external=react",
-    "@radix-ui/react-tooltip":
-      "https://esm.sh/@radix-ui/react-tooltip?external=react",
-    "@radix-ui/react-popover":
-      "https://esm.sh/@radix-ui/react-popover?external=react",
-    "@radix-ui/react-select":
-      "https://esm.sh/@radix-ui/react-select?external=react",
-    "@radix-ui/react-checkbox":
-      "https://esm.sh/@radix-ui/react-checkbox?external=react",
-    "@radix-ui/react-switch":
-      "https://esm.sh/@radix-ui/react-switch?external=react",
-    "@headlessui/react": "https://esm.sh/@headlessui/react?external=react",
-
-    // Positioning / interaction
-    "@floating-ui/react": "https://esm.sh/@floating-ui/react",
-
-    // Notifications
-    sonner: "https://esm.sh/sonner?external=react",
-
-    // Drag & drop
-    "@dnd-kit/core": "https://esm.sh/@dnd-kit/core",
-    "@dnd-kit/sortable": "https://esm.sh/@dnd-kit/sortable",
-
-    //TIER 2
-
-    // Data / server state
-    "@tanstack/react-query": "https://esm.sh/@tanstack/react-query",
-    "@tanstack/react-table": "https://esm.sh/@tanstack/react-table@8.21.3",
-    "@tanstack/react-virtual": "https://esm.sh/@tanstack/react-virtual",
-    "react-aria-components":
-      "https://esm.sh/react-aria-components@1.20.0?external=react",
-
-    // Routing
-    "react-router": "https://esm.sh/react-router",
-
-    // Layout / interaction
-    "react-resizable-panels": "https://esm.sh/react-resizable-panels",
-    "react-intersection-observer": "https://esm.sh/react-intersection-observer",
-    "react-use": "https://esm.sh/react-use",
-    "embla-carousel-react":
-      "https://esm.sh/embla-carousel-react?external=react",
-    "react-dropzone": "https://esm.sh/react-dropzone",
-
-    "react-colorful": "https://esm.sh/react-colorful",
-    "react-hotkeys-hook": "https://esm.sh/react-hotkeys-hook",
-    cmdk: "https://esm.sh/cmdk?external=react",
-    vaul: "https://esm.sh/vaul?external=react",
-    "input-otp": "https://esm.sh/input-otp?external=react",
-  },
   prefixes: {
     // Icons
     "@heroicons/react/": "https://esm.sh/@heroicons/react/",
@@ -105,13 +15,103 @@ const SUPPORTED_REACT_DEPENDENCIES = {
     motion: "https://esm.sh/motion/",
     next: "https://esm.sh/next/",
     "@shippedkit": "https://esm.sh/@shippedkit/",
+
+    // React
+    react: "https://esm.sh/react@19/",
+
+    // Icons
+    "lucide-react": "https://esm.sh/lucide-react/",
+
+    // Animation
+    "framer-motion": "https://esm.sh/framer-motion/",
+    motion: "https://esm.sh/motion/",
+    "canvas-confetti": "https://esm.sh/canvas-confetti/",
+
+    // Charts / data visualization
+    recharts: "https://esm.sh/recharts/",
+    "react-chartjs-2": "https://esm.sh/react-chartjs-2/",
+    "chart.js": "https://esm.sh/chart.js/",
+
+    // Dates
+    "date-fns": "https://esm.sh/date-fns/",
+    dayjs: "https://esm.sh/dayjs/",
+
+    // Forms / validation
+    "react-hook-form": "https://esm.sh/react-hook-form/",
+    zod: "https://esm.sh/zod/",
+
+    // HTTP / data
+    axios: "https://esm.sh/axios/",
+
+    // Markdown
+    "react-markdown": "https://esm.sh/react-markdown/",
+
+    // Utilities
+    clsx: "https://esm.sh/clsx/",
+    "tailwind-merge": "https://esm.sh/tailwind-merge/",
+
+    // UI primitives
+    "@radix-ui/react-dialog":
+      "https://esm.sh/@radix-ui/react-dialog?external=react/",
+    "@radix-ui/react-dropdown-menu":
+      "https://esm.sh/@radix-ui/react-dropdown-menu?external=react/",
+    "@radix-ui/react-tabs":
+      "https://esm.sh/@radix-ui/react-tabs?external=react/",
+    "@radix-ui/react-tooltip":
+      "https://esm.sh/@radix-ui/react-tooltip?external=react/",
+    "@radix-ui/react-popover":
+      "https://esm.sh/@radix-ui/react-popover?external=react/",
+    "@radix-ui/react-select":
+      "https://esm.sh/@radix-ui/react-select?external=react/",
+    "@radix-ui/react-checkbox":
+      "https://esm.sh/@radix-ui/react-checkbox?external=react/",
+    "@radix-ui/react-switch":
+      "https://esm.sh/@radix-ui/react-switch?external=react/",
+    "@headlessui/react": "https://esm.sh/@headlessui/react?external=react/",
+
+    // Positioning / interaction
+    "@floating-ui/react": "https://esm.sh/@floating-ui/react/",
+
+    // Notifications
+    sonner: "https://esm.sh/sonner?external=react/",
+
+    // Drag & drop
+    "@dnd-kit/core": "https://esm.sh/@dnd-kit/core/",
+    "@dnd-kit/sortable": "https://esm.sh/@dnd-kit/sortable/",
+
+    //TIER 2
+
+    // Data / server state
+    "@tanstack/react-query": "https://esm.sh/@tanstack/react-query/",
+    "@tanstack/react-table": "https://esm.sh/@tanstack/react-table@8.21.3/",
+    "@tanstack/react-virtual": "https://esm.sh/@tanstack/react-virtual/",
+    "react-aria-components":
+      "https://esm.sh/react-aria-components@1.20.0?external=react/",
+
+    // Routing
+    "react-router": "https://esm.sh/react-router/",
+
+    // Layout / interaction
+    "react-resizable-panels": "https://esm.sh/react-resizable-panels/",
+    "react-intersection-observer":
+      "https://esm.sh/react-intersection-observer/",
+    "react-use": "https://esm.sh/react-use/",
+    "embla-carousel-react":
+      "https://esm.sh/embla-carousel-react?external=react/",
+    "react-dropzone": "https://esm.sh/react-dropzone/",
+
+    "react-colorful": "https://esm.sh/react-colorful/",
+    "react-hotkeys-hook": "https://esm.sh/react-hotkeys-hook/",
+    cmdk: "https://esm.sh/cmdk?external=react/",
+    vaul: "https://esm.sh/vaul?external=react/",
+    "input-otp": "https://esm.sh/input-otp?external=react/",
   },
 };
 const RUNTIME_DEPENDENCIES = {
   // React
-  react: "https://esm.sh/react@19",
-  "react-dom/client": "https://esm.sh/react-dom@19/client",
-  "react/jsx-runtime": "https://esm.sh/react@19/jsx-runtime",
+  react: "https://esm.sh/react@19/",
+  "react-dom/client": "https://esm.sh/react-dom@19/client/",
+  "react/jsx-runtime": "https://esm.sh/react@19/jsx-runtime/",
 };
 
 // Import map shape
@@ -225,19 +225,23 @@ function resolveDependency(specifier) {
     return runtimeDependency;
   }
 
-  const exact = SUPPORTED_REACT_DEPENDENCIES.exact[specifier];
-
-  if (exact) {
-    return exact;
-  }
-
-  for (const [prefix, baseUrl] of Object.entries(
+  for (const [key, baseUrl] of Object.entries(
     SUPPORTED_REACT_DEPENDENCIES.prefixes,
   )) {
-    if (specifier.startsWith(prefix)) {
-      const subpath = specifier.slice(prefix.length);
-      return `${baseUrl}${subpath}`;
+    // Explicit subpath mapping, e.g. @heroicons/react/24/solid
+    if (key.endsWith("/") && specifier.startsWith(key)) {
+      return `${baseUrl}${specifier.slice(key.length)}`;
     }
+
+    // Exact package mapping; do not match similarly named packages.
+    if (specifier === key) {
+      return baseUrl.replace(/\/$/, "");
+    }
+  }
+
+  // Automatically attempt other npm package imports.
+  if (isBarePackageSpecifier(specifier)) {
+    return `https://esm.sh/${specifier}?external=react`;
   }
 
   return null;
