@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import Logo from "@/components/Logo";
+import Link from "next/link";
 
 const PRODUCT_LINKS = [
   { label: "Workspace", href: "/workspace" },
@@ -17,18 +18,23 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center gap-5">
-          <a href="#workflow" className="transition hover:text-white/50">
+          <Link href="#workflow" className="transition hover:text-white/50">
             Workflow
-          </a>
+          </Link>
 
-          <a href="#capabilities" className="transition hover:text-white/50">
+          <Link href="#capabilities" className="transition hover:text-white/50">
             Capabilities
-          </a>
+          </Link>
 
-          <a href="#pricing" className="transition hover:text-white/50">
+          <Link href="#pricing" className="transition hover:text-white/50">
             Pricing
-          </a>
-
+          </Link>
+          <Link
+            href="/privacy-policy"
+            className="transition hover:text-white/50"
+          >
+            Privacy Policy
+          </Link>
           <span>Build interfaces by describing them.</span>
         </div>
       </div>
