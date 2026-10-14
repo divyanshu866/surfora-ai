@@ -104,6 +104,7 @@ const SUPPORTED_REACT_DEPENDENCIES = {
     three: "https://esm.sh/three/",
     motion: "https://esm.sh/motion/",
     next: "https://esm.sh/next/",
+    "@shippedkit": "https://esm.sh/@shippedkit/",
   },
 };
 const RUNTIME_DEPENDENCIES = {
@@ -159,35 +160,6 @@ const initializeEsbuild = async () => {
     throw new EsBuildError(agnosticErrorList);
   }
 };
-function getSourceLocation(source, index) {
-  const before = source.slice(0, index);
-
-  const line = before.split("\n").length;
-  const lastNewlineIndex = before.lastIndexOf("\n");
-
-  const column = index - lastNewlineIndex;
-
-  return {
-    line,
-    column,
-  };
-}
-function extractImportSpecifiers(jsx) {
-  const imports = new Map();
-  const importRegex =
-    /(?:import\s+(?:[\s\S]*?\s+from\s+)?|import\s*\()\s*["']([^"']+)["']/g;
-  let match;
-
-  while ((match = importRegex.exec(jsx)) !== null) {
-    const specifier = match[1];
-
-    const specifierOffset = match.index + match[0].indexOf(match[1]);
-    const location = getSourceLocation(jsx, specifierOffset);
-    imports.set(specifier, { specifier, location });
-  }
-
-  return [...imports.values()];
-}
 function isBarePackageSpecifier(specifier) {
   return !(
     specifier.startsWith(".") ||
@@ -197,36 +169,24 @@ function isBarePackageSpecifier(specifier) {
   );
 }
 
-function extractPackageImports(jsx) {
-  return extractImportSpecifiers(jsx).filter(({ specifier }) =>
-    isBarePackageSpecifier(specifier),
-  );
-}
+const IMPORT_MAP_KINDS = new Set(["import-statement", "dynamic-import"]);
 
-function resolveDependency(specifier) {
-  const exact = SUPPORTED_REACT_DEPENDENCIES.exact[specifier];
-  if (exact) {
-    return exact;
-  }
-
-  for (const [prefix, baseUrl] of Object.entries(
-    SUPPORTED_REACT_DEPENDENCIES.prefixes,
-  )) {
-    if (specifier.startsWith(prefix)) {
-      const subpath = specifier.slice(prefix.length);
-      return `${baseUrl}${subpath}`;
-    }
-  }
-  return null;
-}
-function buildImportMap(jsx) {
+function buildImportMap(importEntries) {
   const imports = { ...RUNTIME_DEPENDENCIES };
   const agnosticErrorList = [];
-  const packageImports = extractPackageImports(jsx);
-  //console.log("packageImports==============>");
-  //console.dir(packageImports, { depth: null });
 
-  for (const { specifier, location } of packageImports) {
+  // Only include actual static and dynamic JavaScript imports.
+  // Deduplicate dependencies before resolving them.
+  const packageImports = [
+    ...new Set(
+      importEntries
+        .filter(({ kind }) => IMPORT_MAP_KINDS.has(kind))
+        .map(({ specifier }) => specifier)
+        .filter(isBarePackageSpecifier),
+    ),
+  ];
+
+  for (const specifier of packageImports) {
     const url = resolveDependency(specifier);
 
     if (!url) {
@@ -239,8 +199,8 @@ function buildImportMap(jsx) {
         stack: null,
         location: {
           file: "transformed component.jsx",
-          line: location.line,
-          column: location.column,
+          line: null,
+          column: null,
         },
         metadata: {
           specifier,
@@ -250,11 +210,39 @@ function buildImportMap(jsx) {
       imports[specifier] = url;
     }
   }
+
   if (agnosticErrorList.length > 0) {
     throw new DependencyError(agnosticErrorList);
   }
-  return { imports: imports };
+
+  return { imports };
 }
+
+function resolveDependency(specifier) {
+  const runtimeDependency = RUNTIME_DEPENDENCIES[specifier];
+
+  if (runtimeDependency) {
+    return runtimeDependency;
+  }
+
+  const exact = SUPPORTED_REACT_DEPENDENCIES.exact[specifier];
+
+  if (exact) {
+    return exact;
+  }
+
+  for (const [prefix, baseUrl] of Object.entries(
+    SUPPORTED_REACT_DEPENDENCIES.prefixes,
+  )) {
+    if (specifier.startsWith(prefix)) {
+      const subpath = specifier.slice(prefix.length);
+      return `${baseUrl}${subpath}`;
+    }
+  }
+
+  return null;
+}
+
 //Custom error
 class EsBuildError extends Error {
   constructor(diagnostics) {
@@ -280,69 +268,99 @@ class ReactCompileError extends Error {
 }
 export async function compileReact(jsx) {
   await initializeEsbuild();
-  const agnosticErrorList = [];
+
   try {
-    const result = await esbuild.transform(jsx, {
-      loader: "jsx",
+    const result = await esbuild.build({
+      stdin: {
+        contents: jsx,
+        sourcefile: "transformed component.jsx",
+        loader: "jsx",
+      },
+
+      // Analyze imports, but preserve all imports in the output.
+      bundle: true,
+      external: ["*"],
+      write: false,
+
+      // Return dependency metadata alongside the compiled output.
+      metafile: true,
+
       target: "es2020",
       format: "esm",
     });
 
-    //console.log("ESBUILD RESULT========>");
-    //console.dir(result, { depth: null });
+    const outputFile = result.outputFiles?.[0];
 
-    result.warnings.map((error) => {
-      //append all warning to list
-      agnosticErrorList.push({
-        source: "compiler",
-        targetTech: "REACT",
-        severity: "warning",
-        type: "compile",
-        message: error.text,
-        stack: null,
-        location: {
-          file: "transformed component.jsx",
-          line: error.location.line,
-          column: error.location.column,
-        },
-        metadata: {},
-      });
-    });
+    if (!outputFile) {
+      throw new Error("esbuild did not produce compiled JavaScript.");
+    }
 
-    return result.code;
-  } catch (errors) {
-    errors.errors.map((error) => {
-      //append all errors to list
-      agnosticErrorList.push({
+    // With a single stdin source, there should be one input entry.
+    const inputInfo = Object.values(result.metafile?.inputs ?? {})[0];
+
+    if (!inputInfo) {
+      throw new Error("esbuild did not return input import metadata.");
+    }
+
+    const imports = (inputInfo.imports ?? []).map(({ path, kind }) => ({
+      specifier: path,
+      kind,
+    }));
+
+    return {
+      code: outputFile.text,
+      imports,
+    };
+  } catch (error) {
+    if (error instanceof ReactCompileError) {
+      throw error;
+    }
+
+    const errors = Array.isArray(error?.errors) ? error.errors : [];
+
+    const diagnostics = errors.map((item) => ({
+      source: "compiler",
+      targetTech: "REACT",
+      severity: "error",
+      type: "syntax",
+      message: item.text ?? "React component compilation failed.",
+      stack: null,
+      location: {
+        file: item.location?.file ?? "transformed component.jsx",
+        line: item.location?.line ?? null,
+        column: item.location?.column ?? null,
+      },
+      metadata: {},
+    }));
+
+    // Preserve a useful diagnostic for unexpected build failures too.
+    if (diagnostics.length === 0) {
+      diagnostics.push({
         source: "compiler",
         targetTech: "REACT",
         severity: "error",
-        type: "syntax",
-        message: error.text,
-        stack: null,
+        type: "compile",
+        message: error?.message ?? "React component compilation failed.",
+        stack: error?.stack ?? null,
         location: {
           file: "transformed component.jsx",
-          line: error.location.line,
-          column: error.location.column,
+          line: null,
+          column: null,
         },
         metadata: {},
       });
-    });
+    }
 
-    throw new ReactCompileError(agnosticErrorList);
-    // throw error;
+    throw new ReactCompileError(diagnostics);
   }
 }
 
 export async function buildReactPreviewDocument(component) {
-  let compiledJsx;
-  if (component.jsx == "") {
-    compiledJsx = await compileReact(DEFAULT_JSX);
-  } else {
-    compiledJsx = await compileReact(component.jsx);
-  }
+  const source = component.jsx === "" ? DEFAULT_JSX : component.jsx;
 
-  const importMap = buildImportMap(component.jsx);
+  const { code: compiledJsx, imports } = await compileReact(source);
+
+  const importMap = buildImportMap(imports);
   const document = /*html*/ ` <!DOCTYPE html>
     <html>
       <head>
