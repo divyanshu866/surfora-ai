@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { openProCheckout } from "@/lib/paddle/client";
-
+import { initializePaddleClient } from "@/lib/paddle/client";
 export function PaddleUpgradeButton({ userId, yearly }) {
   const [opening, setOpening] = useState(false);
+
+  useEffect(() => {
+    initializePaddleClient().catch((error) => {
+      console.error("Failed to initialize Paddle.js:", error);
+    });
+  }, []);
 
   const handleUpgrade = async () => {
     if (opening) return;
