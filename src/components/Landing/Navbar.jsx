@@ -27,10 +27,10 @@ export default function Navbar() {
 
           <Image
             src={"/name.svg"}
-            width={90}
-            height={50}
+            width={80}
+            height={30}
             alt="surforaAI logo"
-            className="h-6 w-auto sm:h-7"
+            className="h-5 w-auto"
           />
         </Link>
 
