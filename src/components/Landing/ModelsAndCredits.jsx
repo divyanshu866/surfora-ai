@@ -1,76 +1,12 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Zap } from "lucide-react";
-
-export const MODEL_CATALOG = {
-  GPT_6_LUNA: {
-    label: "GPT-6 Luna",
-    value: "gpt-6-luna",
-    description: "Fast & efficient",
-    minimumPlan: "FREE",
-    defaultEffort: "medium",
-    allowedEfforts: {
-      FREE: ["none", "low", "medium"],
-      PRO: ["none", "low", "medium", "high", "xhigh", "max"],
-      MAX: ["none", "low", "medium", "high", "xhigh", "max"],
-    },
-  },
-  GPT_6_SOL: {
-    label: "GPT-6 Sol",
-    value: "gpt-6-sol",
-    description: "Advanced reasoning",
-    minimumPlan: "PRO",
-    defaultEffort: "medium",
-    allowedEfforts: {
-      PRO: ["none", "low", "medium", "high", "xhigh", "max"],
-      MAX: ["none", "low", "medium", "high", "xhigh", "max"],
-    },
-  },
-  GLM_5_3_FLASH: {
-    label: "GLM-5.3 Flash",
-    value: "glm-5.3-flash",
-    description: "Strong coding, slower at high effort",
-    minimumPlan: "FREE",
-    defaultEffort: "low",
-    allowedEfforts: {
-      FREE: ["low", "high"],
-      PRO: ["low", "high"],
-      MAX: ["low", "high", "max"],
-    },
-  },
-  GPT_6_ASTRA: {
-    label: "GPT-6 Astra",
-    value: "gpt-6-astra",
-    description: "Maximum intelligence",
-    minimumPlan: "MAX",
-    defaultEffort: "medium",
-    allowedEfforts: {
-      MAX: ["low", "medium", "high", "xhigh", "max"],
-    },
-  },
-  GEMINI_3_8_FLASH: {
-    label: "Gemini 3.8 Flash",
-    value: "gemini-3.8-flash",
-    description: "Advanced coding",
-    minimumPlan: "PRO",
-    defaultEffort: "medium",
-    allowedEfforts: {
-      PRO: ["low", "medium", "high"],
-      MAX: ["low", "medium", "high"],
-    },
-  },
-  GEMINI_3_5_FLASH_LITE: {
-    label: "Gemini 3.5 Flash-Lite",
-    value: "gemini-3.5-flash-lite",
-    description: "Fast alternative",
-    minimumPlan: "FREE",
-    defaultEffort: "low",
-    allowedEfforts: {
-      FREE: ["minimal", "low", "medium", "high"],
-      PRO: ["minimal", "low", "medium", "high"],
-      MAX: ["minimal", "low", "medium", "high"],
-    },
-  },
-};
+import { AI_MODELS } from "../../ai/models";
+import {
+  CREDIT_POLICY,
+  EFFORT_MULTIPLIERS,
+  MODEL_BASE_CREDITS,
+  TASK_MULTIPLIERS,
+} from "../../lib/billing/credit-costs";
 
 export const EFFORT_OPTIONS = {
   none: {
@@ -101,50 +37,6 @@ export const EFFORT_OPTIONS = {
     label: "Max",
     description: "Maximum reasoning depth for complex system architectures",
   },
-};
-
-export const AI_MODELS = [
-  MODEL_CATALOG.GPT_6_LUNA,
-  MODEL_CATALOG.GPT_6_SOL,
-  MODEL_CATALOG.GEMINI_3_8_FLASH,
-  MODEL_CATALOG.GEMINI_3_5_FLASH_LITE,
-  MODEL_CATALOG.GLM_5_3_FLASH,
-];
-
-export const CREDIT_POLICY = {
-  FREE: {
-    dailyCredits: 20,
-    monthlyCredits: 100,
-  },
-  PRO: {
-    monthlyCredits: 1000,
-  },
-};
-
-// Base credits before effort and task multipliers.
-// Keep this list aligned with models available to users.
-export const MODEL_BASE_CREDITS = {
-  "gpt-6-luna": 4,
-  "gpt-6-sol": 14,
-  "gemini-3.8-flash": 6,
-  "gemini-3.5-flash-lite": 2,
-  "glm-5.3-flash": 3,
-};
-
-export const EFFORT_MULTIPLIERS = {
-  none: 1,
-  minimal: 1,
-  low: 1,
-  medium: 1.25,
-  high: 1.75,
-  xhigh: 2.5,
-  max: 3.5,
-};
-
-export const TASK_MULTIPLIERS = {
-  ASK: 0.5,
-  GENERATE: 1,
-  REWORK: 1.25,
 };
 
 export function calculateCredits(modelValue, effort, task = "GENERATE") {

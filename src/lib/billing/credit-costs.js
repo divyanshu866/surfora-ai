@@ -9,8 +9,8 @@ export const CREDIT_POLICY = {
 };
 
 // Base credits before effort and task multipliers.
-// Keep this list aligned with models available to users.
-const MODEL_BASE_CREDITS = {
+// Keep list aligned with models available to users.
+export const MODEL_BASE_CREDITS = {
   "gpt-6-luna": 4,
   "gpt-6-sol": 14,
   "gemini-3.8-flash": 6,
@@ -18,7 +18,7 @@ const MODEL_BASE_CREDITS = {
   "glm-5.3-flash": 3,
 };
 
-const EFFORT_MULTIPLIERS = {
+export const EFFORT_MULTIPLIERS = {
   none: 1,
   minimal: 1,
   low: 1,
@@ -28,7 +28,7 @@ const EFFORT_MULTIPLIERS = {
   max: 3.5,
 };
 
-const TASK_MULTIPLIERS = {
+export const TASK_MULTIPLIERS = {
   ASK: 0.5,
   GENERATE: 1,
   REWORK: 1.25,
