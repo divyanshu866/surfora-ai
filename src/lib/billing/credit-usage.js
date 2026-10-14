@@ -234,23 +234,28 @@ export async function chargeCredits(
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
-      // The transaction rolls back all period updates if any limit fails.
-      for (const period of periods) {
-        await chargePeriod(tx, userId, period, credits);
-      }
+    await prisma.$transaction(
+      async (tx) => {
+        // Roll back all period updates if any limit fails.
+        for (const period of periods) {
+          await chargePeriod(tx, userId, period, credits);
+        }
 
-      await tx.creditCharge.create({
-        data: {
-          userId,
-          model,
-          effort,
-          task,
-          plan: entitlement.plan,
-          credits,
-        },
-      });
-    });
+        await tx.creditCharge.create({
+          data: {
+            userId,
+            model,
+            effort,
+            task,
+            plan: entitlement.plan,
+            credits,
+          },
+        });
+      },
+      {
+        maxWait: 5_000,
+      },
+    );
 
     return {
       allowed: true,
