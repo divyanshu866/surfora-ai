@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  ArrowDownRight,
   ArrowUp,
-  ArrowUpRight,
+  Check,
   ChevronDown,
   FileCode2,
-  Hammer,
+  Globe,
   Play,
   Plus,
   Search,
-  Volume2,
-  VolumeX,
+  ShieldCheck,
+  Sparkles,
+  TrendingUp,
+  Zap,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
@@ -21,102 +22,97 @@ const REWORK_PROMPT =
   "Refine the interface: make the hierarchy denser, add a network health panel, and give the dashboard a stronger executive feel.";
 
 const INITIAL_RESPONSE =
-  "Built a dark editorial analytics interface with a dominant economic indicator, contextual trend data, and a restrained information hierarchy.";
+  "Built an editorial capital velocity interface with dominant liquidity indices, an SVG velocity curve, and live settlement corridor telemetry.";
 
 const REWORK_RESPONSE =
-  "Refined the interface with denser executive hierarchy, network health context, and stronger visual grouping across the live dashboard.";
+  "Refined the interface with denser executive hierarchy, a 14-node resilience matrix, and real-time corridor settlement telemetry.";
 
 const PROJECTS = [
-  { name: "Editorial Analytics", kind: "react" },
-  { name: "SaaS Pricing", kind: "web" },
+  { name: "Capital Velocity", kind: "react" },
+  { name: "SaaS Billing Engine", kind: "web" },
 ];
 
 const INITIAL_CODE = [
-  'import Dashboard from "./Dashboard";',
+  'import { EditorialMasthead, VelocityCurve } from "./intelligence";',
+  'import { SettlementCorridors } from "./telemetry";',
   "",
-  "const metrics = [",
-  '  { label: "Revenue", value: "$64,200", delta: "+31%" },',
-  '  { label: "Run-rate", value: "128%", delta: "+12%" },',
-  '  { label: "Enterprise", value: "842", delta: "+18%" },',
-  "];",
-  "",
-  "export default function AnalyticsPage() {",
+  "export default function CapitalVelocityPage() {",
   "  return (",
-  '    <Dashboard title="Capital & Network Velocity"',
-  "      metrics={metrics}",
-  "    />",
+  '    <main className="min-h-full bg-[#060608] text-white">',
+  '      <EditorialMasthead index="$68.42B" delta="+38.4%" />',
+  '      <VelocityCurve resolution="high" interval="24h" />',
+  '      <SettlementCorridors pairs={["NY-LON", "SGP-HK", "FRA-TYO"]} />',
+  "    </main>",
   "  );",
   "}",
 ];
 
 const REWORK_CODE = [
-  'import Dashboard from "./Dashboard";',
-  'import NetworkHealth from "./NetworkHealth";',
+  'import { EditorialMasthead, VelocityCurve } from "./intelligence";',
+  'import { NetworkResilienceMatrix } from "./telemetry";',
   "",
-  "const metrics = [",
-  '  { label: "Revenue", value: "$68,420", delta: "+38%" },',
-  '  { label: "Run-rate", value: "136%", delta: "+8%" },',
-  '  { label: "Network health", value: "94%", delta: "+6%" },',
-  "];",
-  "",
-  "export default function AnalyticsPage() {",
+  "export default function CapitalVelocityPage() {",
   "  return (",
-  '    <Dashboard title="Capital & Network Velocity"',
-  "      metrics={metrics}",
-  "      dense",
-  "    >",
-  "      <NetworkHealth />",
-  "    </Dashboard>",
+  '    <main className="min-h-full bg-[#060608] text-white dense">',
+  '      <EditorialMasthead index="$68.42B" delta="+38.4%" executive />',
+  '      <VelocityCurve resolution="high" interval="24h" />',
+  "      <NetworkResilienceMatrix nodes={14} latency={18} sync />",
+  "    </main>",
   "  );",
   "}",
 ];
 
-// All values are milliseconds of actual playback time.
-// Desktop can build beside the conversation, so its preview starts on send.
+// Playback timeline in milliseconds.
+// Preview compilation starts only when the code streaming commences.
 const DESKTOP_T = {
-  firstType: [0, 1700],
-  firstSend: 1700,
-  firstThink: [1750, 2650],
-  firstRespond: [2650, 4100],
-  firstCode: [3850, 6000],
-  firstPreview: [1700, 6500],
+  firstType: [300, 2300],
+  firstSend: 2300,
+  firstThink: [2350, 3550],
+  firstRespond: [3550, 5200],
+  firstCode: [4900, 7200],
+  firstPreview: [5200, 7800],
 
-  reworkType: [10000, 11700],
-  reworkSend: 11700,
-  reworkThink: [11750, 12650],
-  reworkRespond: [12650, 14200],
-  reworkCode: [13900, 16100],
-  reworkPreview: [11700, 16600],
+  reworkType: [12600, 14600],
+  reworkSend: 14600,
+  reworkThink: [14650, 15800],
+  reworkRespond: [15800, 17400],
+  reworkCode: [16900, 19200],
+  reworkPreview: [17200, 19800],
 
-  loop: 23000,
+  loop: 25600,
 };
 
-// On mobile, the conversation and preview share one space. Let the response
-// and code complete before opening each preview. Leave time for the preview
-// to close before the next prompt starts typing.
 const MOBILE_T = {
-  firstType: [0, 1700],
-  firstSend: 1700,
-  firstThink: [1750, 2650],
-  firstRespond: [2650, 4100],
-  firstCode: [3850, 6000],
-  firstPreview: [6100, 7900],
-  firstPreviewClose: 11200,
+  firstType: [300, 2300],
+  firstSend: 2300,
+  firstThink: [2350, 3500],
+  firstRespond: [3500, 5000],
+  firstCode: [4800, 6800],
+  firstPreview: [7000, 9200],
+  firstPreviewClose: 13600,
 
-  reworkType: [12100, 13800],
-  reworkSend: 13800,
-  reworkThink: [13850, 14800],
-  reworkRespond: [14800, 16200],
-  reworkCode: [15900, 18000],
-  reworkPreview: [18400, 20200],
+  reworkType: [14200, 16200],
+  reworkSend: 16200,
+  reworkThink: [16250, 17400],
+  reworkRespond: [17400, 19000],
+  reworkCode: [18600, 20800],
+  reworkPreview: [21000, 23200],
 
-  loop: 27400,
+  loop: 27600,
 };
 
 const clamp01 = (value) => Math.max(0, Math.min(1, value));
 const ease = (value) => 1 - Math.pow(1 - clamp01(value), 3);
 const progress = (elapsed, [start, end]) =>
   clamp01((elapsed - start) / Math.max(1, end - start));
+
+function getTypedText(fullText, elapsed, [start, end]) {
+  if (elapsed < start) return "";
+  if (elapsed >= end) return fullText;
+  const t = (elapsed - start) / (end - start);
+  const eased = Math.min(1, Math.max(0, Math.pow(t, 1.2)));
+  return fullText.slice(0, Math.floor(fullText.length * eased));
+}
 
 function useTimeline(enabled, loop) {
   const [elapsed, setElapsed] = useState(0);
@@ -129,19 +125,16 @@ function useTimeline(enabled, loop) {
     }
 
     let frame;
-
     const tick = (now) => {
       if (lastFrame.current !== null) {
         const delta = Math.min(now - lastFrame.current, 100);
-        setElapsed((previous) => (previous + delta) % loop);
+        setElapsed((prev) => (prev + delta) % loop);
       }
-
       lastFrame.current = now;
       frame = requestAnimationFrame(tick);
     };
 
     frame = requestAnimationFrame(tick);
-
     return () => {
       cancelAnimationFrame(frame);
       lastFrame.current = null;
@@ -151,28 +144,76 @@ function useTimeline(enabled, loop) {
   return elapsed;
 }
 
+function JsxIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="10"
+        ry="4"
+        stroke="#818cf8"
+        strokeWidth="1.5"
+        transform="rotate(30 12 12)"
+      />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="10"
+        ry="4"
+        stroke="#818cf8"
+        strokeWidth="1.5"
+        transform="rotate(90 12 12)"
+      />
+      <ellipse
+        cx="12"
+        cy="12"
+        rx="10"
+        ry="4"
+        stroke="#818cf8"
+        strokeWidth="1.5"
+        transform="rotate(150 12 12)"
+      />
+      <circle cx="12" cy="12" r="1.8" fill="#c084fc" />
+    </svg>
+  );
+}
+
+function CssIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M4 3L6 19L12 21L18 19L20 3H4Z"
+        stroke="#38bdf8"
+        strokeWidth="1.5"
+      />
+      <path d="M12 6V18.5L16.5 17L18 7H12Z" fill="#38bdf8" fillOpacity="0.25" />
+    </svg>
+  );
+}
+
 function BrowserBar() {
   return (
     <div
       aria-label="Browser chrome"
-      className="relative flex h-7 shrink-0 items-center border-b border-[#24242a] bg-[#0a0a0d] px-2.5 sm:h-12 sm:px-3"
+      className="relative flex h-8 shrink-0 items-center border-b border-white/[0.07] bg-backgroundLight px-3 sm:h-11 sm:px-4"
     >
-      <div
-        aria-hidden="true"
-        className="ml-1 flex items-center gap-1.5 opacity-50"
-      >
-        <span className="h-1.5 w-1.5 rounded-full bg-[#ff5f57] sm:h-2.5 sm:w-2.5" />
-        <span className="h-1.5 w-1.5 rounded-full bg-[#febc2e] sm:h-2.5 sm:w-2.5" />
-        <span className="h-1.5 w-1.5 rounded-full bg-[#28c840] sm:h-2.5 sm:w-2.5" />
+      <div aria-hidden="true" className="flex items-center gap-1.5 opacity-60">
+        <span className="h-2 w-2 rounded-full bg-[#ff5f57]/80 sm:h-2.5 sm:w-2.5" />
+        <span className="h-2 w-2 rounded-full bg-[#febc2e]/80 sm:h-2.5 sm:w-2.5" />
+        <span className="h-2 w-2 rounded-full bg-[#28c840]/80 sm:h-2.5 sm:w-2.5" />
       </div>
 
-      <div className="absolute left-1/2 flex h-5 w-[min(42%,260px)] -translate-x-1/2 items-center justify-center rounded-sm border border-[#18181e] bg-[#0e0e12] px-2.5 text-[8px] font-medium text-white/50 sm:h-7 sm:w-[min(34%,340px)] sm:text-[8.5px]">
-        <span className="truncate">surforaai.com/workspace</span>
+      <div className="absolute left-1/2 flex h-5 w-[min(52%,300px)] -translate-x-1/2 items-center justify-center rounded-md border border-white/[0.06] bg-[#0c0b11] px-2.5 text-[8.5px] font-medium text-white/50 sm:h-6 sm:w-[min(38%,320px)] sm:text-[9.5px]">
+        <span className="truncate">
+          surforaai.com/workspace/capital-velocity
+        </span>
       </div>
 
-      <div className="ml-auto">
-        <span className="ml-auto hidden rounded-full border border-green-600/50 bg-emerald-500/50 p-1 px-2 text-xs sm:block">
-          D
+      <div className="ml-auto flex items-center gap-2">
+        <span className="hidden items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-medium text-emerald-300 sm:inline-flex">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          Runtime Ready
         </span>
       </div>
     </div>
@@ -184,23 +225,24 @@ function ProjectRow({ name, active, kind = "react" }) {
     <motion.div
       animate={{
         backgroundColor: active
-          ? "rgba(255,255,255,0.055)"
+          ? "rgba(139,92,246,0.08)"
           : "rgba(255,255,255,0)",
-        borderColor: active ? "rgba(255,255,255,0.065)" : "rgba(255,255,255,0)",
+        borderColor: active
+          ? "rgba(139,92,246,0.22)"
+          : "rgba(255,255,255,0.03)",
       }}
-      transition={{ duration: 0.4 }}
-      className="flex min-w-0 items-center gap-2 rounded-[7px] border px-2 py-[7px]"
+      transition={{ duration: 0.3 }}
+      className="flex min-w-0 items-center gap-2.5 rounded-lg border px-2.5 py-2"
     >
-      <span className="grid h-5 w-5 shrink-0 place-items-center rounded-[6px] bg-white/[0.02]">
-        <img
-          src={kind === "web" ? "/globe2_red.svg" : "/jsx.svg"}
-          height="12"
-          width="12"
-          alt={kind === "web" ? "Web project" : "React project"}
-        />
+      <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md bg-white/[0.04]">
+        {kind === "web" ? (
+          <Globe size={11} className="text-sky-400" />
+        ) : (
+          <JsxIcon />
+        )}
       </span>
       <span
-        className={`min-w-0 truncate text-[10px] leading-4 ${
+        className={`min-w-0 truncate text-[11px] ${
           active ? "font-medium text-white" : "text-white/60"
         }`}
       >
@@ -212,38 +254,34 @@ function ProjectRow({ name, active, kind = "react" }) {
 
 function Sidebar({ active }) {
   return (
-    <aside className="hidden w-[190px] shrink-0 border-r border-[#1a1a1c] bg-backgroundLight lg:block">
-      <div className="border-b border-[#24242a] p-3">
+    <aside className="hidden w-[205px] shrink-0 border-r border-white/[0.06] bg-backgroundLight lg:block">
+      <div className="border-b border-white/[0.06] p-3">
         <button
           type="button"
-          className="flex h-[42px] w-full items-center gap-2 rounded-[9px] border border-[#24242a] bg-neutral-800/20 px-3 text-left text-[11px] font-medium text-white/80 transition-colors hover:border-[#25252d] hover:bg-[#101015]"
+          className="flex h-9 w-full items-center gap-2 rounded-lg border border-white/[0.08] bg-white/[0.025] px-3 text-left text-[11px] font-medium text-white/80 transition hover:border-violet-400/30 hover:bg-violet-400/[0.05]"
         >
-          <span className="grid h-6 w-6 place-items-center rounded-[7px] bg-white/[0.025] text-white/70">
-            <Plus size={13} strokeWidth={1.7} />
+          <span className="grid h-5 w-5 place-items-center rounded-md bg-white/[0.04] text-white/70">
+            <Plus size={12} strokeWidth={2} />
           </span>
-          <span className="flex-1">New Project</span>
-          <span className="text-[8px] text-white/30">⌘ K</span>
+          <span className="flex-1">New Interface</span>
+          <span className="text-[9px] text-white/30">⌘ K</span>
         </button>
       </div>
 
       <div className="px-3 pt-4">
-        <div className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/35">
-          Recent projects
+        <div className="mb-2 px-1 text-[9px] font-medium uppercase tracking-[0.16em] text-white/35">
+          Workspace Projects
         </div>
-        <div className="space-y-0.5">
+        <div className="space-y-1">
           {PROJECTS.map((project) => (
             <ProjectRow
               key={project.name}
               name={project.name}
               kind={project.kind}
-              active={false}
+              active={project.name === "Capital Velocity" && active}
             />
           ))}
-          <ProjectRow
-            name="Revenue Intelligence"
-            kind="react"
-            active={active}
-          />
+          <ProjectRow name="Yield Curve Analysis" kind="react" active={false} />
         </div>
       </div>
     </aside>
@@ -252,21 +290,21 @@ function Sidebar({ active }) {
 
 function EditorTabs() {
   return (
-    <div className="flex h-9 shrink-0 items-center border-b border-[#24242a]/80 bg-[#0a0a0d] px-3 sm:h-10 sm:px-3.5">
-      <div className="flex h-full items-center gap-0.5">
-        <div className="flex h-full items-center gap-1.5 border-b border-violet-400 px-3 text-[9px] font-medium text-white sm:text-[10px]">
-          <img src="/jsx.svg" height="15" width="15" alt="" />
-          JSX
+    <div className="flex h-9 shrink-0 items-center justify-between border-b border-white/[0.06] bg-backgroundLight px-3 sm:h-10 sm:px-4">
+      <div className="flex h-full items-center gap-1">
+        <div className="flex h-full items-center gap-1.5 border-b-2 border-violet-400 px-3 text-[10px] font-medium text-white">
+          <JsxIcon />
+          <span>Dashboard.jsx</span>
         </div>
-        <div className="flex h-full items-center gap-1.5 px-3 text-[9px] font-medium text-neutral-300 sm:text-[10px]">
-          <img src="/css.svg" height="15" width="15" alt="" />
-          CSS
+        <div className="flex h-full items-center gap-1.5 px-3 text-[10px] font-medium text-white/45 transition hover:text-white/70">
+          <CssIcon />
+          <span>styles.css</span>
         </div>
-        <span className="mx-2 h-4 w-px bg-[#1d1d23]" />
-        <div className="flex items-center gap-1.5 rounded-[7px] border border-yellow-300/70 bg-[#191700] px-2.5 py-1 text-[9px] font-semibold text-yellow-300 sm:text-[10px]">
-          <span className="text-[11px]">✦</span>
-          AI
-        </div>
+      </div>
+
+      <div className="flex items-center gap-1.5 rounded-full border border-violet-400/20 bg-violet-400/[0.08] px-2.5 py-0.5 text-[9px] font-medium text-violet-200">
+        <Sparkles size={10} className="text-violet-300" />
+        <span>Surfora AI Runtime</span>
       </div>
     </div>
   );
@@ -274,19 +312,19 @@ function EditorTabs() {
 
 function ModelBar({ active, label = "Generating" }) {
   return (
-    <div className="flex h-9 shrink-0 items-center gap-2 border-b border-[#17171d] bg-[#09090c] px-3 text-[9px] sm:h-10 sm:px-3.5 sm:text-[10px]">
-      <span className="font-medium text-white/90">GPT-6 Luna</span>
-      <span className="text-white/20">|</span>
-      <span className="text-violet-300/80">Medium</span>
-      <ChevronDown size={9} className="text-white/30" />
+    <div className="flex h-8 shrink-0 items-center gap-2 border-b border-white/[0.05] bg-backgroundLight px-3 text-[9.5px] sm:h-9 sm:px-4 sm:text-[10px]">
+      <span className="font-medium text-white/90">GPT-6 Sol</span>
+      <span className="text-white/20">/</span>
+      <span className="text-violet-300/80">Extended Reasoning</span>
+      <ChevronDown size={10} className="text-white/30" />
       {active ? (
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="ml-auto inline-flex items-center gap-1.5 text-white/45"
+          className="ml-auto inline-flex items-center gap-1.5 text-violet-300/80 font-medium"
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-violet-300/75" />
-          {label}
+          <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+          {label}…
         </motion.span>
       ) : null}
     </div>
@@ -298,15 +336,15 @@ function UserBubble({ text, visible }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.99 }}
+      initial={{ opacity: 0, y: 8, scale: 0.99 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
-      className="ml-auto w-[min(88%,46rem)] pb-1"
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="ml-auto w-[min(90%,44rem)] pb-1"
     >
-      <div className="mb-1.5 text-right text-[8px] font-medium text-white/30 sm:text-[9px]">
+      <div className="mb-1 text-right text-[8.5px] font-medium uppercase tracking-wider text-white/30">
         You
       </div>
-      <div className="rounded-[12px] rounded-br-[5px] border border-[#46375c] bg-violet-600/70 px-4 py-3.5 text-[11px] leading-[1.7] text-white/95 sm:px-5 sm:py-4 sm:text-[12px] sm:leading-[1.72]">
+      <div className="rounded-2xl rounded-tr-sm border-0 bg-violet-600/60 p-4 text-[11.5px] leading-relaxed text-white/95 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] sm:p-4.5 sm:text-[12px]">
         {text}
       </div>
     </motion.div>
@@ -320,12 +358,10 @@ function ThinkingState({ text, visible }) {
     <motion.div
       initial={{ opacity: 0, y: 3 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center gap-2 pt-0.5"
+      className="flex items-center gap-2 py-1 text-white/45"
     >
-      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-violet-300/70" />
-      <span className="text-[9px] font-medium text-white/45 sm:text-[10px]">
-        {text}
-      </span>
+      <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+      <span className="text-[10px] font-medium">{text}…</span>
     </motion.div>
   );
 }
@@ -341,20 +377,20 @@ function AssistantMessage({ text, visible, streamProgress, rework = false }) {
       animate={{ opacity: 1 }}
       className="max-w-[94%]"
     >
-      <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[8px] uppercase tracking-[0.08em] text-white/40 sm:text-[9px]">
-        <span className="text-white/60">SurforaAI</span>
-        <span className="h-2.5 w-px bg-[#23232a]" />
-        <span>GPT-6 Luna</span>
+      <div className="mb-2 flex items-center gap-2 text-[9px] uppercase tracking-wider text-white/40">
+        <span className="font-semibold text-violet-300">SurforaAI</span>
+        <span className="h-2.5 w-px bg-white/10" />
+        <span>GPT-6 Sol X-High</span>
         {rework ? (
-          <span className="rounded border border-[#46375c] bg-[#17121f] px-1.5 py-[1px] text-violet-200/80">
-            refined
+          <span className="rounded border border-violet-400/30 bg-violet-400/[0.1] px-1.5 py-0.5 text-[8px] font-medium text-violet-200">
+            Refinement
           </span>
         ) : null}
       </div>
-      <p className="text-[12px] leading-[1.75] text-white/85 sm:text-[13px] sm:leading-[1.78]">
+      <p className="text-[12px] leading-relaxed text-white/85 sm:text-[12.5px]">
         {text.slice(0, chars)}
         {streamProgress < 1 ? (
-          <span className="ml-0.5 inline-block h-[0.95em] w-px translate-y-[2px] animate-pulse bg-violet-300/70" />
+          <span className="ml-0.5 inline-block h-3 w-0.5 bg-violet-400 animate-pulse" />
         ) : null}
       </p>
     </motion.div>
@@ -362,16 +398,16 @@ function AssistantMessage({ text, visible, streamProgress, rework = false }) {
 }
 
 function highlightCode(line) {
-  const tokens = [];
   const pattern =
-    /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(\b(?:import|from|const|export|default|function|return)\b)|(\b(?:Dashboard|NetworkHealth|AnalyticsPage)\b)|(\b(?:title|metrics|label|value|delta|dense)\b)|(\b\d+%?\b)|([{}()[\].,;=<>/+])/g;
+    /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(\b(?:import|from|export|default|function|return|const)\b)|(\b(?:EditorialMasthead|VelocityCurve|SettlementCorridors|NetworkResilienceMatrix|CapitalVelocityPage)\b)|(\b(?:index|delta|resolution|interval|pairs|dense|nodes|latency|sync|executive)\b)|(\b\d+%?\b)|([{}()[\].,;=<>/+])/g;
+  const tokens = [];
   let lastIndex = 0;
   let match;
 
   while ((match = pattern.exec(line)) !== null) {
     if (match.index > lastIndex) {
       tokens.push(
-        <span key={lastIndex} className="text-slate-200">
+        <span key={lastIndex} className="text-slate-300">
           {line.slice(lastIndex, match.index)}
         </span>,
       );
@@ -380,7 +416,7 @@ function highlightCode(line) {
     const color = match[1]
       ? "text-emerald-300"
       : match[2]
-        ? "text-fuchsia-300"
+        ? "text-violet-300 font-medium"
         : match[3]
           ? "text-cyan-300"
           : match[4]
@@ -399,7 +435,7 @@ function highlightCode(line) {
 
   if (lastIndex < line.length) {
     tokens.push(
-      <span key={lastIndex} className="text-slate-200">
+      <span key={lastIndex} className="text-slate-300">
         {line.slice(lastIndex)}
       </span>,
     );
@@ -415,40 +451,34 @@ function CodePanel({ lines, visible, streamProgress, rework = false }) {
     2,
     Math.min(lines.length, Math.ceil(streamProgress * lines.length)),
   );
-  const scroll = ease(streamProgress) * Math.max(0, lines.length - 9);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="overflow-hidden rounded-[11px] border border-[#24242a] bg-darkBorder/25"
+      className="overflow-hidden rounded-xl border border-white/[0.08] bg-darkBorder/20"
     >
-      <div className="flex h-8 items-center justify-between border-b border-[#19191f] bg-[#19191f]/50 px-2.5 sm:h-9 sm:px-3.5">
+      <div className="flex h-8 items-center justify-between border-b border-white/[0.06] bg-[#09080e] px-3">
         <div className="flex items-center gap-1.5">
-          <FileCode2 size={9} className="text-violet-400" />
-          <span className="text-[7px] text-white/55 sm:text-[8px]">
-            {rework ? "Dashboard.jsx" : "AnalyticsPage.jsx"}
+          <FileCode2 size={11} className="text-violet-400" />
+          <span className="text-[8.5px] font-medium text-white/60">
+            {rework ? "Dashboard.rework.jsx" : "Dashboard.jsx"}
           </span>
         </div>
-        <span className="rounded border border-[#29242f] bg-[#111017] px-1.5 py-[2px] text-[6.5px] text-white/40 sm:text-[7px]">
-          {streamProgress >= 0.98 ? "Ready" : "Building"}
+        <span className="rounded border border-violet-400/20 bg-violet-400/[0.08] px-1.5 py-0.5 text-[7.5px] font-medium text-violet-300">
+          {streamProgress >= 0.98 ? "Ready" : "Generating…"}
         </span>
       </div>
 
-      <div className="h-[162px] overflow-hidden px-2.5 py-2.5 font-mono text-[7.5px] leading-[1.9] sm:h-[250px] sm:px-3.5 sm:text-[8.5px]">
-        <motion.div
-          animate={{ y: `${-scroll * 15}px` }}
-          transition={{ duration: 0.48, ease: "easeOut" }}
-        >
-          {lines.slice(0, count).map((line, index) => (
-            <div key={`${index}-${line}`} className="whitespace-pre">
-              <span className="mr-2.5 inline-block w-4 text-right text-white/20 sm:mr-3">
-                {index + 1}
-              </span>
-              {line ? highlightCode(line) : " "}
-            </div>
-          ))}
-        </motion.div>
+      <div className="max-h-[175px] overflow-hidden p-3 font-mono text-[8px] leading-[1.8] sm:max-h-[220px] sm:text-[8.5px]">
+        {lines.slice(0, count).map((line, index) => (
+          <div key={`${index}-${line}`} className="whitespace-pre">
+            <span className="mr-3 inline-block w-3.5 text-right text-white/20">
+              {index + 1}
+            </span>
+            {line ? highlightCode(line) : " "}
+          </div>
+        ))}
       </div>
     </motion.div>
   );
@@ -465,132 +495,75 @@ function Composer({ elapsed, compact = false, timeline = DESKTOP_T }) {
     (elapsed >= timeline.reworkSend && elapsed < timeline.reworkSend + 150);
 
   const text = firstTyping
-    ? INITIAL_PROMPT.slice(
-        0,
-        Math.floor(
-          INITIAL_PROMPT.length * ease(progress(elapsed, timeline.firstType)),
-        ),
-      )
+    ? getTypedText(INITIAL_PROMPT, elapsed, timeline.firstType)
     : reworkTyping
-      ? REWORK_PROMPT.slice(
-          0,
-          Math.floor(
-            REWORK_PROMPT.length * ease(progress(elapsed, timeline.reworkType)),
-          ),
-        )
+      ? getTypedText(REWORK_PROMPT, elapsed, timeline.reworkType)
       : "";
 
   return (
     <div
-      className={`rounded-[13px] border border-[#24242a] bg-white/3 ${
-        compact ? "p-1.5 sm:p-2" : "p-2.5 sm:p-3"
+      className={`rounded-2xl border border-white/[0.09] bg-[#0d0c10] ${
+        compact ? "p-2 sm:p-2.5" : "p-3 sm:p-3.5"
       }`}
     >
       <div
-        className={`min-h-[40px] px-1 text-[10px] leading-[1.62] text-white/70 sm:min-h-[40px] sm:text-[11px] sm:leading-[1.68] ${
-          compact
-            ? "min-h-[42px] text-[9px] sm:min-h-[50px] sm:text-[10px]"
-            : ""
+        className={`min-h-[44px] px-1.5 text-[11px] leading-relaxed text-white/85 sm:min-h-[48px] sm:text-[11.5px] ${
+          compact ? "min-h-[40px] text-[10px]" : ""
         }`}
       >
-        {text}
-        {text && !sending ? (
-          <span className="ml-0.5 inline-block h-[0.9em] w-px translate-y-[2px] animate-pulse bg-violet-300/70" />
-        ) : null}
+        {text ? (
+          <>
+            {text}
+            {!sending ? (
+              <span className="ml-0.5 inline-block h-3 w-0.5 translate-y-[1px] bg-violet-400 animate-pulse" />
+            ) : null}
+          </>
+        ) : (
+          <span className="select-none text-white/30">
+            Describe an interface, design system, or workflow...
+          </span>
+        )}
       </div>
 
-      <div className="mt-2 flex items-center justify-end gap-1 border-t border-[#18181e] pt-2 sm:gap-1.5">
-        <span className="px-1.5 text-[7px] text-neutral-200 sm:text-[8px]">
-          Auto
-        </span>
-        <button
-          type="button"
-          aria-label="Search"
-          className="grid h-6 w-6 place-items-center rounded-md text-neutral-200 transition-colors hover:bg-white/[0.03] hover:text-neutral-50 sm:h-7 sm:w-7"
-        >
-          <Search size={10} strokeWidth={1.7} />
-        </button>
-        <motion.button
-          type="button"
-          aria-label="Send prompt"
-          animate={{
-            scale: sending ? [1, 0.9, 1] : 1,
-            backgroundColor: sending
-              ? "rgba(93,55,134,1)"
-              : "rgba(69,40,101,1)",
-          }}
-          transition={{ duration: 0.45 }}
-          className="grid h-6 w-6 place-items-center rounded-[7px] text-violet-100 sm:h-8 sm:w-8"
-        >
-          <ArrowUp size={11} strokeWidth={1.9} />
-        </motion.button>
+      <div className="mt-2.5 flex items-center justify-between border-t border-white/[0.05] pt-2">
+        <div className="flex items-center gap-1.5 text-[8.5px] text-white/35">
+          <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+          <span>Interactive Synthesis</span>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            aria-label="Search models"
+            className="grid h-6 w-6 place-items-center rounded-md text-white/40 transition hover:bg-white/[0.05] hover:text-white"
+          >
+            <Search size={11} />
+          </button>
+          <motion.button
+            type="button"
+            aria-label="Send prompt"
+            animate={{
+              scale: sending ? [1, 0.92, 1] : 1,
+              backgroundColor: sending ? "#7c3aed" : "#6d28d9",
+            }}
+            transition={{ duration: 0.25 }}
+            className="grid h-7 w-7 place-items-center rounded-lg text-white shadow-[0_0_12px_rgba(109,40,217,0.4)]"
+          >
+            <ArrowUp size={12} strokeWidth={2.2} />
+          </motion.button>
+        </div>
       </div>
     </div>
   );
 }
 
-function CenterConversation({
-  elapsed,
-  autoFollow = true,
-  timeline = DESKTOP_T,
-}) {
+function CenterConversation({ elapsed, timeline = DESKTOP_T }) {
   const conversationRef = useRef(null);
-  const contentRef = useRef(null);
-  const animationRef = useRef(null);
 
   useEffect(() => {
-    if (!autoFollow) return;
-
     const node = conversationRef.current;
-    const content = contentRef.current;
-    if (!node || !content) return;
-
-    let frame = null;
-
-    const follow = () => {
-      if (frame !== null) return;
-
-      const step = () => {
-        const target = Math.max(0, node.scrollHeight - node.clientHeight);
-        const distance = target - node.scrollTop;
-
-        if (Math.abs(distance) < 0.8) {
-          node.scrollTop = target;
-          frame = null;
-          return;
-        }
-
-        node.scrollTop += distance * 0.18;
-        frame = requestAnimationFrame(step);
-      };
-
-      frame = requestAnimationFrame(step);
-    };
-
-    animationRef.current = follow;
-
-    const mutationObserver = new MutationObserver(follow);
-    mutationObserver.observe(content, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-    });
-
-    const resizeObserver = new ResizeObserver(follow);
-    resizeObserver.observe(content);
-    resizeObserver.observe(node);
-    follow();
-
-    return () => {
-      mutationObserver.disconnect();
-      resizeObserver.disconnect();
-      if (frame !== null) cancelAnimationFrame(frame);
-      animationRef.current = null;
-    };
-  }, [autoFollow]);
-
-  useEffect(() => {
-    if (animationRef.current) animationRef.current();
+    if (!node) return;
+    node.scrollTop = node.scrollHeight;
   }, [elapsed]);
 
   const initialPrompt = elapsed >= timeline.firstSend;
@@ -609,16 +582,13 @@ function CenterConversation({
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-backgroundDark">
       <div
         ref={conversationRef}
-        className="workspace-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3 sm:px-15 sm:py-4"
+        className="workspace-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"
       >
-        <div
-          ref={contentRef}
-          className="mx-auto flex w-full max-w-[770px] flex-col gap-5 pb-4 sm:gap-7 sm:pb-5"
-        >
-          <div className="space-y-5 sm:space-y-6">
+        <div className="mx-auto flex w-full max-w-[720px] flex-col gap-5 pb-4">
+          <div className="space-y-6">
             <UserBubble text={INITIAL_PROMPT} visible={initialPrompt} />
             <ThinkingState
-              text="Thinking through your request"
+              text="Reviewing interface requirements"
               visible={initialThinking}
             />
             <AssistantMessage
@@ -636,13 +606,13 @@ function CenterConversation({
           <AnimatePresence initial={false}>
             {reworkPrompt ? (
               <motion.div
-                initial={{ opacity: 0, height: 0, y: 8 }}
-                animate={{ opacity: 1, height: "auto", y: 0 }}
-                className="space-y-5 sm:space-y-6"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                className="space-y-4"
               >
                 <UserBubble text={REWORK_PROMPT} visible />
                 <ThinkingState
-                  text="Refining the interface"
+                  text="Structuring denser hierarchy & telemetry"
                   visible={reworkThinking}
                 />
                 <AssistantMessage
@@ -666,192 +636,318 @@ function CenterConversation({
   );
 }
 
-function AureliaSpeakerPreview({ isPlaying }) {
+// Clean Structural Skeleton Loader with 1px top hairline progress
+function StructuralSkeletonLoader({ progress: val, rework = false }) {
+  const percent = Math.round(val * 100);
+
   return (
-    <div className="relative mx-auto h-[190px] w-[190px] sm:h-[220px] sm:w-[220px]">
-      <div className="absolute inset-0 rounded-full border border-[#c8bd9d]/10" />
-      <div className="absolute inset-[8%] rounded-full border border-[#c8bd9d]/10" />
-      <div className="absolute inset-[13%] rounded-full bg-[linear-gradient(135deg,#9f9572_0%,#59634d_32%,#283329_68%,#151b17_100%)] shadow-[18px_24px_40px_rgba(0,0,0,.45),inset_7px_7px_18px_rgba(255,255,255,.18),inset_-12px_-14px_20px_rgba(0,0,0,.55)] transition-transform duration-700 hover:rotate-[-3deg]">
-        <div className="absolute inset-[5%] rounded-full border border-white/15 bg-[radial-gradient(circle_at_32%_24%,rgba(255,255,255,.20),transparent_25%),linear-gradient(145deg,rgba(255,255,255,.10),transparent_38%,rgba(0,0,0,.18))]" />
-        <div className="absolute inset-[11%] rounded-full border border-[#d8d9cb]/20" />
-        <div
-          className={`absolute inset-[16%] rounded-full border border-[#b7b9a8]/25 bg-[radial-gradient(circle_at_50%_44%,#3f493b_0%,#2f3a30_50%,#202921_76%,#171f1a_100%)] shadow-[inset_0_4px_12px_rgba(255,255,255,.08),inset_0_-10px_18px_rgba(0,0,0,.42)] transition duration-700 ${
-            isPlaying
-              ? "shadow-[inset_0_4px_12px_rgba(255,255,255,.08),inset_0_-10px_18px_rgba(0,0,0,.42),0_0_28px_rgba(176,190,143,.18)]"
-              : ""
-          }`}
-        >
-          <div className="absolute inset-[8%] rounded-full border border-white/10" />
-          <div className="absolute inset-[13%] rounded-full opacity-35 [background:repeating-radial-gradient(circle_at_center,rgba(221,224,208,.26)_0px,rgba(221,224,208,.26)_0.7px,transparent_1px,transparent_4px)]" />
-          <div className="absolute inset-[27%] rounded-full border border-[#c2c7ae]/15 bg-[radial-gradient(circle_at_38%_30%,#71806a,#354233_58%,#222c24_100%)] shadow-[inset_0_4px_10px_rgba(255,255,255,.14),0_6px_18px_rgba(0,0,0,.18)]" />
-          <div className="absolute left-1/2 top-1/2 h-[5%] w-[5%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#c6c8b7]/65" />
-          <div
-            className={`absolute left-1/2 top-[8%] h-1.5 w-1.5 -translate-x-1/2 rounded-full ${
-              isPlaying
-                ? "bg-[#dce6ba] shadow-[0_0_10px_2px_rgba(213,228,171,.55)]"
-                : "bg-[#aeb39e]/70"
-            }`}
-          />
+    <div className="relative flex h-full flex-col overflow-hidden bg-[#07060a] p-4 sm:p-5 text-white">
+      {/* 1px Hairline Progress Bar across the top */}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-white/[0.04]">
+        <motion.div
+          style={{ width: `${percent}%` }}
+          className="h-full bg-gradient-to-r from-violet-500 via-violet-300 to-emerald-400 transition-all duration-150"
+        />
+      </div>
+
+      {/* Structural Wireframe Placeholder */}
+      <div className="flex flex-1 flex-col justify-between pt-2 animate-pulse opacity-40">
+        <div>
+          {/* Header row skeleton */}
+          <div className="flex items-center justify-between border-b border-white/[0.05] pb-3">
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 rounded bg-white/15" />
+              <div className="h-3 w-28 rounded bg-white/10" />
+            </div>
+            <div className="h-4 w-20 rounded-full bg-white/10" />
+          </div>
+
+          {/* Metric skeleton */}
+          <div className="mt-4 space-y-2">
+            <div className="h-2.5 w-32 rounded bg-white/10" />
+            <div className="h-8 w-44 rounded bg-white/15" />
+            <div className="h-2 w-56 rounded bg-white/[0.07]" />
+          </div>
+
+          {/* Chart area skeleton */}
+          <div className="mt-4 h-24 w-full rounded-xl border border-white/[0.05] bg-white/[0.02] p-3">
+            <div className="flex justify-between">
+              <div className="h-2 w-20 rounded bg-white/10" />
+              <div className="h-2 w-16 rounded bg-white/10" />
+            </div>
+            <div className="mt-6 h-10 w-full border-b border-dashed border-white/10" />
+          </div>
+
+          {/* Rows skeleton */}
+          <div className="mt-4 space-y-2">
+            <div className="h-6 w-full rounded-lg bg-white/[0.02]" />
+            <div className="h-6 w-full rounded-lg bg-white/[0.02]" />
+          </div>
         </div>
-      </div>
 
-      <div
-        className={`absolute -right-[1%] top-[36%] flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-[#1a211b]/90 text-[#d0c49b] shadow-[0_8px_20px_rgba(0,0,0,.32)] backdrop-blur-sm transition-transform duration-500 ${
-          isPlaying ? "scale-105" : ""
-        }`}
-      >
-        <span className="flex h-3.5 items-center gap-[2px]" aria-hidden="true">
-          {[0, 1, 2, 3].map((bar) => (
-            <span
-              key={bar}
-              className={`w-[2px] rounded-full bg-current transition-all duration-300 ${
-                isPlaying ? ["h-1.5", "h-3", "h-2.5", "h-1"][bar] : "h-1"
-              }`}
-            />
-          ))}
-        </span>
-      </div>
-
-      <div className="absolute -bottom-1 left-[8%] flex items-center gap-2 rounded-full border border-white/10 bg-[#181d18]/90 px-2.5 py-1.5 shadow-[0_8px_18px_rgba(0,0,0,.28)] backdrop-blur-sm">
-        <span className="grid h-5 w-5 place-items-center rounded-full bg-[#30382d] text-[#d0c49b]">
-          <ArrowDownRight size={10} />
-        </span>
-        <span className="pr-1 text-[6.5px] uppercase tracking-[0.14em] text-[#c0bdad]">
-          Sculpted sound
-        </span>
+        {/* Minimal compile readout */}
+        <div className="flex items-center justify-between border-t border-white/[0.05] pt-3 text-[8.5px] text-white/40">
+          <div className="flex items-center gap-1.5 font-medium">
+            <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
+            <span>
+              {rework ? "Applying refinements…" : "Compiling layout…"}
+            </span>
+          </div>
+          <span className="font-mono text-white/50">{percent}%</span>
+        </div>
       </div>
     </div>
   );
 }
 
-function AureliaPreview({ reworked = false }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [showDetails, setShowDetails] = useState(reworked);
-
-  useEffect(() => {
-    function updateReworked() {
-      if (reworked) setShowDetails(true);
-    }
-    updateReworked();
-  }, [reworked]);
+// Bespoke Editorial Analytics & Capital Velocity Preview
+function CapitalVelocityPreview({ reworked = false }) {
+  const [activeTimeframe, setActiveTimeframe] = useState("24H");
+  const [selectedNode, setSelectedNode] = useState(null);
 
   return (
-    <div className="h-full overflow-y-auto bg-[#101310] text-[#e9e5d9] [scrollbar-width:thin] [scrollbar-color:#44483f_transparent]">
-      <div className="relative min-h-full overflow-hidden px-4 py-4 sm:px-5 sm:py-5">
+    <div className="h-full overflow-y-auto bg-[#07060a] text-white [scrollbar-width:thin] [scrollbar-color:#2a2536_transparent]">
+      <div className="relative min-h-full p-4 sm:p-5">
+        {/* Subtle top ambient glow */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_76%_43%,rgba(139,126,83,.16),transparent_42%),radial-gradient(ellipse_at_18%_100%,rgba(67,83,59,.12),transparent_45%),linear-gradient(120deg,transparent_55%,rgba(255,255,255,.018))]"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-24 top-12 h-[280px] w-[280px] rounded-full border border-[#c8bd9d]/10"
+          className="pointer-events-none absolute left-1/2 top-0 h-40 w-96 -translate-x-1/2 rounded-full bg-violet-600/[0.08] blur-3xl"
         />
 
-        <div className="relative z-10">
-          <header className="flex items-center justify-between border-b border-white/10 pb-3">
-            <div className="flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded-full border border-[#c8bd9d]/30">
-                <span className="h-2 w-2 rounded-full bg-[#c8bd9d]" />
-              </span>
-              <span className="text-[8px] font-semibold uppercase tracking-[0.2em] text-[#e7e2d7]">
-                Aurelia
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowDetails((value) => !value)}
-              className="group flex items-center gap-1 text-[7px] font-medium text-[#b9b8ac] transition hover:text-[#d4c79d]"
-            >
-              {showDetails ? "Close" : "The collection"}
-              <ArrowUpRight
-                size={9}
-                className={`transition-transform ${
-                  showDetails
-                    ? "rotate-45"
-                    : "group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                }`}
-              />
-            </button>
-          </header>
-
-          <div className="grid gap-4 py-5 sm:py-6 md:grid-cols-[0.92fr_1.08fr] md:items-center">
-            <div className="relative z-10">
-              <div className="mb-4 flex items-center gap-2">
-                <span className="h-px w-5 bg-[#a99b72]" />
-                <p className="text-[6px] uppercase tracking-[0.18em] text-[#aaa794]">
-                  Aurelia No. 01 · Made for the room
-                </p>
+        {/* Masthead */}
+        <header className="relative z-10 flex items-center justify-between border-b border-white/[0.07] pb-3.5">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-5 w-5 items-center justify-center rounded-md border border-violet-400/30 bg-violet-400/[0.1] text-[9px] font-semibold text-violet-300">
+              V
+            </span>
+            <div>
+              <div className="text-[9.5px] font-semibold tracking-tight text-white/95">
+                CAPITAL VELOCITY
               </div>
-              <h2 className="max-w-[235px] font-serif text-[clamp(2.2rem,6vw,3.5rem)] leading-[0.88] tracking-[-0.06em] text-[#eee9dc]">
-                Sound,
-                <br />
-                given room
-                <br />
-                <span className="italic text-[#b9aa7e]">to breathe.</span>
-              </h2>
-              <p className="mt-4 max-w-[215px] text-[8px] leading-4 text-[#aaa99d] sm:text-[9px]">
-                A considered sound system that fills a space gently,
-                beautifully, and entirely on its own terms.
-              </p>
-              <div className="mt-5 flex flex-wrap items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsPlaying((value) => !value)}
-                  className="group inline-flex min-h-8 items-center gap-2 rounded-full bg-[#d2c49b] px-3 text-[7px] font-medium text-[#1b2019] transition hover:bg-[#e1d5ad]"
-                >
-                  <span className="grid h-4 w-4 place-items-center rounded-full bg-black/10">
-                    {isPlaying ? <VolumeX size={8} /> : <Volume2 size={8} />}
-                  </span>
-                  {isPlaying ? "Pause the room" : "Hear the room"}
-                  <ArrowUpRight size={9} />
-                </button>
-                <span className="flex items-center gap-1.5 text-[6px] uppercase tracking-[0.13em] text-[#a3a296]">
-                  <span
-                    className={`h-1 w-1 rounded-full ${
-                      isPlaying
-                        ? "bg-[#c3d39b] shadow-[0_0_8px_rgba(195,211,155,.7)]"
-                        : "bg-[#686b60]"
-                    }`}
-                  />
-                  {isPlaying ? "Now playing" : "Sound off"}
-                </span>
+              <div className="text-[7px] tracking-wider uppercase text-white/35">
+                Liquidity Intelligence
               </div>
-
-              {showDetails ? (
-                <div className="mt-4 max-w-[220px] border-l border-[#a99b72] pl-3 text-[7px] leading-4 text-[#aaa99d]">
-                  <p className="font-medium text-[#e6e1d4]">
-                    One form. A fuller room.
-                  </p>
-                  <p className="mt-1">
-                    Hand-finished mineral composite, room-aware acoustics, and a
-                    softly tuned 360° soundstage.
-                  </p>
-                </div>
-              ) : null}
-            </div>
-
-            <div className="relative flex min-h-[230px] items-center justify-center md:min-h-[290px]">
-              <div
-                aria-hidden="true"
-                className="absolute h-[80%] w-[80%] rounded-full bg-[radial-gradient(ellipse,rgba(157,145,101,.15),transparent_68%)]"
-              />
-              <div className="absolute left-[3%] top-[13%] hidden items-center gap-1.5 text-[5.5px] uppercase tracking-[0.18em] text-[#aaa58e] sm:flex">
-                <span className="h-1 w-1 rounded-full bg-[#b7a879]" />
-                Crafted in Copenhagen
-              </div>
-              <div className="absolute bottom-[8%] right-[0%] hidden items-center gap-1.5 text-[5.5px] uppercase tracking-[0.18em] text-[#aaa58e] sm:flex">
-                Room-aware acoustics
-                <span className="h-1 w-1 rounded-full bg-[#b7a879]" />
-              </div>
-              <AureliaSpeakerPreview isPlaying={isPlaying} />
             </div>
           </div>
 
-          <footer className="flex items-center justify-between border-t border-white/10 pt-3 text-[5.5px] uppercase tracking-[0.15em] text-[#85877d]">
-            <span>Pure tone, considered form</span>
-            <span>01 — No. 01</span>
-          </footer>
+          <div className="flex items-center gap-2">
+            <span className="flex items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 text-[7.5px] font-medium text-emerald-300">
+              <span className="h-1 w-1 rounded-full bg-emerald-400" />
+              SETTLEMENT ACTIVE
+            </span>
+          </div>
+        </header>
+
+        {/* Primary Editorial Metric Display */}
+        <div className="relative z-10 pt-4 pb-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[8px] font-medium uppercase tracking-[0.18em] text-white/40">
+              Aggregate Liquidity Index
+            </span>
+            <div className="flex gap-1 text-[8px]">
+              {["1H", "24H", "7D", "30D"].map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setActiveTimeframe(tab)}
+                  className={`rounded px-1.5 py-0.5 transition ${
+                    activeTimeframe === tab
+                      ? "bg-violet-400/20 text-violet-200 font-medium"
+                      : "text-white/40 hover:text-white/70"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-2 flex items-baseline gap-3">
+            <h2 className="text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl">
+              $68.42B
+            </h2>
+            <div className="flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-2 py-0.5 text-[9px] font-semibold text-emerald-300">
+              <TrendingUp size={10} />
+              <span>+38.4%</span>
+            </div>
+          </div>
+
+          <p className="mt-1 text-[8.5px] leading-relaxed text-white/50">
+            Global cross-currency routing volume with sub-20ms settlement across
+            14 clearing corridors.
+          </p>
         </div>
+
+        {/* SVG Fluid Velocity Ribbon */}
+        <div className="relative z-10 mt-3 rounded-xl border border-white/[0.07] bg-[#09080e]/90 p-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)]">
+          <div className="flex items-center justify-between text-[7.5px] text-white/40">
+            <span>VELOCITY CORRIDOR FLUX</span>
+            <span className="font-mono text-emerald-300">Peak: $4.82B / s</span>
+          </div>
+
+          <div className="relative mt-2 h-20 w-full">
+            <svg
+              viewBox="0 0 400 100"
+              preserveAspectRatio="none"
+              className="h-full w-full"
+            >
+              <defs>
+                <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.35" />
+                  <stop offset="70%" stopColor="#8b5cf6" stopOpacity="0.05" />
+                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+
+              {/* Grid guide */}
+              <line
+                x1="0"
+                y1="25"
+                x2="400"
+                y2="25"
+                stroke="rgba(255,255,255,0.05)"
+                strokeDasharray="2 4"
+              />
+              <line
+                x1="0"
+                y1="60"
+                x2="400"
+                y2="60"
+                stroke="rgba(255,255,255,0.05)"
+                strokeDasharray="2 4"
+              />
+
+              {/* Gradient area */}
+              <path
+                d="M 0 80 C 60 85, 110 50, 160 55 C 210 60, 260 20, 310 25 C 360 30, 380 15, 400 18 L 400 100 L 0 100 Z"
+                fill="url(#curveGradient)"
+              />
+
+              {/* Primary stroke line */}
+              <path
+                d="M 0 80 C 60 85, 110 50, 160 55 C 210 60, 260 20, 310 25 C 360 30, 380 15, 400 18"
+                fill="none"
+                stroke="#a78bfa"
+                strokeWidth="2.2"
+              />
+
+              {/* Active data beacon */}
+              <circle cx="310" cy="25" r="3.5" fill="#34d399" />
+              <circle
+                cx="310"
+                cy="25"
+                r="7"
+                fill="none"
+                stroke="#34d399"
+                strokeWidth="1"
+                opacity="0.5"
+              />
+            </svg>
+          </div>
+        </div>
+
+        {/* Live Corridors Stream */}
+        <div className="relative z-10 mt-3.5 space-y-2">
+          <div className="flex items-center justify-between text-[8px] font-medium tracking-wider uppercase text-white/35">
+            <span>Settlement Corridors</span>
+            <span>Latency</span>
+          </div>
+
+          {[
+            {
+              pair: "NY-LON Corridor",
+              vol: "$24.8B",
+              lat: "12ms",
+              health: "Optimal",
+            },
+            {
+              pair: "SGP-HK Corridor",
+              vol: "$18.4B",
+              lat: "16ms",
+              health: "Optimal",
+            },
+            {
+              pair: "FRA-TYO Corridor",
+              vol: "$14.2B",
+              lat: "19ms",
+              health: "Balanced",
+            },
+          ].map((item) => (
+            <div
+              key={item.pair}
+              className="flex items-center justify-between rounded-lg border border-white/[0.05] bg-white/[0.015] px-2.5 py-1.5 text-[8.5px] transition hover:border-violet-400/20"
+            >
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span className="font-medium text-white/90">{item.pair}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-white/50">{item.vol}</span>
+                <span className="font-mono text-emerald-300/80">
+                  {item.lat}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Reworked Dynamic Panel: Network Health & Resilience */}
+        {reworked ? (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-10 mt-4 rounded-xl border border-violet-400/30 bg-violet-950/[0.25] p-3 shadow-[0_0_24px_rgba(139,92,246,0.15)]"
+          >
+            <div className="flex items-center justify-between border-b border-violet-400/15 pb-2">
+              <div className="flex items-center gap-1.5 text-[8.5px] font-medium text-violet-200">
+                <ShieldCheck size={12} className="text-violet-300" />
+                <span>Executive Network Resilience</span>
+              </div>
+              <span className="rounded bg-emerald-400/10 px-1.5 py-0.2 text-[7px] font-semibold text-emerald-300">
+                14/14 NODES ACTIVE
+              </span>
+            </div>
+
+            <div className="mt-2.5 grid grid-cols-2 gap-2 text-[8px]">
+              <div className="rounded-md border border-white/[0.05] bg-black/30 p-2">
+                <span className="text-white/40 block">AVERAGE LATENCY</span>
+                <span className="font-mono text-sm font-semibold text-white">
+                  18.2ms
+                </span>
+                <span className="text-emerald-400 text-[7px]">
+                  ▼ -4.1ms routing optimization
+                </span>
+              </div>
+
+              <div className="rounded-md border border-white/[0.05] bg-black/30 p-2">
+                <span className="text-white/40 block">CLEARING PROTOCOL</span>
+                <span className="font-mono text-xs font-semibold text-violet-200">
+                  ISO 20022
+                </span>
+                <span className="text-white/40 text-[7px]">
+                  Synchronous settlement
+                </span>
+              </div>
+            </div>
+
+            {/* 14-Node Topology Indicators */}
+            <div className="mt-2.5 flex items-center justify-between gap-1 pt-1">
+              {[...Array(14)].map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setSelectedNode(i)}
+                  className={`h-2 flex-1 rounded-sm transition ${
+                    selectedNode === i
+                      ? "bg-emerald-300 scale-110 shadow-[0_0_6px_#34d399]"
+                      : "bg-emerald-500/40 hover:bg-emerald-400"
+                  }`}
+                  title={`Node ${i + 1}: Healthy`}
+                />
+              ))}
+            </div>
+          </motion.div>
+        ) : null}
       </div>
     </div>
   );
@@ -859,174 +955,19 @@ function AureliaPreview({ reworked = false }) {
 
 function PreviewPlaceholder() {
   return (
-    <div className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-[#0a0a0d] px-5 text-white">
-      <div
-        aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(111,76,156,.045),transparent_68%)]"
-      />
+    <div className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-backgroundLight p-6 text-white">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/[0.05] blur-2xl" />
 
-      <div className="relative mt-7 text-center">
-        <div className="text-[10px] font-medium text-white/55 sm:text-[11px]">
-          Your interface will appear here
+      <div className="relative flex flex-col items-center text-center">
+        <div className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.03]">
+          <Play size={14} className="text-white/40 ml-0.5" />
         </div>
-        <div className="mt-1.5 text-[7px] uppercase tracking-[0.16em] text-white/20">
-          Live preview
+        <div className="mt-4 text-[11px] font-medium text-white/60">
+          Interface Canvas Ready
         </div>
-      </div>
-    </div>
-  );
-}
-
-function BuildingPreview({ progress: value, rework = false, overlay = false }) {
-  const impact = value > 0.58 && value < 0.74;
-  const reveal = clamp01(value * 1.18);
-
-  return (
-    <div
-      className={`relative flex h-full flex-col overflow-hidden px-4 text-white ${
-        overlay ? "bg-[#06070a]/42 backdrop-blur-[1px]" : "bg-[#0a0a0d]"
-      }`}
-    >
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(111,76,156,.055),transparent_38%),radial-gradient(circle_at_20%_80%,rgba(74,74,90,.045),transparent_44%)]"
-      />
-      <div className="relative flex flex-1 flex-col items-center justify-center">
-        <div className="mb-5 text-center">
-          <div className="text-[8px] font-medium uppercase tracking-[0.2em] text-white/30">
-            {rework ? "Refining interface" : "Building interface"}
-          </div>
-          <div className="mt-2 text-[18px] font-medium tracking-[-0.04em] text-white/85 sm:text-[21px]">
-            Shaping the experience
-          </div>
+        <div className="mt-1 text-[8px] uppercase tracking-wider text-white/30">
+          Waiting for prompt
         </div>
-
-        <div className="relative h-[190px] w-full max-w-[310px]">
-          <motion.div
-            animate={{ opacity: impact ? 1 : 0, scale: impact ? 1 : 0.75 }}
-            transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-[60%] top-[62%] h-16 w-24 -translate-x-1/2 rounded-full bg-violet-400/[0.045] blur-2xl"
-          />
-
-          <motion.div
-            animate={{
-              y: impact ? 4 : 0,
-              rotate: impact ? -0.7 : 0,
-              scale: impact ? 0.992 : 1,
-            }}
-            transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-1/2 top-1/2 w-[228px] -translate-x-1/2 -translate-y-1/2"
-          >
-            <div className="overflow-hidden rounded-[15px] border border-white/[0.10] bg-[#0f1015]">
-              <div className="flex h-7 items-center justify-between border-b border-white/[0.055] px-2.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/10" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/[0.08]" />
-                </div>
-                <span className="text-[6px] uppercase tracking-[0.18em] text-white/25">
-                  {rework ? "Refine" : "Canvas"}
-                </span>
-              </div>
-
-              <div className="relative h-[128px] p-3">
-                <div className="absolute left-3 top-3 w-[88px]">
-                  <motion.div
-                    animate={{ width: `${32 + reveal * 52}px` }}
-                    transition={{ duration: 0.5 }}
-                    className="h-2 rounded bg-white/[0.19]"
-                  />
-                  <div className="mt-2 h-1.5 w-16 rounded bg-white/[0.07]" />
-                  <div className="mt-1.5 h-1.5 w-12 rounded bg-white/[0.05]" />
-                </div>
-
-                <motion.div
-                  animate={{
-                    scale: 0.68 + reveal * 0.32,
-                    rotate: impact ? 6 : 0,
-                  }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute right-4 top-3 h-10 w-10 rounded-full border border-violet-300/20 bg-violet-300/[0.055]"
-                />
-
-                <motion.div
-                  animate={{ scaleX: 0.45 + reveal * 0.55 }}
-                  transition={{ duration: 0.52 }}
-                  className="absolute bottom-4 left-3 h-11 w-[118px] origin-left rounded-[9px] border border-white/[0.065] bg-white/[0.018]"
-                >
-                  <div className="absolute inset-2 flex items-end gap-1">
-                    {[28, 45, 38, 64, 52, 76].map((height, index) => (
-                      <motion.span
-                        key={index}
-                        animate={{
-                          height: `${Math.max(10, height * Math.max(0.18, reveal))}%`,
-                        }}
-                        transition={{ duration: 0.56, delay: index * 0.03 }}
-                        className="flex-1 rounded-t-[2px] bg-violet-300/35"
-                      />
-                    ))}
-                  </div>
-                </motion.div>
-                <div className="absolute bottom-4 right-3 h-8 w-14 rounded-[8px] border border-white/[0.065] bg-white/[0.018]" />
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            animate={{
-              rotate: impact ? [-46, 16, -42] : -42,
-              x: impact ? [0, 5, 0] : 0,
-              y: impact ? [-2, 8, -2] : -2,
-            }}
-            transition={{
-              duration: impact ? 0.72 : 0.95,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="absolute right-[7%] top-[7%] origin-bottom-left text-violet-200"
-          >
-            <Hammer size={48} strokeWidth={1.6} />
-          </motion.div>
-
-          <AnimatePresence>
-            {impact
-              ? [
-                  ["left-[68%] top-[60%]", "-13px", "-10px", 0.58],
-                  ["left-[69%] top-[59%]", "12px", "-7px", 0.52],
-                  ["left-[68%] top-[61%]", "4px", "11px", 0.6],
-                ].map(([position, x, y, duration], index) => (
-                  <motion.span
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.4, x: 0, y: 0 }}
-                    animate={{
-                      opacity: [0, 1, 0],
-                      scale: [0.4, 1, 1.18],
-                      x,
-                      y,
-                    }}
-                    transition={{ duration, delay: index * 0.025 }}
-                    className={`absolute ${position} text-xs ${
-                      index === 1 ? "text-white/65" : "text-violet-200"
-                    }`}
-                  >
-                    {index === 1 ? "·" : "✦"}
-                  </motion.span>
-                ))
-              : null}
-          </AnimatePresence>
-        </div>
-
-        <div className="mt-4 text-center">
-          <div className="text-[9px] font-medium text-white/70">
-            {rework ? "Reworking the composition" : "Shaping the interface"}
-          </div>
-          <div className="mt-1 text-[7px] text-white/30">
-            {Math.round(value * 100)}% complete
-          </div>
-        </div>
-      </div>
-      <div className="relative flex items-center justify-between border-t border-white/[0.06] pt-3 text-[5.5px] uppercase tracking-[0.15em] text-white/20">
-        <span>Interface being shaped</span>
-        <span>{rework ? "Refinement pass" : "First build"}</span>
       </div>
     </div>
   );
@@ -1054,35 +995,25 @@ function PreviewContent({ elapsed, timeline, mobile = false }) {
       aria-label="Live preview"
       className={
         mobile
-          ? "flex h-full flex-col overflow-hidden bg-[#0a0a0d]"
-          : "flex h-[320px] min-w-0 flex-col border-t border-[#19191f] bg-[#0b0b0f] sm:h-[370px] lg:h-auto lg:w-[27%] lg:shrink-0 lg:border-l lg:border-t-0"
+          ? "flex h-full flex-col overflow-hidden bg-[#07060a]"
+          : "flex h-[320px] min-w-0 flex-col border-t border-white/[0.06] bg-[#07060a] sm:h-[370px] lg:h-auto lg:w-[32%] lg:shrink-0 lg:border-l lg:border-t-0"
       }
     >
-      <div
-        className={
-          mobile
-            ? "flex h-9 shrink-0 items-center justify-between border-b border-[#1d1d22] px-3 sm:px-4"
-            : "flex h-10 shrink-0 items-center justify-between border-b border-[#18181e] px-3.5 sm:h-[42px] sm:px-4"
-        }
-      >
-        <div className="flex items-center gap-2 text-[9px] font-medium text-white/60 sm:text-[10px]">
-          <Play
-            size={mobile ? 8 : 9}
-            fill="currentColor"
-            className="text-emerald-300/80"
-          />
-          Live Preview
+      <div className="flex h-9 shrink-0 items-center justify-between border-b border-white/[0.06] bg-backgroundLight px-3.5 sm:h-10 sm:px-4">
+        <div className="flex items-center gap-2 text-[10px] font-medium text-white/70">
+          <Play size={10} fill="currentColor" className="text-emerald-400" />
+          <span>Live Interface</span>
         </div>
-        <span className="text-[7px] uppercase tracking-[0.1em] text-white/40 sm:text-[8px]">
+        <span className="rounded border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[7.5px] uppercase tracking-wider text-white/50">
           {reworkBuilding
             ? "Refining"
             : initialBuilding
-              ? "Building"
+              ? "Compiling"
               : reworked
-                ? "Refined"
+                ? "Dense Executive"
                 : initialReady
-                  ? "Ready"
-                  : "Waiting"}
+                  ? "Live v1.0"
+                  : "Idle"}
         </span>
       </div>
 
@@ -1094,7 +1025,6 @@ function PreviewContent({ elapsed, timeline, mobile = false }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: mobile ? 0.4 : 0.45 }}
               className="absolute inset-0"
             >
               <PreviewPlaceholder />
@@ -1104,32 +1034,24 @@ function PreviewContent({ elapsed, timeline, mobile = false }) {
           {baseMode === "initial" ? (
             <motion.div
               key="initial"
-              initial={{ opacity: 0, scale: 1.004 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.997 }}
-              transition={{
-                duration: mobile ? 0.65 : 0.75,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               className="absolute inset-0"
             >
-              <AureliaPreview />
+              <CapitalVelocityPreview />
             </motion.div>
           ) : null}
 
           {baseMode === "reworked" ? (
             <motion.div
               key="reworked"
-              initial={{ opacity: 0, scale: 1.004 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{
-                duration: mobile ? 0.7 : 0.85,
-                ease: [0.22, 1, 0.36, 1],
-              }}
               className="absolute inset-0"
             >
-              <AureliaPreview reworked />
+              <CapitalVelocityPreview reworked />
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -1138,22 +1060,13 @@ function PreviewContent({ elapsed, timeline, mobile = false }) {
           {building ? (
             <motion.div
               key={reworkBuilding ? "rework-builder" : "initial-builder"}
-              initial={{ opacity: 0, scale: mobile ? 0.995 : 0.992 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: mobile ? 1.006 : 1.008 }}
-              transition={{
-                opacity: {
-                  duration: mobile ? 0.5 : 0.55,
-                  ease: [0.22, 1, 0.36, 1],
-                },
-                scale: {
-                  duration: mobile ? 0.5 : 0.7,
-                  ease: [0.22, 1, 0.36, 1],
-                },
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
               className="absolute inset-0 z-10"
             >
-              <BuildingPreview
+              <StructuralSkeletonLoader
                 progress={progress(
                   elapsed,
                   reworkBuilding
@@ -1161,38 +1074,36 @@ function PreviewContent({ elapsed, timeline, mobile = false }) {
                     : timeline.firstPreview,
                 )}
                 rework={reworkBuilding}
-                overlay
               />
             </motion.div>
           ) : null}
         </AnimatePresence>
       </div>
 
-      <div
-        className={
-          mobile
-            ? "flex h-7 shrink-0 items-center justify-between border-t border-[#1d1d22] px-3 text-[7px] sm:px-4"
-            : "flex h-7 shrink-0 items-center justify-between border-t border-[#18181e] px-3.5 text-[7px] sm:px-4"
-        }
-      >
-        <span className={mobile ? "text-white/40" : "text-white/30"}>
+      <div className="flex h-7 shrink-0 items-center justify-between border-t border-white/[0.06] bg-[#07060a] px-3.5 text-[8px] sm:px-4 text-white/40">
+        <span>
           {initialBuilding
-            ? "Building interface…"
+            ? "Compiling interface…"
             : reworkBuilding
-              ? "Applying changes…"
+              ? "Applying layout refinements…"
               : reworked
-                ? "Updated from latest changes"
+                ? "Live preview updated"
                 : initialReady
-                  ? "Live"
-                  : "Waiting for prompt"}
+                  ? "Ready for inspection"
+                  : "Waiting for instructions"}
         </span>
-        <span className="text-emerald-300/75">●</span>
+        <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
       </div>
     </section>
   );
 }
 
 function DesktopWorkspace({ elapsed }) {
+  const isLoopEnding = elapsed >= DESKTOP_T.loop - 700;
+  const loopOpacity = isLoopEnding
+    ? 1 - (elapsed - (DESKTOP_T.loop - 700)) / 700
+    : 1;
+
   const thinking =
     (elapsed >= DESKTOP_T.firstThink[0] && elapsed < DESKTOP_T.firstThink[1]) ||
     (elapsed >= DESKTOP_T.reworkThink[0] && elapsed < DESKTOP_T.reworkThink[1]);
@@ -1201,22 +1112,25 @@ function DesktopWorkspace({ elapsed }) {
     elapsed >= DESKTOP_T.reworkSend && elapsed < DESKTOP_T.reworkPreview[1];
 
   return (
-    <div className="hidden bg-[#0a0a0d] lg:block">
-      <div className="relative overflow-hidden rounded-3xl border border-[#232326] bg-[#0a0a0d]">
+    <div
+      style={{ opacity: Math.max(0.04, loopOpacity) }}
+      className="hidden transition-opacity duration-300 lg:block"
+    >
+      <div className="relative overflow-hidden rounded-2xl border border-white/[0.09] bg-[#07060a] shadow-[0_20px_70px_rgba(0,0,0,0.8),0_0_40px_rgba(139,92,246,0.06)]">
         <BrowserBar />
-        <div className="flex lg:h-[750px] lg:flex-row">
+        <div className="flex lg:h-[720px] lg:flex-row">
           <Sidebar active={elapsed >= DESKTOP_T.firstSend} />
 
-          <section className="flex min-w-0 flex-1 flex-col bg-[#0a0a0d]">
+          <section className="flex min-w-0 flex-1 flex-col bg-[#07060a]">
             <EditorTabs />
             <ModelBar
               active={thinking}
-              label={reworkActive ? "Refining" : "Generating"}
+              label={reworkActive ? "Refining" : "Synthesizing"}
             />
-            <CenterConversation elapsed={elapsed} />
-            <div className="bg-backgroundDark px-3 pb-3 pt-2.5 sm:px-10 sm:pb-4 sm:pt-3">
-              <div className="mx-auto max-w-[770px]">
-                <Composer elapsed={elapsed} />
+            <CenterConversation elapsed={elapsed} timeline={DESKTOP_T} />
+            <div className="bg-backgroundDark p-3 sm:p-4 border-0">
+              <div className="mx-auto max-w-[720px]">
+                <Composer elapsed={elapsed} timeline={DESKTOP_T} />
               </div>
             </div>
           </section>
@@ -1229,12 +1143,15 @@ function DesktopWorkspace({ elapsed }) {
 }
 
 function MobileWorkspace({ elapsed }) {
+  const isLoopEnding = elapsed >= MOBILE_T.loop - 700;
+  const loopOpacity = isLoopEnding
+    ? 1 - (elapsed - (MOBILE_T.loop - 700)) / 700
+    : 1;
+
   const thinking =
     (elapsed >= MOBILE_T.firstThink[0] && elapsed < MOBILE_T.firstThink[1]) ||
     (elapsed >= MOBILE_T.reworkThink[0] && elapsed < MOBILE_T.reworkThink[1]);
 
-  // Use one key for each complete visit. Changing from building to ready must
-  // update the content, not close and reopen the entire preview.
   const previewVisit =
     elapsed >= MOBILE_T.firstPreview[0] && elapsed < MOBILE_T.firstPreviewClose
       ? "initial"
@@ -1243,19 +1160,22 @@ function MobileWorkspace({ elapsed }) {
         : null;
 
   return (
-    <div className="block lg:hidden">
-      <div className="mx-0 overflow-hidden rounded-xl border border-[#19191f] bg-[#0a0a0d] sm:mx-1">
+    <div
+      style={{ opacity: Math.max(0.04, loopOpacity) }}
+      className="block transition-opacity duration-300 lg:hidden"
+    >
+      <div className="overflow-hidden rounded-xl border border-white/[0.09] bg-[#07060a]">
         <BrowserBar />
         <div className="relative overflow-hidden">
           <EditorTabs />
           <ModelBar
             active={thinking}
-            label={elapsed >= MOBILE_T.reworkSend ? "Refining" : "Generating"}
+            label={elapsed >= MOBILE_T.reworkSend ? "Refining" : "Synthesizing"}
           />
-          <div className="flex h-[355px] flex-col">
+          <div className="flex h-[360px] flex-col">
             <CenterConversation elapsed={elapsed} timeline={MOBILE_T} />
           </div>
-          <div className="bg-[#09090c] p-2 sm:p-3">
+          <div className="bg-[#07060a] p-2 sm:p-3 border-t border-white/[0.05]">
             <Composer elapsed={elapsed} compact timeline={MOBILE_T} />
           </div>
 
@@ -1266,11 +1186,8 @@ function MobileWorkspace({ elapsed }) {
                 initial={{ x: "100%", opacity: 0.98 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "100%", opacity: 0.98 }}
-                transition={{
-                  duration: 0.68,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="absolute inset-0 z-10 bg-[#0b0b0f]"
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0 z-10 bg-[#07060a]"
               >
                 <PreviewContent elapsed={elapsed} timeline={MOBILE_T} mobile />
               </motion.div>
@@ -1286,8 +1203,6 @@ export default function WorkspaceDemo() {
   const reducedMotion = useReducedMotion();
   const [playing, setPlaying] = useState(true);
 
-  // Independent clocks prevent the shorter desktop cycle from being cut off
-  // whenever the longer mobile cycle resets.
   const desktopClock = useTimeline(playing && !reducedMotion, DESKTOP_T.loop);
   const mobileClock = useTimeline(playing && !reducedMotion, MOBILE_T.loop);
 
@@ -1299,42 +1214,43 @@ export default function WorkspaceDemo() {
     : mobileClock;
 
   return (
-    <section className="relative overflow-hidden bg-transparent px-0 pb-16 text-white sm:pb-20 lg:pb-28">
-      <div className="relative mx-auto max-w-full">
-        <div className="relative isolate mx-auto mt-9 max-w-[1280px] sm:mt-11 lg:mt-14">
-          <div className="relative z-10">
-            <DesktopWorkspace elapsed={desktopElapsed} />
-            <MobileWorkspace elapsed={mobileElapsed} />
-          </div>
+    <section className="relative overflow-hidden bg-transparent px-4 py-4 text-white sm:px-6 lg:px-8">
+      {/* Background ambient lighting */}
+
+      <div className="relative mx-auto max-w-7xl">
+        <div className="relative isolate mx-auto mt-10 max-w-[1240px] sm:mt-12">
+          <DesktopWorkspace elapsed={desktopElapsed} />
+          <MobileWorkspace elapsed={mobileElapsed} />
         </div>
 
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-            {!reducedMotion ? (
-              <button
-                type="button"
-                onClick={() => setPlaying((value) => !value)}
-                aria-label={
-                  playing ? "Pause workflow demo" : "Resume workflow demo"
-                }
-                className="inline-flex items-center gap-2 rounded-full border border-[#1c1c21] bg-white/[0.025] px-3.5 py-2 text-[10px] font-medium text-white/80 transition-colors hover:bg-white/[0.045] hover:text-white sm:text-[11px]"
-              >
-                {playing ? (
-                  <span className="text-violet-200">Ⅱ</span>
-                ) : (
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          {!reducedMotion ? (
+            <button
+              type="button"
+              onClick={() => setPlaying((v) => !v)}
+              className="inline-flex items-center gap-2 rounded-full border border-white/[0.09] bg-white/[0.03] px-3.5 py-1.5 text-[11px] font-medium text-white/80 transition hover:bg-white/[0.06] hover:text-white"
+            >
+              {playing ? (
+                <>
+                  <span className="text-violet-300">❚❚</span>
+                  <span>Pause playback</span>
+                </>
+              ) : (
+                <>
                   <Play
                     size={11}
                     fill="currentColor"
-                    className="text-violet-200"
+                    className="text-violet-300"
                   />
-                )}
-                {playing ? "Pause demo" : "Resume demo"}
-              </button>
-            ) : null}
-            <span className="text-[9px] text-white/35">
-              Product demo · Generate → refine → preview
-            </span>
-          </div>
+                  <span>Resume playback</span>
+                </>
+              )}
+            </button>
+          ) : null}
+
+          <span className="text-[10px] text-white/40">
+            Continuous loop · Prompt → Code → Live Preview → Refine
+          </span>
         </div>
       </div>
     </section>
