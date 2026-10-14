@@ -5,7 +5,8 @@ import {
 } from "../../../../ai/stream_parser";
 
 export const REACT_DEPENDENCIES = `<DEPENDENCIES>
-Runtime: ComponentLab React preview. Import ONLY from the packages below, using standard ES module imports.
+Runtime: SurforaAI React preview. The packages below are the explicitly tested compatibility baseline, not an exhaustive list of available npm packages. Other packages may resolve through the runtime's generic CDN fallback, but their compatibility is not guaranteed.
+Use standard ES module imports for external packages.
 
 #CORE REQUIRED
 - react (always: import React from "react")
@@ -87,9 +88,13 @@ RUNTIME-PROVIDED (never import these, never call createRoot)
 - react/jsx-runtime
 
 GLOBAL RULES
-- Never invent or assume packages that are not listed above.
-- Use the latest APIs of the listed packages.
-- No require(). No CDN <script> tags, global browser variables, or dynamically injected external scripts.
+- Treat the packages listed above as the explicitly tested compatibility baseline, not an exhaustive list of packages that may be available.
+- When asked which dependencies are explicitly supported or tested, answer using the list above. Do not describe unlisted packages as explicitly supported.
+- Other npm packages may resolve through the runtime's generic CDN fallback, but successful resolution and runtime compatibility are not guaranteed.
+- Never claim an unlisted package is tested, supported, or guaranteed to work unless that has been independently verified.
+- When recommending an unlisted package, clearly distinguish it from the tested baseline and mention relevant compatibility uncertainty.
+- Use standard ES module imports for external packages.
+- Prefer documented, stable APIs compatible with the provided React runtime. Do not assume a package's latest API is compatible without verification.
 - Never import CSS from npm packages (no 'swiper/css', no '@daypicker/react/style.css'). Style these components with Tailwind classes or your own CSS.
 - For packages with supported subpath imports, use the documented subpath.
 
@@ -106,6 +111,36 @@ PACKAGE-SPECIFIC RULES
 - @tanstack/react-query: include a minimal QueryClient and QueryClientProvider whenever query hooks are used.
 - sonner: render <Toaster /> whenever toast() is used.
 - @dnd-kit/core and @dnd-kit/sortable: include the required DndContext and SortableContext setup for sortable behavior.
+</DEPENDENCIES>`;
+
+export const REACT_DEPENDENCY_REQUIREMENTS = `<DEPENDENCIES>
+Runtime: SurforaAI React preview. Import external packages only using standard ES module imports.
+
+# CORE
+- Always import React: import React from "react".
+
+# DEPENDENCY SELECTION
+- Consider whether external packages would materially improve the requested interface, visual quality, or functionality. Use them when they provide a meaningful advantage, such as complex charts, drag-and-drop interactions, advanced animations, 3D work/modeling, or specialized UI controls etc.
+- Do not add dependencies merely because they are available. Prefer native browser APIs, CSS, and Tailwind CSS when they can achieve the result effectively without an additional package.
+- Keep dependencies minimal and avoid introducing multiple packages that serve substantially the same purpose.
+- Do not assume that a package is compatible merely because it can be imported or resolved by the preview runtime. Prefer well-established packages and documented APIs that are suitable for a browser-based React preview.
+- Use stable, documented APIs compatible with the React runtime. Avoid deprecated APIs and do not assume that the latest API is compatible without verification.
+- When using a package, implement its required setup and provider components correctly. Do not use a library superficially when its actual functionality is needed.
+
+# MODULES AND STYLING
+- Use standard ES module imports. Never use require().
+- Do not use CDN <script> tags, global browser variables as substitutes for imports, or dynamically injected external scripts.
+- Never import CSS from npm packages (for example, 'swiper/css' or '@daypicker/react/style.css'). Style components with Tailwind classes or your own CSS.
+- For packages with supported subpath imports, use their documented subpaths.
+
+# ROUTING
+- Never use window.history.pushState(), window.history.replaceState(), or pathname-based browser routing.
+- For multi-view navigation, use react-router's MemoryRouter or hash-based routing. Never use BrowserRouter.
+
+# ICONS AND BRAND LOGOS
+- lucide-react and @heroicons/react provide UI icons, not brand logos.
+- Never use these icon libraries to represent brands such as GitHub, Facebook, X/Twitter, Instagram, LinkedIn, YouTube, or Discord. Draw brand logos as inline SVGs.
+
 </DEPENDENCIES>`;
 
 const ReactOutputContract = `## Return ONLY marker-delimited sections.
@@ -230,7 +265,7 @@ Output complete resulting files as required by the output contract, but keep the
 
 ## Implementation
 
-- Preview compatibility/supported-dependencies must not override the requirement to preserve and correctly edit supplied source code. Supplied code may be editable even when it is not previewable.
+- Requirement to preserve and correctly edit supplied source code should not be overridden.
 - Prefer Tailwind for routine layout and responsive spacing.
 - Use CSS for tokens, visual styling, states, and motion, and for spatial compositions or reusable layouts that are clearer there.
 - Give each property one owner; do not duplicate styling across the two.
@@ -238,9 +273,9 @@ Output complete resulting files as required by the output contract, but keep the
 
 ## Engineering Requirements
 
-Deliver complete, valid code. For all interfaces, use only supported dependencies; for edits, do not introduce unsupported dependencies or replace existing dependencies outside the requested scope unless explicitly requested.
+Deliver complete, valid code. For edits, do not replace existing dependencies outside the requested scope unless explicitly requested.
 
-${REACT_DEPENDENCIES}
+${REACT_DEPENDENCY_REQUIREMENTS}
 
 Use:
 

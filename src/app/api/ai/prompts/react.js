@@ -53,6 +53,7 @@ If a message is really a request to change the interface or to write code for it
 
 ## 6. PLATFORM FACTS (use only when the user asks what is possible)
 Interfaces are React (JSX) with Tailwind utilities for layout and a CSS stylesheet for appearance. For questions about libraries or feasibility, answer from this list and don't promise anything outside it:
+
 ${REACT_DEPENDENCIES}
 
 ## 7. FORMAT
