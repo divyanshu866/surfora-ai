@@ -23,7 +23,90 @@ export default function ComponentEditor({
   // latestCodeRef.current = code ?? "";
 
   const editorLanguage = language === "jsx" ? "javascript" : language;
+  function registerReactSnippets(monaco) {
+    const languages = ["javascript", "typescript"];
 
+    const snippets = [
+      {
+        label: "rafce",
+        detail: "React arrow function component with default export",
+        insertText: [
+          "import React from 'react';",
+          "",
+          "const ${1:ComponentName} = () => {",
+          "  return (",
+          "    <div>",
+          "      $0",
+          "    </div>",
+          "  );",
+          "};",
+          "",
+          "export default ${1:ComponentName};",
+        ].join("\n"),
+      },
+      {
+        label: "rfce",
+        detail: "React function component with default export",
+        insertText: [
+          "import React from 'react';",
+          "",
+          "function ${1:ComponentName}() {",
+          "  return (",
+          "    <div>",
+          "      $0",
+          "    </div>",
+          "  );",
+          "}",
+          "",
+          "export default ${1:ComponentName};",
+        ].join("\n"),
+      },
+      {
+        label: "rfc",
+        detail: "React function component",
+        insertText: [
+          "function ${1:ComponentName}() {",
+          "  return (",
+          "    <div>",
+          "      $0",
+          "    </div>",
+          "  );",
+          "}",
+        ].join("\n"),
+      },
+      {
+        label: "clg",
+        detail: "Console log",
+        insertText: "console.log(${1:value});$0",
+      },
+    ];
+
+    return languages.map((language) =>
+      monaco.languages.registerCompletionItemProvider(language, {
+        provideCompletionItems(model, position) {
+          const word = model.getWordUntilPosition(position);
+          const range = {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: word.startColumn,
+            endColumn: word.endColumn,
+          };
+
+          return {
+            suggestions: snippets.map((snippet) => ({
+              label: snippet.label,
+              detail: snippet.detail,
+              kind: monaco.languages.CompletionItemKind.Snippet,
+              insertText: snippet.insertText,
+              insertTextRules:
+                monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+              range,
+            })),
+          };
+        },
+      }),
+    );
+  }
   const handleEditorWillMount = useCallback((monaco) => {
     monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
@@ -33,14 +116,46 @@ export default function ComponentEditor({
       moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
       module: monaco.languages.typescript.ModuleKind.ESNext,
     });
+    monaco.editor.defineTheme("surfora-dark", {
+      base: "vs-dark",
+      inherit: true,
+
+      rules: [
+        // Identifiers and variables
+        { token: "identifier.js", foreground: "9CDCFE" },
+        { token: "identifier.ts", foreground: "9CDCFE" },
+        { token: "identifier", foreground: "9CDCFE" },
+
+        // Functions, where the tokenizer identifies them
+        { token: "function", foreground: "DCDCAA" },
+        { token: "identifier.function", foreground: "DCDCAA" },
+
+        // Types and predefined identifiers
+        { token: "type.identifier", foreground: "4EC9B0" },
+        { token: "predefined", foreground: "4EC9B0" },
+      ],
+      colors: {
+        "editor.background": "#09090B",
+        "editor.foreground": "#D4D4D4",
+        "editorCursor.foreground": "#AEAFAD",
+        "editorLineNumber.foreground": "#858585",
+        "editorLineNumber.activeForeground": "#C6C6C6",
+        "editor.selectionBackground": "#264F78",
+      },
+    });
+
+    emmetMonaco.emmetHTML(monaco, ["html"]);
+    emmetMonaco.emmetCSS(monaco, ["css"]);
+    emmetMonaco.emmetJSX(monaco, ["javascript", "typescript"]);
+    emmetMonaco.emmetHTML(monaco, ["html"]);
+    emmetMonaco.emmetCSS(monaco, ["css"]);
+    emmetMonaco.emmetJSX(monaco, ["javascript", "typescript"]);
   }, []);
 
   const handleEditorDidMount = useCallback((editor, monaco) => {
     editorRef.current = editor;
 
-    emmetMonaco.emmetHTML(monaco);
-    emmetMonaco.emmetCSS(monaco);
-
+    registerReactSnippets(monaco);
     // A project may have changed while Monaco was still mounting.
     const incomingCode = latestCodeRef.current;
     if (editor.getValue() !== incomingCode) {
@@ -81,18 +196,49 @@ export default function ComponentEditor({
         height="100%"
         defaultLanguage={editorLanguage}
         defaultValue={code ?? ""}
-        theme="vs-dark"
+        theme="surfora-dark"
         onChange={handleEditorChange}
         beforeMount={handleEditorWillMount}
         onMount={handleEditorDidMount}
         options={{
-          fontSize: 14,
+          fontSize: 16,
+          fontFamily: "'Cascadia Code', Consolas, monospace",
+          lineHeight: 22,
+          fontLigatures: true,
+
           minimap: { enabled: false },
           automaticLayout: true,
           wordWrap: "on",
           scrollBeyondLastLine: false,
+
+          lineNumbers: "on",
+          lineNumbersMinChars: 3,
+          renderLineHighlight: "all",
+          renderWhitespace: "selection",
+
+          cursorStyle: "line",
+          cursorBlinking: "smooth",
+          cursorSmoothCaretAnimation: "on",
+          smoothScrolling: true,
+
+          bracketPairColorization: { enabled: true },
+          guides: {
+            indentation: true,
+            bracketPairs: true,
+            highlightActiveIndentation: true,
+          },
+
+          padding: { top: 14, bottom: 14 },
+          scrollbar: {
+            verticalScrollbarSize: 8,
+            horizontalScrollbarSize: 8,
+            useShadows: false,
+          },
+
           autoClosingBrackets: true,
           formatOnPaste: true,
+          suggestOnTriggerCharacters: true,
+          tabCompletion: "on",
         }}
       />
       {isEmpty && (
