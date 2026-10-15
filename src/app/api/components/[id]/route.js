@@ -59,7 +59,7 @@ export async function PATCH(req, context) {
     return NextResponse.json({ error: "Not Found" }, { status: 404 });
   }
 
-  const updated = await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx) => {
     await tx.component.update({
       where: { id: Number(id) },
       data: {
@@ -86,8 +86,8 @@ export async function PATCH(req, context) {
                     targetTech === "HTML" ? TargetTech.HTML : TargetTech.REACT,
                   inputTokens: usageMetadata.inputTokens ?? 0,
                   outputTokens: usageMetadata.outputTokens ?? 0,
-                  thinkingTokens: usageMetadata?.reasoningTokens ?? 0,
-                  totalTokens: usageMetadata?.totalTokens ?? 0,
+                  thinkingTokens: usageMetadata.reasoningTokens ?? 0,
+                  totalTokens: usageMetadata.totalTokens ?? 0,
                 },
               }
             : undefined,
@@ -101,20 +101,21 @@ export async function PATCH(req, context) {
         },
       });
     }
+  });
 
-    return await tx.component.findUnique({
-      where: { id: Number(id) },
-      include: {
-        prompts: {
-          orderBy: {
-            id: "asc",
-          },
-          include: {
-            aiRequest: true,
-          },
+  // Fetch the full component only after the transaction has committed.
+  const updated = await prisma.component.findUnique({
+    where: { id: Number(id) },
+    include: {
+      prompts: {
+        orderBy: {
+          id: "asc",
+        },
+        include: {
+          aiRequest: true,
         },
       },
-    });
+    },
   });
 
   return NextResponse.json(updated, { status: 200 });
