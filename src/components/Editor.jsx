@@ -1,9 +1,10 @@
+// Editor.jsx
 "use client";
 
+import React, { useEffect, useRef } from "react";
 import ComponentEditor from "@/components/ComponentEditor";
 import AIEditorTabs from "@/components/AIEditorTabs";
 import AIEditor from "@/components/AIEditor";
-import { useEffect } from "react";
 import { useEditorContext } from "@/context/EditorContext";
 import { useConsole } from "@/context/ConsoleContext";
 
@@ -12,6 +13,8 @@ const Editor = ({ user, isMobile }) => {
     setSelectedVisualStyle,
     activeComponent,
     setActiveComponent,
+    setActiveComponentFromEditor,
+    externalRevision,
     updatePreview,
     components,
     setShowPreview,
@@ -32,9 +35,8 @@ const Editor = ({ user, isMobile }) => {
   } = useEditorContext();
 
   const { setConsoleLogs } = useConsole();
+  const loadedSelectionRef = useRef(null);
 
-  // Resolve the selected record by ID, never by its array position.
-  // Its object reference also changes when that record is updated.
   const selectedComponent =
     activeComponentId == null
       ? null
@@ -42,34 +44,46 @@ const Editor = ({ user, isMobile }) => {
           (component) => String(component.id) === String(activeComponentId),
         ) ?? null);
 
-  // Hide the preview when switching editors on mobile.
   useEffect(() => {
     if (isMobile) {
       setShowPreview(false);
     }
   }, [activeEditor, isMobile, setShowPreview]);
 
-  // Synchronize the editor and preview with the selected saved component.
+  // Only a selection change loads a saved record. Replacing that record
+  // in the sidebar after Save must not replace the live draft.
   useEffect(() => {
+    if (activeComponentId == null) {
+      loadedSelectionRef.current = null;
+      return;
+    }
+
     if (!selectedComponent) return;
 
-    setActiveComponent({
-      id: selectedComponent.id,
-      messages: selectedComponent.prompts ?? [],
-      name: selectedComponent.name ?? "",
-      targetTech: selectedComponent.targetTech,
-      jsx: selectedComponent.jsx ?? "",
-      html: selectedComponent.html ?? "",
-      css: selectedComponent.css ?? "",
-      js: selectedComponent.js ?? "",
-    });
+    const selectionKey = String(activeComponentId);
+    if (loadedSelectionRef.current === selectionKey) return;
+    loadedSelectionRef.current = selectionKey;
+
+    // A newly created project is already the active draft when Save assigns
+    // its server ID; do not reload the submitted snapshot over newer typing.
+    if (String(activeComponent.id) !== selectionKey) {
+      setActiveComponent({
+        id: selectedComponent.id,
+        messages: selectedComponent.prompts ?? [],
+        name: selectedComponent.name ?? "",
+        targetTech: selectedComponent.targetTech,
+        jsx: selectedComponent.jsx ?? "",
+        html: selectedComponent.html ?? "",
+        css: selectedComponent.css ?? "",
+        js: selectedComponent.js ?? "",
+      });
+    }
 
     setActiveMessages(selectedComponent.prompts ?? []);
     setTargetTech(selectedComponent.targetTech);
     setConsoleLogs([]);
 
-    // updatePreview is not memoized in EditorContext, so it is
-    // intentionally omitted from these dependencies.
+    // updatePreview is not memoized in EditorContext.
     void updatePreview(selectedComponent).catch((error) => {
       console.error("Failed to update the preview:", error);
     });
@@ -77,7 +91,6 @@ const Editor = ({ user, isMobile }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeComponentId, selectedComponent]);
 
-  // Cmd/Ctrl + S: update the preview and save the current component.
   useEffect(() => {
     const handleSaveShortcut = (event) => {
       if (
@@ -134,7 +147,6 @@ const Editor = ({ user, isMobile }) => {
     updatePreview,
   ]);
 
-  // Cmd/Ctrl + K: start a new project.
   useEffect(() => {
     const handleNewComponentShortcut = (event) => {
       if (
@@ -152,8 +164,6 @@ const Editor = ({ user, isMobile }) => {
       setShowPreview(false);
       setActiveMessages([]);
       setReworkUI(false);
-
-      // Clear selection by ID, not by index.
       setActiveComponentId(null);
 
       setSelectedVisualStyle("Custom style");
@@ -232,13 +242,9 @@ const Editor = ({ user, isMobile }) => {
             <div className="h-0 flex-1">
               <ComponentEditor
                 code={activeComponent.jsx}
-                onChange={(value) =>
-                  setActiveComponent((previous) => ({
-                    ...previous,
-                    jsx: value,
-                  }))
-                }
+                onChange={(value) => setActiveComponentFromEditor("jsx", value)}
                 language="jsx"
+                externalRevision={externalRevision}
               />
             </div>
           </div>
@@ -255,12 +261,10 @@ const Editor = ({ user, isMobile }) => {
               <ComponentEditor
                 code={activeComponent.html}
                 onChange={(value) =>
-                  setActiveComponent((previous) => ({
-                    ...previous,
-                    html: value,
-                  }))
+                  setActiveComponentFromEditor("html", value)
                 }
                 language="html"
+                externalRevision={externalRevision}
               />
             </div>
           </div>
@@ -275,13 +279,9 @@ const Editor = ({ user, isMobile }) => {
           <div className="h-0 flex-1">
             <ComponentEditor
               code={activeComponent.css}
-              onChange={(value) =>
-                setActiveComponent((previous) => ({
-                  ...previous,
-                  css: value,
-                }))
-              }
+              onChange={(value) => setActiveComponentFromEditor("css", value)}
               language="css"
+              externalRevision={externalRevision}
             />
           </div>
         </div>
@@ -296,13 +296,9 @@ const Editor = ({ user, isMobile }) => {
             <div className="h-0 flex-1">
               <ComponentEditor
                 code={activeComponent.js}
-                onChange={(value) =>
-                  setActiveComponent((previous) => ({
-                    ...previous,
-                    js: value,
-                  }))
-                }
+                onChange={(value) => setActiveComponentFromEditor("js", value)}
                 language="javascript"
+                externalRevision={externalRevision}
               />
             </div>
           </div>
