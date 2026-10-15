@@ -73,7 +73,7 @@ const markdownComponents = {
       );
 
     const className =
-      "mb-3 break-words whitespace-pre-wrap text-[14px] leading-6 font-normal text-neutral-200 last:mb-0 sm:mb-4 sm:text-[15px] sm:leading-7 [&+ul]:mt-0 [&+ol]:mt-0";
+      "mb-3 break-words whitespace-pre-wrap text-[14px] leading-6 font-normal text-white last:mb-0 sm:mb-4 sm:text-[15px] sm:leading-7 [&+ul]:mt-0 [&+ol]:mt-0";
 
     if (isImageOnly) return <>{children}</>;
 
@@ -121,7 +121,7 @@ const markdownComponents = {
         pl-[0.95rem]
         text-[14px]
         leading-6
-        text-neutral-200
+        text-white
         marker:text-neutral-400
         sm:my-4
         sm:space-y-2
@@ -151,7 +151,7 @@ const markdownComponents = {
          pl-[0.95rem]
         text-[14px]
         leading-6
-        text-neutral-200
+        text-white
         marker:font-medium
         marker:text-neutral-400
         sm:my-4

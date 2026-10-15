@@ -106,11 +106,6 @@ const AssistantHeader = ({ isGenerating, aiRequest }) => {
               sm:tracking-[0.08em]
             "
           >
-            <span
-              aria-hidden="true"
-              className="hidden h-3 w-px bg-white/10 sm:block"
-            />
-
             <span className="truncate">{modelUsed.label}</span>
 
             {aiRequest?.effort ? (
