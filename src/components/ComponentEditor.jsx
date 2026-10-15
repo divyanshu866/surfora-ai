@@ -1,31 +1,30 @@
 // ComponentEditor.tsx
+"use client";
+
+import React, { useCallback, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import * as emmetMonaco from "emmet-monaco-es";
-import { useEffect, useRef } from "react";
 import { useEditorContext } from "@/context/EditorContext";
 
 import "@/styles/editor.css";
 
-export default function ComponentEditor({ code, onChange, language }) {
+export default function ComponentEditor({
+  code,
+  onChange,
+  language,
+  externalRevision,
+}) {
   const { isGenerating } = useEditorContext();
   const editorRef = useRef(null);
-  let editorLanguage;
-  switch (language) {
-    case "html":
-      editorLanguage = "html";
-      break;
-    case "css":
-      editorLanguage = "css";
-      break;
-    case "javascript":
-      editorLanguage = "javascript";
-      break;
-    case "jsx":
-      editorLanguage = "javascript";
-      break;
-  }
-  function handleEditorWillMount(monaco) {
-    // Enable JSX/React support in Monaco's JavaScript language service
+  const latestCodeRef = useRef(code ?? "");
+  const lastAppliedRevisionRef = useRef(externalRevision);
+  const [isEmpty, setIsEmpty] = React.useState(!(code ?? ""));
+
+  // latestCodeRef.current = code ?? "";
+
+  const editorLanguage = language === "jsx" ? "javascript" : language;
+
+  const handleEditorWillMount = useCallback((monaco) => {
     monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
       allowJs: true,
@@ -34,52 +33,56 @@ export default function ComponentEditor({ code, onChange, language }) {
       moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
       module: monaco.languages.typescript.ModuleKind.ESNext,
     });
+  }, []);
 
-    // Optional: Setup any monaco configurations before mounting
-  }
-
-  function handleEditorDidMount(editor, monaco) {
-    // Store editor reference for auto-scroll
+  const handleEditorDidMount = useCallback((editor, monaco) => {
     editorRef.current = editor;
 
-    // Enable Emmet for HTML and CSS
     emmetMonaco.emmetHTML(monaco);
     emmetMonaco.emmetCSS(monaco);
 
-    // Override Tab to trigger Emmet
-  }
-
-  // Auto-scroll to end when code is being streamed
-  useEffect(() => {
-    if (isGenerating && editorRef.current && code) {
-      try {
-        const model = editorRef.current.getModel();
-        if (model) {
-          const lineCount = model.getLineCount();
-          // Scroll to reveal the last line
-          editorRef.current.revealLine(lineCount);
-          // Set cursor position to end of document
-          const lastLineLength = model.getLineLength(lineCount);
-          editorRef.current.setPosition({
-            lineNumber: lineCount,
-            column: lastLineLength + 1,
-          });
-        }
-      } catch (error) {
-        // Silently handle any errors during auto-scroll
-        console.debug("Auto-scroll error:", error);
-      }
+    // A project may have changed while Monaco was still mounting.
+    const incomingCode = latestCodeRef.current;
+    if (editor.getValue() !== incomingCode) {
+      editor.setValue(incomingCode);
     }
-  }, [code, isGenerating]);
+    setIsEmpty(!incomingCode);
+  }, []);
+
+  const handleEditorChange = useCallback(
+    (value) => {
+      const nextValue = value ?? "";
+      setIsEmpty(!nextValue);
+      onChange(nextValue);
+    },
+    [onChange],
+  );
+
+  useEffect(() => {
+    if (lastAppliedRevisionRef.current === externalRevision) return;
+    lastAppliedRevisionRef.current = externalRevision;
+
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    const incomingCode = code ?? "";
+
+    // Never replace Monaco's model with identical text. In particular,
+    // ordinary keystrokes do not enter this external-update path.
+    if (editor.getValue() !== incomingCode) {
+      editor.setValue(incomingCode);
+    }
+    setIsEmpty(!incomingCode);
+  }, [code, externalRevision]);
 
   return (
-    <div className="relative flex items-center justify-center h-full bg-[#070708]">
+    <div className="relative flex h-full items-center justify-center bg-[#070708]">
       <Editor
         height="100%"
-        defaultLanguage={editorLanguage} // "jsx", "html", "css", or "javascript"
-        value={code}
+        defaultLanguage={editorLanguage}
+        defaultValue={code ?? ""}
         theme="vs-dark"
-        onChange={onChange}
+        onChange={handleEditorChange}
         beforeMount={handleEditorWillMount}
         onMount={handleEditorDidMount}
         options={{
@@ -92,11 +95,11 @@ export default function ComponentEditor({ code, onChange, language }) {
           formatOnPaste: true,
         }}
       />
-      {!code && (
+      {isEmpty && (
         <img
           src={`${language}.svg`}
           alt=""
-          className="absolute max-w-45 max-h-45 h-full w-full p-5 opacity-30"
+          className="absolute max-h-45 max-w-45 h-full w-full p-5 opacity-30"
         />
       )}
     </div>

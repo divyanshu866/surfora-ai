@@ -1,9 +1,19 @@
+// EditorContext.js
 "use client";
-import { createContext, useState, useContext, useEffect } from "react";
+
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import { buildReactPreviewDocument } from "@/components/Preview/reactRuntime";
 import { buildwebBundleDocument } from "@/components/Preview/webBundleRuntime";
 import { DEFAULT_JSX, EMPTY_JSX } from "@/components/Preview/defaults";
 import { useConsole } from "./ConsoleContext";
+
 const EditorContext = createContext();
 
 export function EditorProvider({ children }) {
@@ -17,7 +27,7 @@ export function EditorProvider({ children }) {
   const [generationLimitModalOpen, setGenerationLimitModalOpen] =
     useState(false);
 
-  const [activeComponent, setActiveComponent] = useState({
+  const [activeComponent, setActiveComponentState] = useState({
     id: "",
     messages: [],
     name: "",
@@ -27,6 +37,28 @@ export function EditorProvider({ children }) {
     js: "",
     jsx: EMPTY_JSX,
   });
+
+  // Any external draft replacement signals mounted Monaco editors to
+  // compare their models against the new code.
+  const [externalRevision, setExternalRevision] = useState(0);
+  const draftRevisionRef = useRef(0);
+
+  const setActiveComponent = useCallback((nextComponent) => {
+    draftRevisionRef.current += 1;
+    setActiveComponentState(nextComponent);
+    setExternalRevision((revision) => revision + 1);
+  }, []);
+
+  // Keystrokes update the draft used by Save and Preview, but never signal
+  // Monaco to write that draft back into its own model.
+  const setActiveComponentFromEditor = useCallback((field, value) => {
+    draftRevisionRef.current += 1;
+    setActiveComponentState((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
+  }, []);
+
   //Sidebar
   const [components, setComponents] = useState([]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -47,7 +79,15 @@ export function EditorProvider({ children }) {
   const [isMaximised, setIsMaximised] = useState(false);
   const [previewKey, setPreviewKey] = useState(0);
 
-  const [activeComponentId, setActiveComponentId] = useState(null);
+  const [activeComponentId, setActiveComponentIdState] = useState(null);
+  const activeComponentIdRef = useRef(null);
+  const selectionSessionRef = useRef(0);
+
+  const setActiveComponentId = useCallback((nextId) => {
+    selectionSessionRef.current += 1;
+    activeComponentIdRef.current = nextId;
+    setActiveComponentIdState(nextId);
+  }, []);
 
   function sortComponents(items) {
     return [...items].sort((a, b) => {
@@ -72,8 +112,12 @@ export function EditorProvider({ children }) {
       ]),
     );
   }
+
   const saveComponent = async (component) => {
     const isNew = component?.id == null || component.id === "";
+    const selectionAtStart = activeComponentIdRef.current;
+    const sessionAtStart = selectionSessionRef.current;
+    const revisionAtStart = draftRevisionRef.current;
 
     const payload = {
       id: component?.id ?? "",
@@ -115,26 +159,42 @@ export function EditorProvider({ children }) {
         );
       }
 
-      // Store the COMPLETE API response in the sidebar list.
+      // The sidebar may show the saved snapshot, but that snapshot must not
+      // automatically become the live editor draft.
       upsertComponent(saved);
 
-      // Update the editor using its expected state shape.
-      const editorComponent = {
-        id: saved.id,
-        messages: saved.prompts || [],
-        name: saved.name,
-        targetTech: saved.targetTech,
-        html: saved.html,
-        css: saved.css,
-        js: saved.js,
-        jsx: saved.jsx,
-      };
+      const stillSameSelection =
+        selectionSessionRef.current === sessionAtStart &&
+        String(activeComponentIdRef.current) === String(selectionAtStart);
 
-      setActiveComponent(editorComponent);
-      setActiveMessages(saved.prompts || []);
+      if (!stillSameSelection) return saved;
 
-      // Selection will be made ID-based below.
-      setActiveComponentId(saved.id);
+      const draftIsUnchanged = draftRevisionRef.current === revisionAtStart;
+
+      if (draftIsUnchanged) {
+        setActiveComponent({
+          id: saved.id,
+          messages: saved.prompts || [],
+          name: saved.name,
+          targetTech: saved.targetTech,
+          html: saved.html,
+          css: saved.css,
+          js: saved.js,
+          jsx: saved.jsx,
+        });
+        setActiveMessages(saved.prompts || []);
+      } else if (isNew) {
+        // A new project needs its assigned ID, but keeps any text typed
+        // after the request started.
+        setActiveComponentState((previous) => ({
+          ...previous,
+          id: saved.id,
+        }));
+      }
+
+      if (isNew) {
+        setActiveComponentId(saved.id);
+      }
 
       return saved;
     } finally {
@@ -189,6 +249,8 @@ export function EditorProvider({ children }) {
         setActiveEditor,
         activeComponent,
         setActiveComponent,
+        setActiveComponentFromEditor,
+        externalRevision,
         htmlPreviewDocument,
         setHtmlPreviewDocument,
         reactPreviewDocument,
