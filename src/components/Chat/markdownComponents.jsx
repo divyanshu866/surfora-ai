@@ -329,14 +329,14 @@ const markdownComponents = {
           className="
             break-words
             rounded
-            bg-white/[0.085]
+            bg-[white]/[0.10]
             px-1.5
             py-0.5
             font-mono
             text-[11px]
             font-medium
             leading-[1.45]
-            text-violet-300/85
+            text-violet-300
             sm:text-[12.5px]
             sm:leading-[1.5]
           "

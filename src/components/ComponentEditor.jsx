@@ -19,6 +19,8 @@ export default function ComponentEditor({
   const latestCodeRef = useRef(code ?? "");
   const lastAppliedRevisionRef = useRef(externalRevision);
   const [isEmpty, setIsEmpty] = React.useState(!(code ?? ""));
+  // surfora-dark || visual-sudio-dark
+  const editorTheme = "surfora-dark";
 
   // latestCodeRef.current = code ?? "";
 
@@ -116,7 +118,7 @@ export default function ComponentEditor({
       moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
       module: monaco.languages.typescript.ModuleKind.ESNext,
     });
-    monaco.editor.defineTheme("surfora-dark", {
+    monaco.editor.defineTheme("visual-studio-dark", {
       base: "vs-dark",
       inherit: true,
 
@@ -143,7 +145,94 @@ export default function ComponentEditor({
         "editor.selectionBackground": "#264F78",
       },
     });
+    monaco.editor.defineTheme("surfora-dark", {
+      base: "vs-dark",
+      inherit: true,
 
+      rules: [
+        // Comments
+
+        // Keywords — SurforaAI violet instead of Visual Studio blue
+        { token: "keyword", foreground: "B79AF7" },
+        { token: "keyword.flow", foreground: "C586C0" },
+
+        // Strings and numbers
+        { token: "string", foreground: "CE9178" },
+        { token: "number", foreground: "B5CEA8" },
+
+        // Functions
+        { token: "function", foreground: "DCDCAA" },
+        { token: "identifier.function", foreground: "DCDCAA" },
+
+        // Types and predefined identifiers
+        { token: "type", foreground: "4EC9B0" },
+        { token: "type.identifier", foreground: "4EC9B0" },
+        { token: "predefined", foreground: "4EC9B0" },
+
+        // Variables and identifiers
+        { token: "variable", foreground: "9CDCFE" },
+        { token: "identifier.js", foreground: "9CDCFE" },
+        { token: "identifier.ts", foreground: "9CDCFE" },
+        { token: "identifier", foreground: "D4D4D4" },
+
+        // Operators and delimiters
+        { token: "operator", foreground: "D4D4D4" },
+        { token: "delimiter", foreground: "D4D4D4" },
+
+        // JSX / HTML
+        { token: "tag", foreground: "4EC9B0" },
+        { token: "attribute.name", foreground: "B79AF7" },
+        { token: "attribute.value", foreground: "CE9178" },
+        { token: "delimiter.html", foreground: "D4D4D4" },
+      ],
+
+      colors: {
+        // ── Editor surface ──
+        "editor.background": "#09090B",
+        "editor.foreground": "#D4D4D8",
+        "editorGutter.background": "#09090B",
+
+        // ── Cursor and selection ──
+        "editorCursor.foreground": "#C4B5FD",
+        "editor.selectionBackground": "#493B78",
+        "editor.inactiveSelectionBackground": "#34303F",
+        "editor.selectionHighlightBackground": "#66538A55",
+        "editor.lineHighlightBackground": "#FFFFFF08",
+        "editor.lineHighlightBorder": "#FFFFFF00",
+
+        // ── Line numbers ──
+        "editorLineNumber.foreground": "#686875",
+        "editorLineNumber.activeForeground": "#B7A7FA",
+
+        // ── Autocomplete ──
+        "editorSuggestWidget.background": "#111113",
+        "editorSuggestWidget.foreground": "#D4D4D8",
+        "editorSuggestWidget.border": "#303039",
+        "editorSuggestWidget.selectedBackground": "#292631",
+        "editorSuggestWidget.highlightForeground": "#B7A7FA",
+        "editorSuggestWidget.focusHighlightForeground": "#B7A7FA",
+
+        // ── Hover and editor widgets ──
+        "editorHoverWidget.background": "#111113",
+        "editorHoverWidget.foreground": "#D4D4D8",
+        "editorHoverWidget.border": "#303039",
+        "editorWidget.background": "#111113",
+        "editorWidget.foreground": "#D4D4D8",
+        "editorWidget.border": "#303039",
+
+        // ── Search ──
+        "editor.findMatchBackground": "#66538A",
+        "editor.findMatchBorder": "#B7A7FA",
+        "editor.findMatchHighlightBackground": "#66538A55",
+        "editor.findRangeHighlightBackground": "#FFFFFF0D",
+
+        // ── Scrollbars ──
+        "editorOverviewRuler.border": "#09090B",
+        "scrollbarSlider.background": "#71717A40",
+        "scrollbarSlider.hoverBackground": "#85859370",
+        "scrollbarSlider.activeBackground": "#A1A1AC90",
+      },
+    });
     emmetMonaco.emmetHTML(monaco, ["html"]);
     emmetMonaco.emmetCSS(monaco, ["css"]);
     emmetMonaco.emmetJSX(monaco, ["javascript", "typescript"]);
@@ -189,19 +278,19 @@ export default function ComponentEditor({
     }
     setIsEmpty(!incomingCode);
   }, [code, externalRevision]);
-
   return (
     <div className="relative flex h-full items-center justify-center bg-[#070708]">
       <Editor
         height="100%"
         defaultLanguage={editorLanguage}
         defaultValue={code ?? ""}
-        theme="surfora-dark"
+        theme={editorTheme ?? "surfora-dark"}
         onChange={handleEditorChange}
         beforeMount={handleEditorWillMount}
         onMount={handleEditorDidMount}
         options={{
           fontSize: 16,
+          mouseWheelZoom: true,
           fontFamily: "'Cascadia Code', Consolas, monospace",
           lineHeight: 22,
           fontLigatures: true,

@@ -137,30 +137,8 @@ const UserMessage = ({ message }) => {
           </span>
         </div>
 
-        <div
-          className="
-            rounded-2xl
-            rounded-br-md
-            border
-            border-violet-300/15
-            bg-violet-600/50
-            px-3.5
-            py-2.5
-            text-[14px]
-            leading-6
-            text-neutral-50
-            shadow-[0_4px_18px_rgba(0,0,0,0.14)]
-            transition-colors
-            duration-200
-            sm:rounded-2xl
-            sm:px-4
-            sm:py-3
-            sm:text-[15px]
-            sm:leading-7
-            sm:shadow-[0_6px_24px_rgba(0,0,0,0.12)]
-          "
-        >
-          <p className="whitespace-pre-wrap break-words">{message}</p>
+        <div class="box-border w-fit max-w-full min-w-0 rounded-[1.25rem] border border-white/10 bg-gradient-to-br from-[#6d3bd1] via-[#5f2ec8] to-[#5323b5] px-4 py-3.5 text-[14px] leading-[1.65] text-white shadow-[0_12px_32px_rgba(38,18,78,0.20)] transition-colors duration-200 sm:max-w-[48rem] sm:rounded-[1.5rem] sm:px-5 sm:py-4 sm:text-[15px] lg:px-6 lg:py-5">
+          <p class="m-0 whitespace-pre-wrap break-words">{message}</p>
         </div>
       </div>
     </div>

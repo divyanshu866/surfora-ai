@@ -267,6 +267,7 @@ const CodePreviewPannel = () => {
           scrollbar-thin
           scrollbar-track-transparent
           scrollbar-thumb-white/10
+          scroll-smooth
         "
       >
         {code ? (
