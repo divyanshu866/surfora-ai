@@ -1,12 +1,14 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import { AI_MODELS } from "@/ai/models";
 
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 const DEFAULT_STEPS = [
-  "Thinking through your request",
-  "Planning the response",
-  "Generating your response",
+  "Understanding the objective...",
+  "Analyzing context and constraints...",
+  "Evaluating reasoning paths...",
+  "Preparing the response stream...",
 ];
 
 const PendingAssistantHeader = ({ aiRequest }) => {
@@ -93,20 +95,21 @@ export default function PendingAssistant({
   const [stepIndex, setStepIndex] = useState(0);
 
   useEffect(() => {
-    function updateStepIndex() {
+    function resetStep() {
       setStepIndex(0);
-
-      if (messages.length < 2) {
-        return undefined;
-      }
-
-      const intervalId = window.setInterval(() => {
-        setStepIndex((currentIndex) => (currentIndex + 1) % messages.length);
-      }, 1800);
-
-      return () => window.clearInterval(intervalId);
     }
-    return updateStepIndex();
+    resetStep();
+    if (messages.length < 2) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setStepIndex((currentIndex) => (currentIndex + 1) % messages.length);
+    }, 6000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
   }, [text, steps, messages.length]);
 
   const currentMessage = messages[stepIndex % messages.length] || "Thinking...";
@@ -128,23 +131,41 @@ export default function PendingAssistant({
           <div
             className="
               relative
-              text-[15px]
+              flex
+              items-center
+              gap-2.5
+              text-[14.5px]
               leading-7
-              text-neutral-200
+              text-neutral-100
             "
           >
-            <p
-              className={`
-                shimmer-text
-                m-0
-                font-medium
-                ${className}
-              `}
-              role="status"
-              aria-live="polite"
-            >
-              {currentMessage}
-            </p>
+            <span className="anchor-dot" aria-hidden="true" />
+            <div className="relative min-w-0 overflow-hidden">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.p
+                  key={stepIndex}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{
+                    duration: 0.32,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className={`
+                    m-0
+                    font-normal
+                    tracking-[-0.012em]
+                    antialiased
+                    [text-rendering:optimizeLegibility]
+                    ${className}
+                  `}
+                  role="status"
+                  aria-live="polite"
+                >
+                  <span className="shimmer-text">{currentMessage}</span>
+                </motion.p>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </div>

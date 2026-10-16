@@ -178,66 +178,349 @@ body {
 /* -------------------------------------------------------------------------- */
 
 @keyframes shimmer {
-  to {
-    background-position: 200% center;
+  0% {
+    background-position: 0% 0;
   }
-}
 
-.shimmer-text {
-  width: fit-content;
-  color: transparent;
-  background: linear-gradient(
-    90deg,
-    #94a3b8 0%,
-    #e2e8f0 35%,
-    #ffffff 50%,
-    #94a3b8 70%
-  );
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: shimmer 2.2s linear infinite;
-}
-
-/* Generation indicator */
-
-@keyframes cl-hammer-swing {
-  0%,
-  18%,
-  55%,
   100% {
-    transform: rotate(-28deg);
-  }
-  34% {
-    transform: rotate(5deg);
+    background-position: -200% 0;
   }
 }
 
-@keyframes cl-sparkle-flash {
+@keyframes subtle-breath {
   0%,
-  25%,
-  48%,
   100% {
-    opacity: 0;
-    transform: scale(0.65);
+    opacity: 0.65;
+    transform: scale(0.92);
   }
-  34% {
+
+  50% {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-@keyframes cl-card-appear {
-  0%,
-  20% {
-    opacity: 0.45;
+.anchor-dot {
+  width: 4.5px;
+  height: 4.5px;
+  border-radius: 9999px;
+  background-color: #ffffff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  animation: subtle-breath 4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.shimmer-text {
+  display: inline-block;
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #ffffff 22%,
+    rgba(255, 255, 255, 0.62) 50%,
+    #ffffff 78%,
+    #ffffff 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-text {
+    animation: none;
+    color: #ffffff;
   }
-  50%,
-  100% {
-    opacity: 1;
+
+  .anchor-dot {
+    animation: none;
   }
 }
 
+/* Generation indicator */
+
+/* 
+  Calibrated 8px Bento Grid System:
+  Stage Dimensions: 240px wide x 128px high
+  Phase 1: Split Left (148px + 8px + 84px = 240px)
+  Phase 2: Panoramic Stack (Hero: 240px x 64px, Stack: 116px + 8px + 116px = 240px)
+  Phase 3: Split Right (84px + 8px + 148px = 240px)
+*/
+
+/* --- TILE A (Primary Violet Glass Hero) --- */
+@keyframes gi-anim-tile-a {
+  /* State 1: Left Tall Hero */
+  0%,
+  25% {
+    top: 0px;
+    left: 0px;
+    width: 148px;
+    height: 128px;
+  }
+  /* State 2: Panoramic Top Banner */
+  33%,
+  58% {
+    top: 0px;
+    left: 0px;
+    width: 240px;
+    height: 64px;
+  }
+  /* State 3: Right Tall Hero */
+  66%,
+  91% {
+    top: 0px;
+    left: 92px;
+    width: 148px;
+    height: 128px;
+  }
+  /* Return to State 1 */
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 148px;
+    height: 128px;
+  }
+}
+
+/* --- TILE B (Secondary Panel) --- */
+@keyframes gi-anim-tile-b {
+  /* State 1: Top Right */
+  0%,
+  25% {
+    top: 0px;
+    left: 156px;
+    width: 84px;
+    height: 60px;
+  }
+  /* State 2: Bottom Left */
+  33%,
+  58% {
+    top: 72px;
+    left: 0px;
+    width: 116px;
+    height: 56px;
+  }
+  /* State 3: Top Left */
+  66%,
+  91% {
+    top: 0px;
+    left: 0px;
+    width: 84px;
+    height: 60px;
+  }
+  /* Return to State 1 */
+  100% {
+    top: 0px;
+    left: 156px;
+    width: 84px;
+    height: 60px;
+  }
+}
+
+/* --- TILE C (Tertiary Panel) --- */
+@keyframes gi-anim-tile-c {
+  /* State 1: Bottom Right */
+  0%,
+  25% {
+    top: 68px;
+    left: 156px;
+    width: 84px;
+    height: 60px;
+  }
+  /* State 2: Bottom Right */
+  33%,
+  58% {
+    top: 72px;
+    left: 124px;
+    width: 116px;
+    height: 56px;
+  }
+  /* State 3: Bottom Left */
+  66%,
+  91% {
+    top: 68px;
+    left: 0px;
+    width: 84px;
+    height: 60px;
+  }
+  /* Return to State 1 */
+  100% {
+    top: 68px;
+    left: 156px;
+    width: 84px;
+    height: 60px;
+  }
+}
+
+/* Adaptive Internal Geometry */
+@keyframes gi-anim-hero-title {
+  0%,
+  25%,
+  66%,
+  91% {
+    width: 36px;
+  }
+  33%,
+  58% {
+    width: 64px;
+  }
+  100% {
+    width: 36px;
+  }
+}
+
+@keyframes gi-anim-hero-body-1 {
+  0%,
+  25%,
+  66%,
+  91% {
+    width: 48px;
+  }
+  33%,
+  58% {
+    width: 110px;
+  }
+  100% {
+    width: 48px;
+  }
+}
+
+@keyframes gi-anim-hero-body-2 {
+  0%,
+  25%,
+  66%,
+  91% {
+    width: 32px;
+  }
+  33%,
+  58% {
+    width: 72px;
+  }
+  100% {
+    width: 32px;
+  }
+}
+
+@keyframes gi-anim-sec-bar-1 {
+  0%,
+  25%,
+  66%,
+  91% {
+    width: 44px;
+  }
+  33%,
+  58% {
+    width: 68px;
+  }
+  100% {
+    width: 44px;
+  }
+}
+
+@keyframes gi-anim-sec-bar-2 {
+  0%,
+  25%,
+  66%,
+  91% {
+    width: 28px;
+  }
+  33%,
+  58% {
+    width: 48px;
+  }
+  100% {
+    width: 28px;
+  }
+}
+
+/* Precise Motion Easing */
+.gi-tile-a {
+  animation: gi-anim-tile-a 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change: top, left, width, height;
+}
+
+.gi-tile-b {
+  animation: gi-anim-tile-b 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change: top, left, width, height;
+}
+
+.gi-tile-c {
+  animation: gi-anim-tile-c 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change: top, left, width, height;
+}
+
+.gi-hero-title {
+  animation: gi-anim-hero-title 9s ease-in-out infinite;
+}
+
+.gi-hero-body-1 {
+  animation: gi-anim-hero-body-1 9s ease-in-out infinite;
+}
+
+.gi-hero-body-2 {
+  animation: gi-anim-hero-body-2 9s ease-in-out infinite;
+}
+
+.gi-sec-bar-1 {
+  animation: gi-anim-sec-bar-1 9s ease-in-out infinite;
+}
+
+.gi-sec-bar-2 {
+  animation: gi-anim-sec-bar-2 9s ease-in-out infinite;
+}
+
+/* Subtle Text Fade */
+@keyframes gi-text-fade {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gi-text-fade {
+  animation: gi-text-fade 0.24s ease-out forwards;
+}
+
+/* Reduced Motion Fallback */
+@media (prefers-reduced-motion: reduce) {
+  .gi-tile-a,
+  .gi-tile-b,
+  .gi-tile-c,
+  .gi-hero-title,
+  .gi-hero-body-1,
+  .gi-hero-body-2,
+  .gi-sec-bar-1,
+  .gi-sec-bar-2,
+  .gi-text-fade {
+    animation: none;
+    transition: none;
+  }
+  .gi-tile-a {
+    top: 0px;
+    left: 0px;
+    width: 148px;
+    height: 128px;
+  }
+  .gi-tile-b {
+    top: 0px;
+    left: 156px;
+    width: 84px;
+    height: 60px;
+  }
+  .gi-tile-c {
+    top: 68px;
+    left: 156px;
+    width: 84px;
+    height: 60px;
+  }
+}
+
+/* PREVIEW ANIMATION */
 .cl-build-hammer {
   transform-origin: 25% 85%;
   animation: cl-hammer-swing 2.4s ease-in-out infinite;
